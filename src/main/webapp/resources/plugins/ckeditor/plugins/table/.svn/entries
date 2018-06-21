@@ -1,0 +1,79 @@
+<<<<<<< HEAD:src/.svn/entries
+10
+
+dir
+3
+http://gite-ls-nlopez.onpelima.onpe.gob.pe:443/svn/ONPE_ERPGGE/erp/src
+http://gite-ls-nlopez.onpelima.onpe.gob.pe:443/svn/ONPE_ERPGGE
+
+
+
+2018-05-11T17:10:24.388173Z
+3
+admin
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+195cc76f-3d75-2444-b671-b800b691244b
+
+
+
+
+
+
+0
+
+main
+dir
+
+test
+dir
+
+
+
+delete
+
+=======
+10
+
+dir
+47
+http://gite-ls-nlopez.onpelima.onpe.gob.pe:443/svn/ONPE_ERPGGE/erp/src/main/resources/static/plugins/ckeditor/plugins/table
+http://gite-ls-nlopez.onpelima.onpe.gob.pe:443/svn/ONPE_ERPGGE
+
+
+
+2018-05-11T20:00:17.957377Z
+12
+admin
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+195cc76f-3d75-2444-b671-b800b691244b
+
+dialogs
+dir
+
+>>>>>>> origin/ERPDESAGIT:src/main/resources/static/plugins/ckeditor/plugins/table/.svn/entries
