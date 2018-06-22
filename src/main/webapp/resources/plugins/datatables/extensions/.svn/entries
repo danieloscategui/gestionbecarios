@@ -1,111 +1,0 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD:src/main/resources/static/.svn/entries
-10
-
-dir
-3
-http://gite-ls-nlopez.onpelima.onpe.gob.pe:443/svn/ONPE_ERPGGE/erp/src/main/resources/static
-http://gite-ls-nlopez.onpelima.onpe.gob.pe:443/svn/ONPE_ERPGGE
-
-
-
-2018-05-11T17:10:24.388173Z
-3
-admin
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-195cc76f-3d75-2444-b671-b800b691244b
-
-
-
-
-
-
-0
-
-bootstrap
-dir
-
-css
-dir
-
-img
-dir
-
-js
-dir
-
-=======
->>>>>>> ERPDESAGIT
-10
-
-dir
-47
-http://gite-ls-nlopez.onpelima.onpe.gob.pe:443/svn/ONPE_ERPGGE/erp/src/main/resources/static/plugins/datatables/extensions
-http://gite-ls-nlopez.onpelima.onpe.gob.pe:443/svn/ONPE_ERPGGE
-
-
-
-2018-05-11T20:00:17.957377Z
-12
-admin
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-195cc76f-3d75-2444-b671-b800b691244b
-
-AutoFill
-dir
-
-ColReorder
-dir
-
-ColVis
-dir
-
-FixedColumns
-dir
-
-FixedHeader
-dir
-
-KeyTable
-dir
-
-Responsive
-dir
-
-Scroller
-dir
-
-TableTools
-dir
-
-<<<<<<< HEAD
-=======
->>>>>>> origin/ERPDESAGIT:src/main/resources/static/plugins/datatables/extensions/.svn/entries
->>>>>>> ERPDESAGIT
