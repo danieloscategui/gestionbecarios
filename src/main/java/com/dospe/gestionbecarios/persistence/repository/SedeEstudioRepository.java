@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dospe.gestionbecarios.persistence.model.SedeEstudio;
 
-@Repository
+@Repository("sedeEstudioRepository")
 public interface SedeEstudioRepository extends JpaRepository<SedeEstudio, Long>{
 
 }

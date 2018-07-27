@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.dospe.gestionbecarios.persistence.model.Beca;
 
 
-@Repository
+@Repository("becaRepository")
 public interface BecaRepository extends JpaRepository<Beca, Long>{
 
 }

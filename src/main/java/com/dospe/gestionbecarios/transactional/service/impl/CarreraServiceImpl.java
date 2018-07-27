@@ -1,69 +1,56 @@
-package com.dospe.gestionbecarios.service.impl;
+package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.List;
+import java.util.Collection;
+
+import com.dospe.gestionbecarios.persistence.model.Carrera;
+import com.dospe.gestionbecarios.persistence.repository.CarreraRepository;
+import com.dospe.gestionbecarios.transactional.service.CarreraService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.model.Carrera;
-import com.dospe.gestionbecarios.repository.CarreraRepository;
-import com.dospe.gestionbecarios.service.CarreraService;
 
-@Service
+@Service("carreraService")
 public class CarreraServiceImpl implements CarreraService {
 
 	@Autowired
-	private CarreraRepository carreraDAO;
+	@Qualifier("carreraRepository")
+	private CarreraRepository carreraRepository;
 
-	public void setCarreraDAO(CarreraRepository carreraDAO) {
-		this.carreraDAO = carreraDAO;
+	public void setCarreraRepository(CarreraRepository carreraRepository) {
+		this.carreraRepository = carreraRepository;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public Carrera findOne(Long id) {
-		return carreraDAO.findOne(id);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Carrera> findAll() {
-		return carreraDAO.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Carrera> findAllPaginated(Integer offset, Integer maxResults) {
-		return carreraDAO.findAllPaginated(offset, maxResults);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public Long count() {
-		return carreraDAO.count();
+	public Collection<Carrera> findAll() {
+		return carreraRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public String saveOrUpdate(Carrera entity) {
-		if (entity.isNew())
-			carreraDAO.save(entity);
-		else
-			carreraDAO.update(entity);
+	public void save(Carrera entity) {
+		carreraRepository.save(entity);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Carrera findById(Long id) {
+		return carreraRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public void remove(Long id) {
+		carreraRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<Carrera> findPaginated(int page, int size, String orden, String campo) {
 		return null;
-	}
-
-	@Override
-	@Transactional
-	public void delete(Carrera entity) {
-		carreraDAO.delete(entity);
-	}
-
-	@Override
-	@Transactional
-	public void deleteById(Long id) {
-		carreraDAO.deleteById(id);
 	}
 
 }

@@ -1,69 +1,55 @@
-package com.dospe.gestionbecarios.service.impl;
+package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.List;
+import java.util.Collection;
+
+import com.dospe.gestionbecarios.persistence.model.TipoGestion;
+import com.dospe.gestionbecarios.persistence.repository.TipoGestionRepository;
+import com.dospe.gestionbecarios.transactional.service.TipoGestionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.model.TipoGestion;
-import com.dospe.gestionbecarios.repository.TipoGestionRepository;
-import com.dospe.gestionbecarios.service.TipoGestionService;
-
-@Service
+@Service("tipoGestionService")
 public class TipoGestionServiceImpl implements TipoGestionService {
 
 	@Autowired
-	private TipoGestionRepository tipoGestionDAO;
+	@Qualifier("tipoGestionRepository")
+	private TipoGestionRepository tipoGestionRepository;
 	
-	public void setTipoGestionDAO(TipoGestionRepository tipoGestionDAO) {
-		this.tipoGestionDAO = tipoGestionDAO;
+	public void setTipoGestionRepository(TipoGestionRepository tipoGestionRepository) {
+		this.tipoGestionRepository = tipoGestionRepository;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public TipoGestion findOne(Long id) {
-		return tipoGestionDAO.findOne(id);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<TipoGestion> findAll() {
-		return tipoGestionDAO.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<TipoGestion> findAllPaginated(Integer offset, Integer maxResults) {
-		return tipoGestionDAO.findAllPaginated(offset, maxResults);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public Long count() {
-		return tipoGestionDAO.count();
+	public Collection<TipoGestion> findAll() {
+		return tipoGestionRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public String saveOrUpdate(TipoGestion entity) {
-		if (entity.isNew())
-			tipoGestionDAO.save(entity);
-		else
-			tipoGestionDAO.update(entity);
+	public void save(TipoGestion entity) {
+		tipoGestionRepository.save(entity);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public TipoGestion findById(Long id) {
+		return tipoGestionRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public void remove(Long id) {
+		tipoGestionRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<TipoGestion> findPaginated(int page, int size, String orden, String campo) {
 		return null;
-	}
-
-	@Override
-	@Transactional
-	public void delete(TipoGestion entity) {
-		tipoGestionDAO.delete(entity);
-	}
-
-	@Override
-	@Transactional
-	public void deleteById(Long id) {
-		tipoGestionDAO.deleteById(id);
 	}
 
 }

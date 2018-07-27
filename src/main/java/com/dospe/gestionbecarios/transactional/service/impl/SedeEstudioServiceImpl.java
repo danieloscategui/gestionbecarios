@@ -1,69 +1,54 @@
-package com.dospe.gestionbecarios.service.impl;
+package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.List;
+import java.util.Collection;
+
+import com.dospe.gestionbecarios.persistence.model.SedeEstudio;
+import com.dospe.gestionbecarios.persistence.repository.SedeEstudioRepository;
+import com.dospe.gestionbecarios.transactional.service.SedeEstudioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.model.SedeEstudio;
-import com.dospe.gestionbecarios.repository.SedeEstudioRepository;
-import com.dospe.gestionbecarios.service.SedeEstudioService;
-
-@Service
+@Service("sedeEstudioService")
 public class SedeEstudioServiceImpl implements SedeEstudioService {
 
 	@Autowired
-	private SedeEstudioRepository sedeEstudioDAO;
+	@Qualifier("sedeEstudioRepository")
+	private SedeEstudioRepository sedeEstudioRepository;
 	
-	public void setSedeEstudioDAO(SedeEstudioRepository sedeEstudioDAO) {
-		this.sedeEstudioDAO = sedeEstudioDAO;
+	public void setSedeEstudioRepository(SedeEstudioRepository sedeEstudioRepository) {
+		this.sedeEstudioRepository = sedeEstudioRepository;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public SedeEstudio findOne(Long id) {
-		return sedeEstudioDAO.findOne(id);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<SedeEstudio> findAll() {
-		return sedeEstudioDAO.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<SedeEstudio> findAllPaginated(Integer offset, Integer maxResults) {
-		return sedeEstudioDAO.findAllPaginated(offset, maxResults);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public Long count() {
-		return sedeEstudioDAO.count();
+	public Collection<SedeEstudio> findAll() {
+		return sedeEstudioRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public String saveOrUpdate(SedeEstudio entity) {
-		if(entity.isNew())
-			sedeEstudioDAO.save(entity);
-		else
-			sedeEstudioDAO.update(entity);
+	public void save(SedeEstudio entity) {
+		sedeEstudioRepository.save(entity);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public SedeEstudio findById(Long id) {
+		return sedeEstudioRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public void remove(Long id) {
+		sedeEstudioRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<SedeEstudio> findPaginated(int page, int size, String orden, String campo) {
 		return null;
-	}
-
-	@Override
-	@Transactional
-	public void delete(SedeEstudio entity) {
-		sedeEstudioDAO.delete(entity);
-	}
-
-	@Override
-	@Transactional
-	public void deleteById(Long id) {
-		sedeEstudioDAO.deleteById(id);
 	}
 
 }

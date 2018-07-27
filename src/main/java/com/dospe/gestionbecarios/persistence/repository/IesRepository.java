@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.dospe.gestionbecarios.persistence.model.Ies;
 
 
-@Repository
+@Repository("iesRepository")
 public interface IesRepository extends JpaRepository<Ies, Long> {
 
 }

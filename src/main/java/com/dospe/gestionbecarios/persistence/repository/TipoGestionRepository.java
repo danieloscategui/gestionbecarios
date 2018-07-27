@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.dospe.gestionbecarios.persistence.model.TipoGestion;
 
 
-@Repository
+@Repository("tipoGestionRepository")
 public interface TipoGestionRepository extends JpaRepository<TipoGestion, Long>{
 
 }

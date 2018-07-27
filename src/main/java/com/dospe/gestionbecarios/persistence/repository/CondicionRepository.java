@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.dospe.gestionbecarios.persistence.model.Condicion;
 
 
-@Repository
+@Repository("condicionRepository")
 public interface CondicionRepository extends JpaRepository<Condicion, Long>{
 	
 //	@SuppressWarnings("unchecked")

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.dospe.gestionbecarios.persistence.model.Carrera;
 
 
-@Repository
+@Repository("carreraRepository")
 public interface CarreraRepository extends JpaRepository<Carrera, Long> {
 
 }

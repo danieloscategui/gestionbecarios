@@ -1,69 +1,55 @@
-package com.dospe.gestionbecarios.service.impl;
+package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.List;
+import java.util.Collection;
+
+import com.dospe.gestionbecarios.persistence.model.TipoIes;
+import com.dospe.gestionbecarios.persistence.repository.TipoIesRepository;
+import com.dospe.gestionbecarios.transactional.service.TipoIesService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.model.TipoIes;
-import com.dospe.gestionbecarios.repository.TipoIesRepository;
-import com.dospe.gestionbecarios.service.TipoIesService;
-
-@Service
+@Service("tipoIesService")
 public class TipoIesServiceImpl implements TipoIesService {
 
 	@Autowired
-	private TipoIesRepository tipoIesDAO;
+	@Qualifier("tipoIesRepository")
+	private TipoIesRepository tipoIesRepository;
 	
-	public void setTipoIesDAO(TipoIesRepository tipoIesDAO) {
-		this.tipoIesDAO = tipoIesDAO;
+	public void setTipoIesRepository(TipoIesRepository tipoIesRepository) {
+		this.tipoIesRepository = tipoIesRepository;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public TipoIes findOne(Long id) {
-		return tipoIesDAO.findOne(id);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<TipoIes> findAll() {
-		return tipoIesDAO.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<TipoIes> findAllPaginated(Integer offset, Integer maxResults) {
-		return tipoIesDAO.findAllPaginated(offset, maxResults);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public Long count() {
-		return tipoIesDAO.count();
+	public Collection<TipoIes> findAll() {
+		return tipoIesRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public String saveOrUpdate(TipoIes entity) {
-		if (entity.isNew())
-			tipoIesDAO.save(entity);
-		else
-			tipoIesDAO.update(entity);
+	public void save(TipoIes entity) {
+		tipoIesRepository.save(entity);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public TipoIes findById(Long id) {
+		return tipoIesRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public void remove(Long id) {
+		tipoIesRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<TipoIes> findPaginated(int page, int size, String orden, String campo) {
 		return null;
-	}
-
-	@Override
-	@Transactional
-	public void delete(TipoIes entity) {
-		tipoIesDAO.delete(entity);
-	}
-
-	@Override
-	@Transactional
-	public void deleteById(Long id) {
-		tipoIesDAO.deleteById(id);;
 	}
 
 }

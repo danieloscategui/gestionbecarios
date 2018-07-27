@@ -1,73 +1,56 @@
-package com.dospe.gestionbecarios.service.impl;
+package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.List;
+import java.util.Collection;
+
+import com.dospe.gestionbecarios.persistence.model.Beca;
+import com.dospe.gestionbecarios.persistence.repository.BecaRepository;
+import com.dospe.gestionbecarios.transactional.service.BecaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.model.Beca;
-import com.dospe.gestionbecarios.repository.BecaRepository;
-import com.dospe.gestionbecarios.service.BecaService;
 
-@Service
+@Service("becaService")
 public class BecaServiceImpl implements BecaService {
 
 	@Autowired
-	private BecaRepository becaDAO;
+	@Qualifier("becaRepository")
+	private BecaRepository becaRepository;
 	
-	public void setBecaDAO(BecaRepository becaDAO){
-		this.becaDAO = becaDAO;
-	}
-	
-	@Override
-	@Transactional(readOnly=true)
-	public Beca findOne(Long id) {
-		return becaDAO.findOne(id);
+	public void setBecaRepository(BecaRepository becaRepository){
+		this.becaRepository = becaRepository;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<Beca> findAll() {
-		return becaDAO.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Beca> findAllPaginated(Integer offset, Integer maxResults) {
-		return becaDAO.findAllPaginated(offset, maxResults);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public Long count() {
-		return becaDAO.count();
+	public Collection<Beca> findAll() {
+		return becaRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public String saveOrUpdate(Beca entity) {
-		String msg;
-		if(entity.isNew()){
-			becaDAO.save(entity);
-			msg = "Beca guardada exitosamente";
-		}
-		else {
-			becaDAO.update(entity);
-			msg = "Beca actualizada exitosamente";
-		}
-		return msg;
+	public void save(Beca entity) {
+		becaRepository.save(entity);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Beca findById(Long id) {
+		return becaRepository.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
-	public void delete(Beca entity) {
-		becaDAO.delete(entity);
+	public void remove(Long id) {
+		becaRepository.deleteById(id);
 	}
 
 	@Override
-	public void deleteById(Long id) {
-		becaDAO.deleteById(id);
+	public Page<Beca> findPaginated(int page, int size, String orden, String campo) {
+		return null;
 	}
-
+	
 }

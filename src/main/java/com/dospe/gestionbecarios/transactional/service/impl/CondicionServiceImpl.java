@@ -1,81 +1,65 @@
-package com.dospe.gestionbecarios.service.impl;
+package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.List;
+import java.util.Collection;
+
+import com.dospe.gestionbecarios.persistence.model.Condicion;
+import com.dospe.gestionbecarios.persistence.repository.CondicionRepository;
+import com.dospe.gestionbecarios.transactional.service.CondicionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.model.Condicion;
-import com.dospe.gestionbecarios.repository.CondicionRepository;
-import com.dospe.gestionbecarios.service.CondicionService;
-
-@Service
+@Service("condicionService")
 public class CondicionServiceImpl implements CondicionService {
 
 	@Autowired
-	private CondicionRepository condicionDAO;
+	@Qualifier("condicionRepository")
+	private CondicionRepository condicionRepository;
 
-	public void setCondicionDAO(CondicionRepository condicionDAO) {
-		this.condicionDAO = condicionDAO;
+	public void setCondicionRepository(CondicionRepository condicionRepository) {
+		this.condicionRepository = condicionRepository;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public Condicion findOne(Long id) {
-		return condicionDAO.findOne(id);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Condicion> findAll() {
-		return condicionDAO.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Condicion> findAllPaginated(Integer offset, Integer maxResults) {
-		return condicionDAO.findAllPaginated(offset, maxResults);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public Long count() {
-		return condicionDAO.count();
+	public Collection<Condicion> findAll() {
+		return condicionRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public String saveOrUpdate(Condicion entity) {
-		if (entity.isNew())
-			condicionDAO.save(entity);
-		else
-			condicionDAO.update(entity);
+	public void save(Condicion entity) {
+		condicionRepository.save(entity);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Condicion findById(Long id) {
+		return condicionRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public void remove(Long id) {
+		condicionRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<Condicion> findPaginated(int page, int size, String orden, String campo) {
 		return null;
 	}
 
 	@Override
-	@Transactional
-	public void delete(Condicion entity) {
-		condicionDAO.delete(entity);
+	public Collection<Condicion> findAllByEstado(Long idEstado) {
+		return null;
 	}
 
 	@Override
-	@Transactional
-	public void deleteById(Long id) {
-		condicionDAO.deleteById(id);
+	public Collection<Condicion> findAllByCondicion(Long idCondicion) {
+		return null;
 	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Condicion> findAllByEstado(Long idEstado) {
-		return condicionDAO.findAllByEstado(idEstado);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Condicion> findAllByCondicion(Long idCondicion) {
-		return condicionDAO.findAllByCondicion(idCondicion);
-	}
-
+	
 }

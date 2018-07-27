@@ -1,69 +1,54 @@
-package com.dospe.gestionbecarios.service.impl;
+package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.List;
+import java.util.Collection;
+
+import com.dospe.gestionbecarios.persistence.model.Ies;
+import com.dospe.gestionbecarios.persistence.repository.IesRepository;
+import com.dospe.gestionbecarios.transactional.service.IesService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.model.Ies;
-import com.dospe.gestionbecarios.repository.IesRepository;
-import com.dospe.gestionbecarios.service.IesService;
-
-@Service
+@Service("iesService")
 public class IesServiceImpl implements IesService {
 
 	@Autowired
-	private IesRepository iesDAO;
+	@Qualifier("iesRepository")
+	private IesRepository iesRepository;
 	
-	public void setIesDAO(IesRepository iesDAO) {
-		this.iesDAO = iesDAO;
+	public void setIesRepository(IesRepository iesRepository) {
+		this.iesRepository = iesRepository;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public Ies findOne(Long id) {
-		return iesDAO.findOne(id);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Ies> findAll() {
-		return iesDAO.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Ies> findAllPaginated(Integer offset, Integer maxResults) {
-		return iesDAO.findAllPaginated(offset, maxResults);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public Long count() {
-		return iesDAO.count();
+	public Collection<Ies> findAll() {
+		return iesRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public String saveOrUpdate(Ies entity) {
-		if (entity.isNew())
-			iesDAO.save(entity);
-		else
-			iesDAO.update(entity);
+	public void save(Ies entity) {
+		iesRepository.save(entity);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Ies findById(Long id) {
+		return iesRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public void remove(Long id) {
+		iesRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<Ies> findPaginated(int page, int size, String orden, String campo) {
 		return null;
 	}
-
-	@Override
-	@Transactional
-	public void delete(Ies entity) {
-		iesDAO.delete(entity);
-	}
-
-	@Override
-	@Transactional
-	public void deleteById(Long id) {
-		iesDAO.deleteById(id);
-	}
-
 }

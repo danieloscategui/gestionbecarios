@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.dospe.gestionbecarios.persistence.model.Estado;
 
 
-@Repository
+@Repository("estadoRepository")
 public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
 }

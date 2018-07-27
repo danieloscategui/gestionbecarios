@@ -1,69 +1,55 @@
-package com.dospe.gestionbecarios.service.impl;
+package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.List;
+import java.util.Collection;
+
+import com.dospe.gestionbecarios.persistence.model.Estado;
+import com.dospe.gestionbecarios.persistence.repository.EstadoRepository;
+import com.dospe.gestionbecarios.transactional.service.EstadoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.model.Estado;
-import com.dospe.gestionbecarios.repository.EstadoRepository;
-import com.dospe.gestionbecarios.service.EstadoService;
-
-@Service
+@Service("estadoService")
 public class EstadoServiceImpl implements EstadoService {
 
 	@Autowired
-	private EstadoRepository estadoDAO;
+	@Qualifier("estadoRepository")
+	private EstadoRepository estadoRepository;
 	
-	public void setEstadoDAO(EstadoRepository estadoDAO) {
-		this.estadoDAO = estadoDAO;
+	public void setEstadoRepository(EstadoRepository estadoRepository) {
+		this.estadoRepository = estadoRepository;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public Estado findOne(Long id) {
-		return estadoDAO.findOne(id);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Estado> findAll() {
-		return estadoDAO.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Estado> findAllPaginated(Integer offset, Integer maxResults) {
-		return estadoDAO.findAllPaginated(offset, maxResults);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public Long count() {
-		return estadoDAO.count();
+	public Collection<Estado> findAll() {
+		return estadoRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public String saveOrUpdate(Estado entity) {
-		if (entity.isNew())
-			estadoDAO.save(entity);
-		else
-			estadoDAO.update(entity);
+	public void save(Estado entity) {
+		estadoRepository.save(entity);
+	}
+
+	@Override
+	@Transactional
+	public Estado findById(Long id) {
+		return estadoRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public void remove(Long id) {
+		estadoRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<Estado> findPaginated(int page, int size, String orden, String campo) {
 		return null;
-	}
-
-	@Override
-	@Transactional
-	public void delete(Estado entity) {
-		estadoDAO.delete(entity);
-	}
-
-	@Override
-	@Transactional
-	public void deleteById(Long id) {
-		estadoDAO.deleteById(id);
 	}
 
 }
