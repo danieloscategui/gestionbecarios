@@ -1,5 +1,6 @@
 package com.dospe.gestionbecarios.controller;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dospe.gestionbecarios.controller.dto.CondicionDTO;
 import com.dospe.gestionbecarios.controller.dto.EstadoDTO;
-import com.dospe.gestionbecarios.model.Condicion;
-import com.dospe.gestionbecarios.model.Estado;
-import com.dospe.gestionbecarios.service.CondicionService;
-import com.dospe.gestionbecarios.service.EstadoService;
+import com.dospe.gestionbecarios.persistence.domain.Condicion;
+import com.dospe.gestionbecarios.persistence.domain.Estado;
+import com.dospe.gestionbecarios.transactional.service.CondicionService;
+import com.dospe.gestionbecarios.transactional.service.EstadoService;
 
 @Controller
 public class EstadoController {
@@ -43,7 +44,7 @@ public class EstadoController {
 	
 	@RequestMapping(value="/estado/get", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Estado> listarEstado(){
+	public Collection<Estado> listarEstado(){
 		logger.debug("Listando todos los estados");
 		return  estadoService.findAll();
 	}
@@ -52,26 +53,26 @@ public class EstadoController {
 	@ResponseBody
 	public Estado getEstado(@PathVariable("idEstado") Long idEstado){
 		logger.debug("Getting one estado");
-		return  estadoService.findOne(idEstado);
+		return  estadoService.findById(idEstado);
 	}
 	
 	@RequestMapping(value="/estado/condicion/{idCondicion}", method=RequestMethod.GET)
 	@ResponseBody
 	public Condicion getCondicion(@PathVariable("idCondicion") Long idCondicion){
 		logger.debug("Getting one Condicion");
-		return  condicionService.findOne(idCondicion);
+		return  condicionService.findById(idCondicion);
 	}
 	
 	@RequestMapping(value="/estado/{idEstado}/condicion", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Condicion> mostrarCondicionPorBeca(@PathVariable("idEstado") Long idEstado){
+	public Collection<Condicion> mostrarCondicionPorBeca(@PathVariable("idEstado") Long idEstado){
 		logger.debug("Consultando todas las condiciones por determinado estado");
 		return  condicionService.findAllByEstado(idEstado);
 	}
 	
 	@RequestMapping(value="/estado/subcondicion/{idCondicion}", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Condicion> mostrarSubCondiciones(@PathVariable("idCondicion") Long idCondicion){
+	public Collection<Condicion> mostrarSubCondiciones(@PathVariable("idCondicion") Long idCondicion){
 		logger.debug("Consultando todas las subcondiciones por determinada condicion.");
 		return condicionService.findAllByCondicion(idCondicion);
 	}
@@ -80,7 +81,7 @@ public class EstadoController {
 	@ResponseBody
 	public Map<String, Object> crearEstado(@ModelAttribute("estadoDTO") EstadoDTO estadoDTO){
 		Map<String, Object> map = new HashMap<String, Object>();
-		estadoService.saveOrUpdate(new Estado(estadoDTO.getDescripcion()));
+		estadoService.save(new Estado(estadoDTO.getDescripcion()));
 		map.put("success", true);
 		map.put("msg", "El estado se registro satisfactoriamente.");
 		return map;
@@ -92,9 +93,9 @@ public class EstadoController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		logger.debug("Comprobando EstadoDTO: " + estadoDTO.getIdEstado() + " - " + estadoDTO.getDescripcion());
 		Estado estado = new Estado(); 
-		estado = estadoService.findOne(estadoDTO.getIdEstado());
+		estado = estadoService.findById(estadoDTO.getIdEstado());
 		estado.setDescripcion(estadoDTO.getDescripcion());
-		estadoService.saveOrUpdate(estado);
+		estadoService.save(estado);
 		map.put("success", true);
 		map.put("msg", "El registro se actualizo satisfactoriamente");
 		
@@ -105,11 +106,11 @@ public class EstadoController {
 	@ResponseBody
 	public Map<String, Object> crearCondicion(@ModelAttribute("condicionDTO") CondicionDTO condicionDTO){
 		Map<String, Object> map = new HashMap<String, Object>();
-		Condicion condicion = condicionService.findOne(condicionDTO.getIdCondicion());
-		Estado estado = estadoService.findOne(condicionDTO.getIdEstado());
+		Condicion condicion = condicionService.findById(condicionDTO.getIdCondicion());
+		Estado estado = estadoService.findById(condicionDTO.getIdEstado());
 		
 		if(condicion.isNew() && estado != null){
-			condicionService.saveOrUpdate(new Condicion(condicionDTO.getDescripcion(), estado, condicionDTO.getIdSubCondicion()));
+			condicionService.save(new Condicion(condicionDTO.getDescripcion(), estado, condicionDTO.getIdSubCondicion()));
 			map.put("success", true);
 			map.put("msg", "La condicion se registro satisfactoriamente.");
 		} else {
@@ -125,12 +126,12 @@ public class EstadoController {
 	@ResponseBody
 	public Map<String, Object> actualizarCondicion(@ModelAttribute("condicionDTO") CondicionDTO condicionDTO){
 		Map<String, Object> map = new HashMap<String, Object>();
-		Condicion condicion = condicionService.findOne(condicionDTO.getIdCondicion());
-		Estado estado = estadoService.findOne(condicionDTO.getIdEstado());
+		Condicion condicion = condicionService.findById(condicionDTO.getIdCondicion());
+		Estado estado = estadoService.findById(condicionDTO.getIdEstado());
 		condicion.setDescripcion(condicionDTO.getDescripcion());
 		condicion.setEstado(estado);
 		condicion.setIdSubCondicion(condicionDTO.getIdSubCondicion());
-		condicionService.saveOrUpdate(condicion);
+		condicionService.save(condicion);
 		map.put("success", true);
 		map.put("msg", "La condicion se registro satisfactoriamente.");
 			

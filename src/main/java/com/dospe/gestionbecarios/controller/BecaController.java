@@ -2,6 +2,7 @@ package com.dospe.gestionbecarios.controller;
 
 import java.beans.PropertyEditorSupport;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,22 +15,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dospe.gestionbecarios.model.Asesor;
-import com.dospe.gestionbecarios.model.Beca;
-import com.dospe.gestionbecarios.service.AsesorService;
-import com.dospe.gestionbecarios.service.BecaService;
-import com.dospe.gestionbecarios.service.IesService;
+import com.dospe.gestionbecarios.persistence.domain.Asesor;
+import com.dospe.gestionbecarios.persistence.domain.Beca;
+import com.dospe.gestionbecarios.transactional.service.AsesorService;
+import com.dospe.gestionbecarios.transactional.service.BecaService;
+import com.dospe.gestionbecarios.transactional.service.IesService;
 
 
 @Controller
@@ -68,7 +73,7 @@ public class BecaController {
 		binder.registerCustomEditor(Asesor.class, new PropertyEditorSupport(){
 			@Override
 			public void setAsText(String text) throws IllegalArgumentException {
-				Asesor asesor = asesorService.findOne(Long.parseLong(text));
+				Asesor asesor = asesorService.findById(Long.parseLong(text));
 				setValue(asesor);
 			}
 		});
@@ -76,31 +81,31 @@ public class BecaController {
 
 	
 	/**
-	 * Show All Becas with Pagination
+	 * Show All Becas
 	 * 
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/beca", method = RequestMethod.GET)
-	public String showAllBecasWithPagination(Model model, Integer offset, Integer maxResults) {
-		model.addAttribute("becaList", becaService.findAllPaginated(offset, maxResults));
-		model.addAttribute("becaCount", becaService.count());
-		model.addAttribute("becaOffset", offset);
+	public String showAllBecasWithPagination(Model model) {
+		model.addAttribute("becaList", becaService.findAll());
 		return BECA_LIST_PAGINATED;
-//		return "base-definition-2";
 	}
 	
-	@RequestMapping(value="/beca/api/cargar_becas", method=RequestMethod.GET)
+	@GetMapping("/beca/api/cargar_becas")
+	@ResponseStatus(code=HttpStatus.OK)
 	@ResponseBody
-	public List<Beca> cargarBecasPost(){
+	public Collection<Beca> listarBecas(){
 		logger.debug("Listando Becas");
 		return becaService.findAll();
 	}
 	
 	@RequestMapping(value = "/beca/api/get/{id}", method = RequestMethod.GET)
+	@GetMapping("/beca/api/get/{id}")
+	@ResponseStatus(code=HttpStatus.OK)
 	@ResponseBody
 	public Beca getBecaById(@PathVariable("id") Long id) {
-		return becaService.findOne(id);
+		return becaService.findById(id);
 	}
 
 
@@ -112,20 +117,18 @@ public class BecaController {
 	 * @param redirectAttributes
 	 * @return
 	 */
-	@RequestMapping(value = "/beca/api/guardar", method = RequestMethod.POST)
+	@PostMapping("/beca/api/guardar")
 	@ResponseBody
 //	public String saveorUpdateBeca(@ModelAttribute("becaForm") Beca beca, BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
 	public Map<String, Object> saveorUpdateBeca(@RequestBody Beca beca) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String msg;
-		msg = becaService.saveOrUpdate(beca);
+		becaService.save(beca);
 		map.put("estado", "OK");
-		map.put("msg", msg);
 		return map;
 	}
 
 	/**
-	 * Show Add Beca Form
+	 * showBecariosPorBeca
 	 * 
 	 * @param model
 	 * @return

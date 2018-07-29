@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.dospe.gestionbecarios.model.Ies;
-import com.dospe.gestionbecarios.service.IesService;
-import com.dospe.gestionbecarios.service.TipoGestionService;
-import com.dospe.gestionbecarios.service.TipoIesService;
+import com.dospe.gestionbecarios.persistence.domain.Ies;
+import com.dospe.gestionbecarios.transactional.service.IesService;
+import com.dospe.gestionbecarios.transactional.service.TipoGestionService;
+import com.dospe.gestionbecarios.transactional.service.TipoIesService;
 
 @Controller
 public class IesController {
@@ -37,10 +37,8 @@ public class IesController {
 	 * @return
 	 */
 	@RequestMapping(value="/ies", method=RequestMethod.GET)
-	public String showAllIes(Model model, Integer offset, Integer maxResults){
-		model.addAttribute("iesList", iesService.findAllPaginated(offset, maxResults));
-		model.addAttribute("iesCount", iesService.count());
-		model.addAttribute("iesOffset", offset);
+	public String showAllIes(Model model){
+		model.addAttribute("iesList", iesService.findAll());
 		return IES_LIST_PAGINATED; 
 	}
 	
@@ -60,7 +58,7 @@ public class IesController {
 			return IES_FORM;
 		} else {
 			
-			iesService.saveOrUpdate(ies);
+			iesService.save(ies);
 			
 			return IES_REDIRECT; //+ies.getId();
 		}
@@ -89,7 +87,7 @@ public class IesController {
 	 */
 	@RequestMapping(value="/ies/{id}/update", method=RequestMethod.GET)
 	public String showUpdateIesForm(@PathVariable("id") Long id,  Model model){
-		Ies ies = iesService.findOne(id);
+		Ies ies = iesService.findById(id);
 		model.addAttribute("iesForm", ies);
 		populateDefaultModel(model);
 		return IES_FORM;
@@ -118,7 +116,7 @@ public class IesController {
 	 */
 	@RequestMapping(value="/ies/{id}", method=RequestMethod.GET)
 	public String showIES(@PathVariable("id") Long id, Model model){
-		Ies ies = iesService.findOne(id);
+		Ies ies = iesService.findById(id);
 		if (ies == null){
 			model.addAttribute("css", "danger");
 			model.addAttribute("msg", "IES not found");

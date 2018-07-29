@@ -4,6 +4,14 @@
 <!-- Menu Url Definitions -->
 <spring:url value="/home" var="homeUrl"/>
 
+<spring:url value="/dashboard" var="dashboardMenuUrl"/>
+<spring:url value="/becario" var="becarioMenuUrl"/>
+<spring:url value="/ies" var="iesMenuUrl"/>
+<spring:url value="/asesor" var="asesorMenuUrl"/>
+<spring:url value="/beca" var="becaMenuUrl"/>
+<spring:url value="/tramite" var="tramiteMenuUrl"/>
+<spring:url value="/pagoAcademico" var="pagoAcademicoMenuUrl"/>
+
 <section class="sidebar">
 	<!-- search form -->
     <form action="#" method="get" class="sidebar-form">
@@ -52,6 +60,9 @@
           <a href="${homeUrl}">
             <i class="fa fa-edit"></i> <span>Home</span>
           </a>
+		  <a href="${asesorMenuUrl}">
+            <i class="fa fa-edit"></i> <span>Asesores</span>
+          </a>	
         </li>
         <li class="treeview active">
           <a href="#">

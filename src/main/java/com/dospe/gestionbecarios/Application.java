@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@ComponentScan("com.dospe.demo")
-@EntityScan(basePackages = {"com.dospe.gestionbecarios.persistence.model"})
+@ComponentScan("com.dospe.gestionbecarios")
+@EntityScan(basePackages = {"com.dospe.gestionbecarios.persistence.domain"})
 @EnableJpaRepositories(basePackages={"com.dospe.gestionbecarios.persistence.repository"})
 @EnableTransactionManagement
 public class Application extends SpringBootServletInitializer {
@@ -25,5 +25,5 @@ public class Application extends SpringBootServletInitializer {
 		SpringApplication.run(Application.class, args);
 	}
 	
-	 
+
 }

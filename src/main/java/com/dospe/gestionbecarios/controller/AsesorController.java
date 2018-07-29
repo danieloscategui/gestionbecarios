@@ -1,92 +1,93 @@
 package com.dospe.gestionbecarios.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.dospe.gestionbecarios.model.Asesor;
-import com.dospe.gestionbecarios.service.AsesorService;
+import com.dospe.gestionbecarios.controller.dto.AsesorAddDTO;
+import com.dospe.gestionbecarios.controller.dto.AsesorEditDTO;
+import com.dospe.gestionbecarios.controller.dto.AsesorListDTO;
+import com.dospe.gestionbecarios.persistence.domain.Asesor;
+import com.dospe.gestionbecarios.transactional.service.AsesorService;
 
 
-@Controller
+@RestController
+@RequestMapping("/api/asesor")
 public class AsesorController {
 	
-	private static final String ASESOR_FORM = "asesor-form";
-	private static final String ASESOR_LIST_PAGINATED = "asesor-list-paginated";
-	private static final String ASESOR_REDIRECT = "redirect:/asesor/";
-	
+	private static final Logger logger = LoggerFactory.getLogger(AsesorController.class);
+//	private static final String ASESOR_FORM = "asesor-form";
+//	private static final String ASESOR_LIST_PAGINATED = "asesor-list-paginated";
+//	private static final String ASESOR_REDIRECT = "redirect:/asesor/";
 	
 	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	@Qualifier("asesorService")
 	private AsesorService asesorService;
 	
-	/**
-	 * List Asesor Paginated
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/asesor", method=RequestMethod.GET )
-	public String showAllAsesor(Model model, Integer offset, Integer maxResults){
-		model.addAttribute("asesorList", asesorService.findAllPaginated(offset, maxResults));
-		model.addAttribute("asesorCount", asesorService.count());
-		model.addAttribute("asesorOffset", offset);
-		return ASESOR_LIST_PAGINATED;
+	@GetMapping({"/", ""})
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<AsesorListDTO> findAll(){
+		logger.info("listando todos los asesores");
+		List<Asesor> asesores = (List<Asesor>) asesorService.findAll();
+		return asesores.stream()
+				.map(asesor -> convertToDTO(asesor))
+				.collect(Collectors.toList());
+	}
+	
+	@PostMapping("/")
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	public AsesorEditDTO create(@Valid @RequestBody AsesorAddDTO asesorDTO){
+		Asesor asesor = modelMapper.map(asesorDTO, Asesor.class);
+		asesorService.save(asesor);
+		return modelMapper.map(asesor, AsesorEditDTO.class);
+	}
+	
 
+	@GetMapping("/{id}")
+	@ResponseBody
+	public AsesorEditDTO edit(@PathVariable("id") Long id) {
+		AsesorEditDTO asesorDTO = modelMapper.map(
+									asesorService.findById(id), 
+									AsesorEditDTO.class
+								);
+		return asesorDTO;
 	}
 	
-	/**
-	 * Save or update Asesor
-	 * @param asesorDTO
-	 * @param result
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value="/asesor", method=RequestMethod.POST)
-	public String saveOrUpdateAsesor(@ModelAttribute("asesorForm") Asesor asesor, BindingResult result, final RedirectAttributes redirectAttributes){
-		if(result.hasErrors()){
-			return ASESOR_FORM;
-		} else {
-			asesorService.saveOrUpdate(asesor);
-		}
-		return ASESOR_REDIRECT;
+	@PutMapping("/{id}")
+	@ResponseBody
+	public AsesorEditDTO update(@PathVariable("id") Long id, @Valid @RequestBody AsesorEditDTO asesorDTO) {
+		Asesor asesor = asesorService.findById(id);
+		asesor.setNombre(asesorDTO.getNombre());
+		asesorService.save(asesor);
+		return modelMapper.map(asesor, AsesorEditDTO.class);
 	}
 	
-	/**
-	 * Show Add Asesor Form
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/asesor/add", method=RequestMethod.GET)
-	public String showAddAsesorForm(Model model){
-		Asesor asesor = new Asesor();
-		model.addAttribute("asesorForm", asesor);
-		return ASESOR_FORM;
+	private AsesorListDTO convertToDTO(Asesor asesor) {
+		AsesorListDTO asesorListDTO = modelMapper.map(asesor, AsesorListDTO.class);
+		return asesorListDTO;
 	}
-	
-	/**
-	 * Show Update Asesor Form
-	 * @param id
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value="/asesor/{id}/update", method=RequestMethod.GET)
-	public String showUpdateAsesorForm(@PathVariable("id") Long id, Model model){
-		Asesor asesor = asesorService.findOne(id);
-		model.addAttribute("asesorForm", asesor);
-//		populateDefaultModel(model);
-		return ASESOR_FORM;
-	}
-	
-	/**
-	 * Populate Default Model
-	 * https://howtoprogramwithjava.com/how-to-fix-duplicate-data-from-hibernate-queries/
-	 */
-	private void populateDefaultModel(){
-		
-	}
+
 }

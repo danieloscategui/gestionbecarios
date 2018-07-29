@@ -2,17 +2,16 @@ package com.dospe.gestionbecarios.transactional.service.impl;
 
 import java.util.Collection;
 
-
-import com.dospe.gestionbecarios.persistence.model.Becario;
-import com.dospe.gestionbecarios.persistence.model.BecarioView;
-import com.dospe.gestionbecarios.persistence.repository.BecarioRepository;
-import com.dospe.gestionbecarios.transactional.service.BecarioService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.dospe.gestionbecarios.persistence.domain.Becario;
+import com.dospe.gestionbecarios.persistence.domain.BecarioView;
+import com.dospe.gestionbecarios.persistence.repository.BecarioRepository;
+import com.dospe.gestionbecarios.transactional.service.BecarioService;
 
 
 @Service("becarioService")

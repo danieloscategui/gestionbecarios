@@ -2,15 +2,15 @@ package com.dospe.gestionbecarios.transactional.service.impl;
 
 import java.util.Collection;
 
-import com.dospe.gestionbecarios.persistence.model.TipoIes;
-import com.dospe.gestionbecarios.persistence.repository.TipoIesRepository;
-import com.dospe.gestionbecarios.transactional.service.TipoIesService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.dospe.gestionbecarios.persistence.domain.TipoIes;
+import com.dospe.gestionbecarios.persistence.repository.TipoIesRepository;
+import com.dospe.gestionbecarios.transactional.service.TipoIesService;
 
 @Service("tipoIesService")
 public class TipoIesServiceImpl implements TipoIesService {

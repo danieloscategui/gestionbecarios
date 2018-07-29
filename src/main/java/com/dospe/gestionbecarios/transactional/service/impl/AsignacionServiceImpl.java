@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.persistence.model.Asignacion;
+import com.dospe.gestionbecarios.persistence.domain.Asignacion;
 import com.dospe.gestionbecarios.persistence.repository.AsignacionRepository;
 import com.dospe.gestionbecarios.transactional.service.AsignacionService;
 
@@ -51,6 +51,5 @@ public class AsignacionServiceImpl implements AsignacionService{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 }

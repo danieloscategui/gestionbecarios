@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.persistence.model.Asesor;
+import com.dospe.gestionbecarios.persistence.domain.Asesor;
 import com.dospe.gestionbecarios.persistence.repository.AsesorRepository;
 import com.dospe.gestionbecarios.transactional.service.AsesorService;
 

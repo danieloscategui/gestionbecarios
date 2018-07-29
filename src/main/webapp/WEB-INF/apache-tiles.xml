@@ -18,5 +18,13 @@
 		<put-attribute name="body" value="/WEB-INF/jsp//body.jsp"/>
 	</definition>
 	-->
+	<!-- Asesor Pages -->
+	<definition name="asesor-list" extends="base-definition">
+		<put-attribute name="content" value="/WEB-INF/jsp/asesor/asesorList.jsp"/>
+	</definition>
+	<definition name="asesor-form" extends="base-definition">
+		<put-attribute name="content" value="/WEB-INF/jsp/asesor/asesorForm.jsp"/>
+	</definition>
+	
 	
 </tiles-definitions>

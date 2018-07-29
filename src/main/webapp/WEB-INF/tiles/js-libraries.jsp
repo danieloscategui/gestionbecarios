@@ -18,6 +18,8 @@
 <script src="components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- ChartJS -->
 <script src="components/chart.js/Chart.js"></script>
+<!-- Axios -->
+<script src="plugins/axios/axios.min.js"></script>
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) 
 <script src="dist/js/pages/dashboard2.js"></script>

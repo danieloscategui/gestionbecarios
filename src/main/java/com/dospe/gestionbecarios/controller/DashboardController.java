@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dospe.gestionbecarios.controller.dto.SearchCriteriaDashboard;
-import com.dospe.gestionbecarios.service.BecaService;
+import com.dospe.gestionbecarios.transactional.service.BecaService;
 
 @Controller
 public class DashboardController {

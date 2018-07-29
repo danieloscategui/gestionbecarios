@@ -3,6 +3,7 @@ package com.dospe.gestionbecarios.controller;
 import java.beans.PropertyEditorSupport;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -21,14 +22,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dospe.gestionbecarios.controller.form.BecarioEstado;
-import com.dospe.gestionbecarios.model.Beca;
-import com.dospe.gestionbecarios.model.Becario;
-import com.dospe.gestionbecarios.model.BecarioView;
-import com.dospe.gestionbecarios.model.Estado;
-import com.dospe.gestionbecarios.model.Sexo;
-import com.dospe.gestionbecarios.service.BecaService;
-import com.dospe.gestionbecarios.service.BecarioService;
-import com.dospe.gestionbecarios.service.EstadoService;
+import com.dospe.gestionbecarios.persistence.domain.Beca;
+import com.dospe.gestionbecarios.persistence.domain.Becario;
+import com.dospe.gestionbecarios.persistence.domain.BecarioView;
+import com.dospe.gestionbecarios.persistence.domain.Estado;
+import com.dospe.gestionbecarios.persistence.domain.Sexo;
+import com.dospe.gestionbecarios.transactional.service.BecaService;
+import com.dospe.gestionbecarios.transactional.service.BecarioService;
+import com.dospe.gestionbecarios.transactional.service.EstadoService;
 
 @Controller
 public class BecarioController {
@@ -50,7 +51,7 @@ public class BecarioController {
 	@Autowired
 	private BecaService becaService;
 
-	private List<Beca> listaBecas = new ArrayList<Beca>();
+	private Collection<Beca> listaBecas = new ArrayList<Beca>();
 	
 	
 	@InitBinder
@@ -62,7 +63,7 @@ public class BecarioController {
 		binder.registerCustomEditor(Beca.class, new PropertyEditorSupport(){
 			@Override
 			public void setAsText(String text) throws IllegalArgumentException {
-				Beca beca = becaService.findOne(Long.parseLong(text));
+				Beca beca = becaService.findById(Long.parseLong(text));
 				setValue(beca);
 			}
 		});
@@ -70,7 +71,7 @@ public class BecarioController {
 		binder.registerCustomEditor(Estado.class, new PropertyEditorSupport(){
 			@Override
 			public void setAsText(String text) throws IllegalArgumentException {
-				Estado estado = estadoService.findOne(Long.parseLong(text)); 
+				Estado estado = estadoService.findById(Long.parseLong(text)); 
 				setValue(estado);
 			}
 		});
@@ -97,7 +98,7 @@ public class BecarioController {
 	 */
 	@RequestMapping(value="/becario/api/beca/{idBeca}", method=RequestMethod.GET)
 	@ResponseBody
-	public List<BecarioView> showBecariosPorBeca(@PathVariable("idBeca") Long idBeca){
+	public Collection<BecarioView> showBecariosPorBeca(@PathVariable("idBeca") Long idBeca){
 //		model.addAttribute("becarioList", becarioService.findBecariosPorBecaPaginated(idBeca, offset, maxResults));
 //		model.addAttribute("beca", becaService.findOne(idBeca));
 //		model.addAttribute("becarioCount", becarioService.countByBeca(idBeca));
@@ -130,7 +131,7 @@ public class BecarioController {
 	 */
 	@RequestMapping(value="/becario/{idBecario}/updateEstado", method=RequestMethod.GET)
 	public String updateBecarioEstadoForm(@PathVariable("idBecario") Long idBecario, Model model){
-		Becario becario = becarioService.findOne(idBecario);
+		Becario becario = becarioService.findById(idBecario);
 		
 		model.addAttribute("listEstado", estadoService.findAll());
 //		model.addAttribute("listEstadoDos", becarioService.getListEstadoDos(becario.getEstadoUno().getIdEstadoUno()));
@@ -144,7 +145,7 @@ public class BecarioController {
 	 */
 	@RequestMapping(value="/becario/{idBecario}/update",method=RequestMethod.GET)
 	public String showUpdateBecarioForm(@PathVariable("idBecario") Long idBecario, Model model){
-		Becario becario = becarioService.findOne(idBecario);
+		Becario becario = becarioService.findById(idBecario);
 		model.addAttribute("becarioForm", becario);
 		populateDefaultModel(model);
 		return BECARIO_FORM;
@@ -184,7 +185,7 @@ public class BecarioController {
 			return "redirect:/";
 		}
 		
-		List<Becario> becariosEncontrados = becarioService.findByDNI(dni);
+		Collection<Becario> becariosEncontrados = becarioService.findByDNI(dni);
 		if(becariosEncontrados.isEmpty()){
 			model.addAttribute("msg", "No existe DNI");
 			return "redirect:/";
@@ -199,7 +200,7 @@ public class BecarioController {
 	 */
 	@RequestMapping(value="/becario/{id}/show", method=RequestMethod.GET)
 	public String mostrarBecario(@PathVariable("id") Long id, Model model){
-		model.addAttribute("becario", becarioService.findOne(id));
+		model.addAttribute("becario", becarioService.findById(id));
 		return BECARIO_SHOW;
 	}
 	

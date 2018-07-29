@@ -2,15 +2,15 @@ package com.dospe.gestionbecarios.transactional.service.impl;
 
 import java.util.Collection;
 
-import com.dospe.gestionbecarios.persistence.model.SedeEstudio;
-import com.dospe.gestionbecarios.persistence.repository.SedeEstudioRepository;
-import com.dospe.gestionbecarios.transactional.service.SedeEstudioService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.dospe.gestionbecarios.persistence.domain.SedeEstudio;
+import com.dospe.gestionbecarios.persistence.repository.SedeEstudioRepository;
+import com.dospe.gestionbecarios.transactional.service.SedeEstudioService;
 
 @Service("sedeEstudioService")
 public class SedeEstudioServiceImpl implements SedeEstudioService {
