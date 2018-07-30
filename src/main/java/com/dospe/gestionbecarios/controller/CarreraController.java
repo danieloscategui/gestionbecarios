@@ -49,7 +49,7 @@ public class CarreraController {
 				.collect(Collectors.toList());
 	}
 	
-	@PostMapping("/beca/{id}")
+	@PostMapping("/beca/{id}/")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public CarreraDTO create(@PathVariable("id") Long idBeca, @Valid @RequestBody CarreraDTO carreraDTO) {

@@ -16,6 +16,9 @@ public class SedeEstudioDTO implements Serializable {
 	@NotNull(message="<span>Región: </span> Es requerido.")
 	private String sede;
 	
+	@NotNull(message="<span>IES: </span> Es requerido.")
+	private Long idIes;
+	
 	public Long getId() {
 		return id;
 	}
@@ -33,6 +36,12 @@ public class SedeEstudioDTO implements Serializable {
 	}
 	public void setSede(String sede) {
 		this.sede = sede;
+	}
+	public Long getIdIes() {
+		return idIes;
+	}
+	public void setIdIes(Long idIes) {
+		this.idIes = idIes;
 	}
 	
 }

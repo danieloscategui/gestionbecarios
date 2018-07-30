@@ -51,4 +51,10 @@ public class SedeEstudioServiceImpl implements SedeEstudioService {
 		return null;
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public Collection<SedeEstudio> findAllByIes(Long idIes) {
+		return null;
+	}
+
 }

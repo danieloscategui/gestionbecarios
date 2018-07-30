@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,19 +51,28 @@ public class Becario implements Serializable {
 	@Column
 	private Sexo sexo;
 	
-	@JoinColumn(name="id_asignacion", referencedColumnName="id_asignacion")
+	@Column(name="id_asignacion")
+	private Long idAsignacion;
+	
+	@JoinColumn(name="id_asignacion", referencedColumnName="id_asignacion", insertable=false, nullable=false, updatable=false)
 	@ManyToOne(optional=false)
 	private Asignacion asignacion;
 	
 	@Column(name="numero_expediente")
 	private String numeroExpediente;
+
+	@Column(name="id_estado")
+	private Long idEstado;
 	
-	@JoinColumn(name="id_estado", referencedColumnName="id_estado")
-	@ManyToOne(optional=false)
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_estado", referencedColumnName="id_estado", insertable=false, nullable=false, updatable=false)
 	private Estado estado;
 	
-	@JoinColumn(name="id_condicion", referencedColumnName="id_condicion")
-	@ManyToOne(optional=false)
+	@Column(name="id_condicion")
+	private Long idCondicion;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_condicion", referencedColumnName="id_condicion", insertable=false, nullable=false, updatable=false)
 	private Condicion condicion;
 	
 	@Column(name="resolucion_adjudicacion")
@@ -112,12 +122,12 @@ public class Becario implements Serializable {
 	private String observaciones;
 	
 
-	public Long getIdBecario() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setIdBecario(Long idBecario) {
-		this.id = idBecario;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDni() {
@@ -167,6 +177,13 @@ public class Becario implements Serializable {
 	public void setSexo(Sexo sexo) {
 		this.sexo = sexo;
 	}
+	public Long getIdAsignacion() {
+		return idAsignacion;
+	}
+
+	public void setIdAsignacion(Long idAsignacion) {
+		this.idAsignacion = idAsignacion;
+	}
 
 	public Asignacion getAsignacion() {
 		return asignacion;
@@ -184,12 +201,28 @@ public class Becario implements Serializable {
 		this.numeroExpediente = numeroExpediente;
 	}
 
+	public Long getIdEstado() {
+		return idEstado;
+	}
+
+	public void setIdEstado(Long idEstado) {
+		this.idEstado = idEstado;
+	}
+
 	public Estado getEstado() {
 		return estado;
 	}
 
 	public void setEstado(Estado estado) {
 		this.estado = estado;
+	}
+
+	public Long getIdCondicion() {
+		return idCondicion;
+	}
+
+	public void setIdCondicion(Long idCondicion) {
+		this.idCondicion = idCondicion;
 	}
 
 	public Condicion getCondicion() {

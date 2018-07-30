@@ -11,6 +11,8 @@ public class SedeEstudioListDTO implements Serializable {
 	private String region;
 	
 	private String sede;
+
+	private String ies;
 	
 	public Long getId() {
 		return id;
@@ -29,6 +31,12 @@ public class SedeEstudioListDTO implements Serializable {
 	}
 	public void setSede(String sede) {
 		this.sede = sede;
+	}
+	public String getIes() {
+		return ies;
+	}
+	public void setIes(String ies) {
+		this.ies = ies;
 	}
 	
 }

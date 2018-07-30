@@ -27,6 +27,7 @@ public class BecarioDTO implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Sexo sexo;
 	private String numeroExpediente;
+	private Long idAsignacion;
 	private Long idEstado;
 	private Long idCondicion;
 	private String resolucionAdjudicacion;
@@ -102,6 +103,14 @@ public class BecarioDTO implements Serializable {
 
 	public void setNumeroExpediente(String numeroExpediente) {
 		this.numeroExpediente = numeroExpediente;
+	}
+	
+	public Long getIdAsignacion() {
+		return idAsignacion;
+	}
+
+	public void setIdAsignacion(Long idAsignacion) {
+		this.idAsignacion = idAsignacion;
 	}
 
 	public Long getIdEstado() {

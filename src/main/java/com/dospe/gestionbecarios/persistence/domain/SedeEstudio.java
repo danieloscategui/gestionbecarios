@@ -37,8 +37,11 @@ public class SedeEstudio implements Serializable {
 	@Column
 	private String sede;
 	
-	@JoinColumn(name="id_ies", referencedColumnName="id_ies")
-	@ManyToOne(optional=false)
+	@Column(name="id_ies")
+	private Long idIes;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_ies", referencedColumnName="id_ies", nullable = false, insertable = false, updatable = false)
 	private Ies ies;
 
 	@JsonIgnore
@@ -69,6 +72,14 @@ public class SedeEstudio implements Serializable {
 		this.sede = sede;
 	}
 	
+	public Long getIdIes() {
+		return idIes;
+	}
+
+	public void setIdIes(Long idIes) {
+		this.idIes = idIes;
+	}
+
 	public Ies getIes() {
 		return ies;
 	}

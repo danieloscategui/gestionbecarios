@@ -18,8 +18,8 @@ public class BecarioListDTO implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Sexo sexo;
 	private String numeroExpediente;
-	private Long idEstado;
-	private Long idCondicion;
+	private String estado;
+	private String condicion;
 
 	public Long getId() {
 		return id;
@@ -69,20 +69,20 @@ public class BecarioListDTO implements Serializable {
 		this.numeroExpediente = numeroExpediente;
 	}
 
-	public Long getIdEstado() {
-		return idEstado;
+	public String getEstado() {
+		return estado;
 	}
 
-	public void setIdEstado(Long idEstado) {
-		this.idEstado = idEstado;
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
-	public Long getIdCondicion() {
-		return idCondicion;
+	public String getCondicion() {
+		return condicion;
 	}
 
-	public void setIdCondicion(Long idCondicion) {
-		this.idCondicion = idCondicion;
+	public void setCondicion(String condicion) {
+		this.condicion = condicion;
 	}
 
 }

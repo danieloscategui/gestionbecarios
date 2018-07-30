@@ -34,12 +34,18 @@ public class Ies implements Serializable{
 	@Column
 	private String nombre;
 	
-	@JoinColumn(name="id_tipo_ies", referencedColumnName="id_tipo_ies")
-	@ManyToOne(optional=false)
+	@Column(name="id_tipo_ies")
+	private Long idTipoIes;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_tipo_ies", referencedColumnName="id_tipo_ies", nullable = false, insertable = false, updatable = false)
 	private TipoIes tipoIes;
 	
-	@JoinColumn(name="id_tipo_gestion", referencedColumnName="id_tipo_gestion")
-	@ManyToOne(optional=false)
+	@Column(name="id_tipo_gestion")
+	private Long idTipoGestion;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_tipo_gestion", referencedColumnName="id_tipo_gestion", nullable = false, insertable = false, updatable = false)
 	private TipoGestion tipoGestion;
 	
 	@JsonIgnore
@@ -58,11 +64,23 @@ public class Ies implements Serializable{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	public Long getIdTipoGestion() {
+		return idTipoGestion;
+	}
+	public void setIdTipoGestion(Long idTipoGestion) {
+		this.idTipoGestion = idTipoGestion;
+	}
 	public TipoGestion getTipoGestion() {
 		return tipoGestion;
 	}
 	public void setTipoGestion(TipoGestion tipoGestion) {
 		this.tipoGestion = tipoGestion;
+	}
+	public Long getIdTipoIes() {
+		return idTipoIes;
+	}
+	public void setIdTipoIes(Long idTipoIes) {
+		this.idTipoIes = idTipoIes;
 	}
 	public TipoIes getTipoIes() {
 		return tipoIes;
