@@ -1,139 +1,92 @@
 package com.dospe.gestionbecarios.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.dospe.gestionbecarios.controller.dto.IesDTO;
+import com.dospe.gestionbecarios.controller.dto.IesListDTO;
 import com.dospe.gestionbecarios.persistence.domain.Ies;
+import com.dospe.gestionbecarios.persistence.exception.DuplicateValueException;
 import com.dospe.gestionbecarios.transactional.service.IesService;
-import com.dospe.gestionbecarios.transactional.service.TipoGestionService;
-import com.dospe.gestionbecarios.transactional.service.TipoIesService;
 
-@Controller
+@RestController
+@RequestMapping("/api/ies")
 public class IesController {
 	
-	private static final String IES_FORM = "ies-form";
-	private static final String IES_LIST_PAGINATED = "ies-list-paginated";
-	private static final String IES_REDIRECT = "redirect:/ies/";
+	private static final Logger logger = LoggerFactory.getLogger(IesController.class);
+//	private static final String IES_FORM = "ies-form";
+//	private static final String IES_LIST_PAGINATED = "ies-list-paginated";
+//	private static final String IES_REDIRECT = "redirect:/ies/";
+	
+	@Autowired
+	ModelMapper modelMapper;
 	
 	@Autowired
 	private IesService iesService;
 
-	@Autowired
-	private TipoGestionService tipoGestionService;
-	
-	@Autowired
-	private TipoIesService tipoIesService;
-	
-	/**
-	 * List IES
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/ies", method=RequestMethod.GET)
-	public String showAllIes(Model model){
-		model.addAttribute("iesList", iesService.findAll());
-		return IES_LIST_PAGINATED; 
+	@GetMapping({"/", ""})
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<IesListDTO> findAll(){
+		logger.info("listando todos las ies");
+		List<Ies> iesList = (List<Ies>) iesService.findAll();
+		return iesList.stream()
+				.map(ies -> convertToDTO(ies))
+				.collect(Collectors.toList());
 	}
 	
-	/**
-	 * Save or update IES
-	 * @param iesDto
-	 * @param result
-	 * @param model
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value="/ies", method=RequestMethod.POST)
-	public String saveOrUpdateIes(@ModelAttribute("iesForm") Ies ies, BindingResult result, Model model, final RedirectAttributes redirectAttributes){
-		
-		if (result.hasErrors()){
-//			populateDefaultModel(model);
-			return IES_FORM;
-		} else {
-			
-			iesService.save(ies);
-			
-			return IES_REDIRECT; //+ies.getId();
+	@PostMapping("/")
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	public IesDTO create(@Valid @RequestBody IesDTO iesDTO) {
+		boolean iesExiste = iesService.findByNombre(iesDTO.getNombre().toUpperCase()) != null;
+		if(iesExiste) {
+			throw new DuplicateValueException("El nombre "+iesDTO.getNombre()+ " ya existe");
 		}
+		
+		Ies ies = modelMapper.map(iesDTO, Ies.class);
+		iesService.save(ies);
+		return modelMapper.map(ies, IesDTO.class);
+	}
+	
+	@GetMapping("/{id}")
+	@ResponseBody
+	public IesDTO edit(@PathVariable("id") Long id) {
+		IesDTO iesDTO = modelMapper.map(
+									iesService.findById(id), 
+									IesDTO.class
+								);
+		return iesDTO;
 	}
 
-	
-	/**
-	 * Show Add IES Form
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/ies/add", method=RequestMethod.GET)
-	public String showAddIesForm(Model model){
-		Ies ies = new Ies();
-		//set default value
-		model.addAttribute("iesForm", ies);
-		populateDefaultModel(model);
-		return IES_FORM;
-	}
-	
-	/**
-	 * Show Update IES Form
-	 * @param id
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/ies/{id}/update", method=RequestMethod.GET)
-	public String showUpdateIesForm(@PathVariable("id") Long id,  Model model){
+	@PutMapping("/{id}")
+	@ResponseBody
+	public IesDTO update(@PathVariable("id") Long id, @Valid @RequestBody IesDTO iesDTO) {
 		Ies ies = iesService.findById(id);
-		model.addAttribute("iesForm", ies);
-		populateDefaultModel(model);
-		return IES_FORM;
+		ies.setNombre(iesDTO.getNombre());
+		iesService.save(ies);
+		return modelMapper.map(ies, IesDTO.class);
 	}
 	
-	/**
-	 * Delete IES -- to implement
-	 * @param id
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value="/ies/{id}/delete", method=RequestMethod.POST)
-	public String deleteIes(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes){
-		//check previous data -- implements
-//		iesService.delete(id);
-		redirectAttributes.addFlashAttribute("css", "success");
-		redirectAttributes.addFlashAttribute("msg", "IES has been deleted");
-		return "redirect:/ies";
-	}
-	
-	/**
-	 * Show IES - to implement
-	 * @param id
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/ies/{id}", method=RequestMethod.GET)
-	public String showIES(@PathVariable("id") Long id, Model model){
-		Ies ies = iesService.findById(id);
-		if (ies == null){
-			model.addAttribute("css", "danger");
-			model.addAttribute("msg", "IES not found");
-		} 
-		model.addAttribute("ies", ies);
-		
-		return IES_FORM;//make new ies.show just to show data
-	}
-	
-	/**
-	 * Populate Default Model
-	 * @param model
-	 */
-	private void populateDefaultModel(Model model) {
-		
-		model.addAttribute("opcionesTipoIes", tipoIesService.findAll());
-		model.addAttribute("opcionesTipoGestion", tipoGestionService.findAll());
-
+	private IesListDTO convertToDTO(Ies ies) {
+		IesListDTO iesListDTO = modelMapper.map(ies, IesListDTO.class);
+		return iesListDTO;
 	}
 }

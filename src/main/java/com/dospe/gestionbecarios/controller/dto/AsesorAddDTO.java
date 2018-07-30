@@ -3,7 +3,6 @@ package com.dospe.gestionbecarios.controller.dto;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class AsesorAddDTO implements Serializable {
 
@@ -11,7 +10,6 @@ public class AsesorAddDTO implements Serializable {
 
 	private Long id;
 	
-	@NotNull(message = "<span>Nombre:</span> Es requerido.")
 	@NotBlank(message = "<span>Nombre:</span> Es requerido.")
 	private String nombre;
 

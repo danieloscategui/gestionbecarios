@@ -7,5 +7,5 @@ import com.dospe.gestionbecarios.persistence.domain.Asesor;
 
 @Repository("asesorRepository")
 public interface AsesorRepository extends JpaRepository<Asesor, Long>{
-
+	public Asesor findByNombre(String nombre);
 }

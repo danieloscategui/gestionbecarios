@@ -27,7 +27,7 @@ public class Estado implements Serializable {
 	@SequenceGenerator(name="estadoSequence", sequenceName="gb_estado_seq", allocationSize=20)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="estadoSequence")
 	@Column(name="id_estado")
-	private Long idEstado;
+	private Long id;
 	
 	@Column
 	private String descripcion;
@@ -40,16 +40,16 @@ public class Estado implements Serializable {
 	}
 	
 	public Estado(String descripcion) {
-		this.idEstado = null;
+		this.id = null;
 		this.descripcion = descripcion;
 	}
 
-	public Long getIdEstado() {
-		return idEstado;
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdEstado(Long idEstado) {
-		this.idEstado = idEstado;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDescripcion() {
@@ -69,6 +69,6 @@ public class Estado implements Serializable {
 	}
 
 	public boolean isNew(){
-		return (this.idEstado == null);
+		return (this.id == null);
 	}
 }

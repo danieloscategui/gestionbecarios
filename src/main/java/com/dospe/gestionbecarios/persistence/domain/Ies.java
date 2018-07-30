@@ -29,7 +29,7 @@ public class Ies implements Serializable{
 	@SequenceGenerator(name="iesSequence", sequenceName="gb_ies_seq", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="iesSequence")
 	@Column(name="id_ies")
-	private Long idIes;
+	private Long id;
 	
 	@Column
 	private String nombre;
@@ -46,11 +46,11 @@ public class Ies implements Serializable{
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="ies", fetch=FetchType.LAZY)
 	private List<SedeEstudio> sedes = new ArrayList<SedeEstudio>();
 	
-	public Long getIdIes() {
-		return idIes;
+	public Long getId() {
+		return id;
 	}
-	public void setIdIes(Long idIes) {
-		this.idIes = idIes;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getNombre() {
 		return nombre;
@@ -78,6 +78,6 @@ public class Ies implements Serializable{
 		this.sedes = sedes;
 	}
 	public boolean isNew(){
-		return (this.idIes == null);
+		return (this.id == null);
 	}
 }

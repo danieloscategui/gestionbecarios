@@ -3,11 +3,13 @@ package com.dospe.gestionbecarios.controller.exception;
 public class ApiFieldError {
 	private String field;
 	private String code;
+	private String message;
 	private Object rejectedValue;
 
-	public ApiFieldError(String field, String code, Object rejectedValue) {
+	public ApiFieldError(String field, String code, String message, Object rejectedValue) {
 		this.field = field;
 		this.code = code;
+		this.message = message;
 		this.rejectedValue = rejectedValue;
 	}
 
@@ -19,6 +21,10 @@ public class ApiFieldError {
 		return code;
 	}
 
+	public String getMessage() {
+		return message;
+	}
+	
 	public Object getRejectedValue() {
 		return rejectedValue;
 	}

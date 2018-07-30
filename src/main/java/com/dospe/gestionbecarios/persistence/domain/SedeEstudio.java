@@ -29,7 +29,7 @@ public class SedeEstudio implements Serializable {
 	@SequenceGenerator(name="sedeEstudioSequence", sequenceName="gb_sede_estudio_seq", allocationSize=20)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="sedeEstudioSequence")
 	@Column(name="id_sede_estudio")
-	private Long idSedeEstudio;
+	private Long id;
 	
 	@Column
 	private String region;
@@ -45,12 +45,12 @@ public class SedeEstudio implements Serializable {
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="sedeEstudio", fetch=FetchType.LAZY)
 	private List<Asignacion> asignaciones = new ArrayList<Asignacion>();
 	
-	public Long getIdSedeEstudio() {
-		return idSedeEstudio;
+	public Long getId() {
+		return id;
 	}
 	
-	public void setIdSedeEstudio(Long idSedeEstudio) {
-		this.idSedeEstudio = idSedeEstudio;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public String getRegion() {
@@ -86,6 +86,6 @@ public class SedeEstudio implements Serializable {
 	}
 
 	public boolean isNew(){
-		return (this.idSedeEstudio == null);
+		return (this.id == null);
 	}
 }

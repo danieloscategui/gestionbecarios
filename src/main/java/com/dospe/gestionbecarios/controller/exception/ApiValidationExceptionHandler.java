@@ -10,18 +10,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.dospe.gestionbecarios.persistence.exception.DuplicateValueException;
+/**
+ * 
+ * @author http://www.bbenson.co/post/spring-validations-with-examples/
+ *
+ */
 @ControllerAdvice
-public class ValidationExceptionHandler extends ResponseEntityExceptionHandler{
+public class ApiValidationExceptionHandler extends ResponseEntityExceptionHandler{
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(
 			MethodArgumentNotValidException ex,
 			HttpHeaders headers, 
 			HttpStatus status, 
-			WebRequest request) {
-		
+			WebRequest request
+	) {
 		BindingResult bindingResult = ex.getBindingResult();
 		
 		List<ApiFieldError> apiFieldErrors = bindingResult
@@ -29,7 +36,8 @@ public class ValidationExceptionHandler extends ResponseEntityExceptionHandler{
 				.stream()
 				.map(fieldError -> new ApiFieldError(
 						fieldError.getField(), 
-						fieldError.getCode(), 
+						fieldError.getCode(),
+						fieldError.getDefaultMessage(),
 						fieldError.getRejectedValue())
 				).collect(toList());
 				
@@ -42,6 +50,11 @@ public class ValidationExceptionHandler extends ResponseEntityExceptionHandler{
 				
 		ApiErrorsView apiErrorsView = new ApiErrorsView(apiFieldErrors, apiGlobalErrors);
 		return new ResponseEntity<>(apiErrorsView, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
+	@ExceptionHandler(DuplicateValueException.class)
+	public final ResponseEntity<Object> handleDuplicateValueException(DuplicateValueException ex, WebRequest request){
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
 	}
 	
 }

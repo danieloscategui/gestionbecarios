@@ -51,5 +51,11 @@ public class AsesorServiceImpl implements AsesorService {
 		return null;
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public Asesor findByNombre(String nombre) {
+		return asesorRepository.findByNombre(nombre);
+	}
+
 
 }

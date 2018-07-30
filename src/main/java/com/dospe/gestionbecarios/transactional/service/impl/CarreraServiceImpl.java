@@ -1,6 +1,7 @@
 package com.dospe.gestionbecarios.transactional.service.impl;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -50,6 +51,19 @@ public class CarreraServiceImpl implements CarreraService {
 
 	@Override
 	public Page<Carrera> findPaginated(int page, int size, String orden, String campo) {
+		return null;
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Carrera findByDescripcion(Long idBeca, String descripcion) {
+		return null;
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<Carrera> findAllByBeca(Long idBeca) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

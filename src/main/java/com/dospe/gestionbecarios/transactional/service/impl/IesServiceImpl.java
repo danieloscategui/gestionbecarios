@@ -51,4 +51,10 @@ public class IesServiceImpl implements IesService {
 	public Page<Ies> findPaginated(int page, int size, String orden, String campo) {
 		return null;
 	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Ies findByNombre(String nombre) {
+		return iesRepository.findByNombre(nombre);
+	}
 }

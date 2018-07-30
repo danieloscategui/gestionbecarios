@@ -27,7 +27,7 @@ public class TipoIes implements Serializable{
 	@SequenceGenerator(name="tipoIesSequence", sequenceName="gb_tipo_ies_seq", allocationSize=20)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="tipoIesSequence")
 	@Column(name="id_tipo_ies")
-	private Long idTipoIes;
+	private Long id;
 	
 	@Column
 	private String descripcion;
@@ -36,12 +36,12 @@ public class TipoIes implements Serializable{
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="tipoIes", fetch=FetchType.LAZY)
 	private List<Ies> ies = new ArrayList<Ies>();
 	
-	public Long getIdTipoIes() {
-		return idTipoIes;
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdTipoIes(Long idTipoIes) {
-		this.idTipoIes = idTipoIes;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDescripcion() {
@@ -61,7 +61,7 @@ public class TipoIes implements Serializable{
 	}
 
 	public boolean isNew(){
-		return (this.idTipoIes == null);
+		return (this.id == null);
 	}
 	
 }

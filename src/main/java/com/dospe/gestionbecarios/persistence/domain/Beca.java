@@ -30,7 +30,7 @@ public class Beca implements Serializable{
 	@SequenceGenerator(name="becaSequence", sequenceName="gb_beca_seq", allocationSize=20)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="becaSequence")
 	@Column(name="id_beca")
-	private Long idBeca;
+	private Long id;
 	
 	@Column
 	private String convocatoria;
@@ -50,12 +50,12 @@ public class Beca implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "beca", fetch=FetchType.LAZY)
 	private List<Carrera> carreras = new ArrayList<Carrera>();
 	
-	public Long getIdBeca() {
-		return idBeca;
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdBeca(Long idBeca) {
-		this.idBeca = idBeca;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getConvocatoria() {
@@ -100,7 +100,7 @@ public class Beca implements Serializable{
 	}
 
 	public boolean isNew(){
-		return (this.idBeca == null);
+		return (this.id == null);
 	}
 	
 	public String getShortName(){

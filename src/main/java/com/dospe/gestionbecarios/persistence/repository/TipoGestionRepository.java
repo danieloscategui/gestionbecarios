@@ -7,5 +7,5 @@ import com.dospe.gestionbecarios.persistence.domain.TipoGestion;
 
 @Repository("tipoGestionRepository")
 public interface TipoGestionRepository extends JpaRepository<TipoGestion, Long>{
-
+	public TipoGestion findByDescripcion(String descripcion);
 }

@@ -1,131 +1,59 @@
-package com.dospe.gestionbecarios.persistence.domain;
+package com.dospe.gestionbecarios.controller.dto;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name="gb_becario")
-public class Becario implements Serializable {
+import com.dospe.gestionbecarios.persistence.domain.Sexo;
+import com.dospe.gestionbecarios.util.JsonDateDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-	private static final long serialVersionUID = 8308709621688477320L;
+public class BecarioDTO implements Serializable {
 
-	@Id
-	@SequenceGenerator(name="becarioSequence", sequenceName="gb_becario_seq", allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="becarioSequence")
-	@Column(name="id_becario")
+	private static final long serialVersionUID = -3101669372822728174L;
+
 	private Long id;
-	
-	@Column
-	private String dni;
-
-	@Column
+	@NotNull(message = "<span>Nombre: </span> Es requerido.")
 	private String nombres;
-	
-	@Column
+	@NotNull(message = "<span>Apellidos: </span> Es requerido.")
 	private String apellidos;
-	
-
-	@Column(name="fecha_nacimiento")
-	@Temporal(TemporalType.DATE)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private Date fechaNacimiento;
-	
-	@Column
 	private Integer edad;
-
 	@Enumerated(EnumType.STRING)
-	@Column
 	private Sexo sexo;
-	
-	@JoinColumn(name="id_asignacion", referencedColumnName="id_asignacion")
-	@ManyToOne(optional=false)
-	private Asignacion asignacion;
-	
-	@Column(name="numero_expediente")
 	private String numeroExpediente;
-	
-	@JoinColumn(name="id_estado", referencedColumnName="id_estado")
-	@ManyToOne(optional=false)
-	private Estado estado;
-	
-	@JoinColumn(name="id_condicion", referencedColumnName="id_condicion")
-	@ManyToOne(optional=false)
-	private Condicion condicion;
-	
-	@Column(name="resolucion_adjudicacion")
+	private Long idEstado;
+	private Long idCondicion;
 	private String resolucionAdjudicacion;
-
-	@Column(name="resolucion_adjudicacion_fecha")
-	@Temporal(TemporalType.DATE)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private Date resolucionAdjudicacionFecha;
-
-	@Column(name="representante")
 	private String representante;
-	
-	@Column(name="representante_dni")
 	private String representanteDni;
-	
-	@Column
 	private String telefonos;
-	
-	@Column(name="correo_pronabec")
+	@Email(message = "<span>Correo Pronabec: </span> Ingrese un correo valido")
 	private String correoPronabec;
-	
-	@Column(name="correo_personal")
+	@Email(message = "<span>Correo Personal: </span> Ingrese un correo valido")
 	private String correoPersonal;
-	
-	@Column
 	private String direccion;
-	
-	@Column(name="region_procedencia")
 	private String regionProcedencia;
-	
-	@Column(name="provincia_procedencia")
 	private String provinciaProcedencia;
-	
-	@Column(name="distrito_procedencia")
 	private String distritoProcedencia;
-	
-	@Column(name="region_postulacion")
 	private String regionPostulacion;
-	
-	@Column(name="provincia_postulacion")
 	private String provinciaPostulacion;
-	
-	@Column(name="distrito_postulacion")
 	private String distritoPostulacion;
-	
-	@Column(name="observaciones")
 	private String observaciones;
-	
 
-	public Long getIdBecario() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setIdBecario(Long idBecario) {
-		this.id = idBecario;
-	}
-
-	public String getDni() {
-		return dni;
-	}
-
-	public void setDni(String dni) {
-		this.dni = dni;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNombres() {
@@ -168,14 +96,6 @@ public class Becario implements Serializable {
 		this.sexo = sexo;
 	}
 
-	public Asignacion getAsignacion() {
-		return asignacion;
-	}
-
-	public void setAsignacion(Asignacion asignacion) {
-		this.asignacion = asignacion;
-	}
-
 	public String getNumeroExpediente() {
 		return numeroExpediente;
 	}
@@ -184,20 +104,20 @@ public class Becario implements Serializable {
 		this.numeroExpediente = numeroExpediente;
 	}
 
-	public Estado getEstado() {
-		return estado;
+	public Long getIdEstado() {
+		return idEstado;
 	}
 
-	public void setEstado(Estado estado) {
-		this.estado = estado;
+	public void setIdEstado(Long idEstado) {
+		this.idEstado = idEstado;
 	}
 
-	public Condicion getCondicion() {
-		return condicion;
+	public Long getIdCondicion() {
+		return idCondicion;
 	}
 
-	public void setCondicion(Condicion condicion) {
-		this.condicion = condicion;
+	public void setIdCondicion(Long idCondicion) {
+		this.idCondicion = idCondicion;
 	}
 
 	public String getResolucionAdjudicacion() {
@@ -320,23 +240,4 @@ public class Becario implements Serializable {
 		this.observaciones = observaciones;
 	}
 
-	public boolean isNew(){
-		return (this.id == null);
-	}
-	
-	public String getFullName(){
-		StringBuilder sb = new StringBuilder();
-		sb.append(nombres).append(" ").append(apellidos);
-		return sb.toString();
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("ID[").append(id).append("], ");
-		sb.append("Full Name[").append(getFullName()).append("], ");
-		sb.append("DNI[").append(dni).append("], ");
-		sb.append("Estado[").append(estado.getDescripcion()).append("]");
-		return sb.toString();
-	}
 }

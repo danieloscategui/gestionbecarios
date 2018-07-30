@@ -52,4 +52,10 @@ public class TipoIesServiceImpl implements TipoIesService {
 		return null;
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public TipoIes findByDescripcion(String descripcion) {
+		return tipoIesRepository.findByDescripcion(descripcion);
+	}
+
 }

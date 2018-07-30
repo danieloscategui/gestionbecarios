@@ -58,6 +58,7 @@
 			</div>
 		    <div class="panel-body">
 				<form class="form-horizontal" autocomplete="off" id="form_asesor">
+					<ul class="errorMessages"></ul>
 					<input type="hidden" id="action"/>
 					<input type="hidden" id="id"/>
 					<div class="form-group">

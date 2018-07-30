@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +25,7 @@ import com.dospe.gestionbecarios.controller.dto.AsesorAddDTO;
 import com.dospe.gestionbecarios.controller.dto.AsesorEditDTO;
 import com.dospe.gestionbecarios.controller.dto.AsesorListDTO;
 import com.dospe.gestionbecarios.persistence.domain.Asesor;
+import com.dospe.gestionbecarios.persistence.exception.DuplicateValueException;
 import com.dospe.gestionbecarios.transactional.service.AsesorService;
 
 
@@ -59,8 +59,13 @@ public class AsesorController {
 	@PostMapping("/")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public AsesorEditDTO create(@Valid @RequestBody AsesorAddDTO asesorDTO){
-		Asesor asesor = modelMapper.map(asesorDTO, Asesor.class);
+	public AsesorEditDTO create(@Valid @RequestBody AsesorAddDTO asesorDTO) {
+		boolean asesorExiste = asesorService.findByNombre(asesorDTO.getNombre().toUpperCase()) != null;
+		if(asesorExiste) {
+			throw new DuplicateValueException("El nombre "+asesorDTO.getNombre()+ " ya existe");
+		}
+		
+		Asesor asesor = modelMapper.map(asesorDTO,Asesor.class);
 		asesorService.save(asesor);
 		return modelMapper.map(asesor, AsesorEditDTO.class);
 	}

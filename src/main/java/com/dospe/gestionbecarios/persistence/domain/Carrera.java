@@ -26,7 +26,7 @@ public class Carrera implements Serializable{
 	@Id
 	@SequenceGenerator(name="carreraSequence", sequenceName="gb_carrera_seq", allocationSize=20)
 	@Column(name="id_carrera")
-	private Long idCarrera;
+	private Long id;
 	
 	@Column
 	private String descripcion;
@@ -34,20 +34,23 @@ public class Carrera implements Serializable{
 	@Column(name="semestre_egreso")
 	private String semestreEgreso;
 	
-	@JoinColumn(name="id_beca", referencedColumnName="id_beca")
-	@ManyToOne(optional=false)
+	@Column(name="id_beca")
+	private Long idBeca;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_beca", referencedColumnName="id_beca", nullable = false, insertable = false, updatable = false)
 	private Beca beca;
 
 	@JsonIgnore
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="carrera", fetch=FetchType.LAZY)
 	private List<Asignacion> asignaciones = new ArrayList<Asignacion>();
 	
-	public Long getIdCarrera() {
-		return idCarrera;
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdCarrera(Long idCarrera) {
-		this.idCarrera = idCarrera;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDescripcion() {
@@ -64,6 +67,14 @@ public class Carrera implements Serializable{
 
 	public void setSemestreEgreso(String semestreEgreso) {
 		this.semestreEgreso = semestreEgreso;
+	}
+
+	public Long getIdBeca() {
+		return idBeca;
+	}
+
+	public void setIdBeca(Long idBeca) {
+		this.idBeca = idBeca;
 	}
 
 	public Beca getBeca() {
@@ -84,6 +95,6 @@ public class Carrera implements Serializable{
 	}
 
 	public boolean isNew(){
-		return (this.idCarrera == null);
+		return (this.id == null);
 	}
 }

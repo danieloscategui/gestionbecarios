@@ -52,4 +52,10 @@ public class TipoGestionServiceImpl implements TipoGestionService {
 		return null;
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public TipoGestion findByDescripcion(String descripcion) {
+		return tipoGestionRepository.findByDescripcion(descripcion);
+	}
+
 }

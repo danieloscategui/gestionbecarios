@@ -161,7 +161,7 @@ public class BecarioController {
 //		becarioEstado.setEstadoDos(becario.getEstadoDos());
 //		becarioEstado.setEstadoTres(becario.getEstadoTres());
 //		becarioService.updateBecarioEstado(becario.getIdBecario(), becarioEstado, becario.getObservaciones());
-		return "redirect:/becario/beca/" + String.valueOf(becario.getAsignacion().getCarrera().getBeca().getIdBeca());
+		return "redirect:/becario/beca/" + String.valueOf(becario.getAsignacion().getCarrera().getBeca().getId());
 	}
 	
 	/**
