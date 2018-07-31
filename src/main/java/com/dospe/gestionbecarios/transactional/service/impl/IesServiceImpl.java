@@ -54,7 +54,7 @@ public class IesServiceImpl implements IesService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Ies findByNombre(String nombre) {
-		return iesRepository.findByNombre(nombre);
+	public boolean existsByNombreIgnoreCase(String nombre) {
+		return iesRepository.existsByNombreIgnoreCase(nombre);
 	}
 }

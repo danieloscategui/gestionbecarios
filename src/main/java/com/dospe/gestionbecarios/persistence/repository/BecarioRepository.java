@@ -1,6 +1,10 @@
 package com.dospe.gestionbecarios.persistence.repository;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.dospe.gestionbecarios.persistence.domain.Becario;
@@ -36,4 +40,11 @@ public interface BecarioRepository extends JpaRepository<Becario, Long> {
 //	public Long countByBeca(Long idBeca){
 //		return 0L;
 //	}
+	
+	@Query(value= "select b from Becario b "
+				+ "inner join fetch b.asignacion asig "
+				+ "inner join fetch asig.carrera c "
+				+ "inner join fetch c.beca bec "
+				+ "where bec.id = :idBeca ")
+	public Collection<Becario> findAllByBeca(@Param("idBeca") Long idBeca);
 }

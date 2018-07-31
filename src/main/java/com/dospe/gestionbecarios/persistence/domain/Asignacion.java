@@ -86,4 +86,5 @@ public class Asignacion implements Serializable {
 	public boolean isNew(){
 		return (this.idAsignacion == null);
 	}
+	
 }

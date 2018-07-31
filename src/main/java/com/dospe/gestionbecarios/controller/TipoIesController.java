@@ -55,7 +55,7 @@ public class TipoIesController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public TipoIesDTO create(@Valid @RequestBody TipoIesDTO tipoIesDTO) {
-		boolean tipoIesExiste = tipoIesService.findByDescripcion(tipoIesDTO.getDescripcion().toUpperCase()) != null;
+		boolean tipoIesExiste = tipoIesService.existsByDescripcionIgnoreCase(tipoIesDTO.getDescripcion());
 		if(tipoIesExiste) {
 			throw new DuplicateValueException("El nombre "+tipoIesDTO.getDescripcion()+ " ya existe");
 		}

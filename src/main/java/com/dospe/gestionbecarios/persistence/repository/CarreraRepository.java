@@ -7,5 +7,5 @@ import com.dospe.gestionbecarios.persistence.domain.Carrera;
 
 @Repository("carreraRepository")
 public interface CarreraRepository extends JpaRepository<Carrera, Long> {
-	public Carrera findByDescripcion(String descripcion);
+	public boolean existsByIdBecaAndDescripcionIgnoreCase(Long idBeca, String descripcion);
 }

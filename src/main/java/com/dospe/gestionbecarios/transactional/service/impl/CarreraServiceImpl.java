@@ -56,15 +56,15 @@ public class CarreraServiceImpl implements CarreraService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Carrera findByDescripcion(Long idBeca, String descripcion) {
+	public List<Carrera> findAllByBeca(Long idBeca) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<Carrera> findAllByBeca(Long idBeca) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean existsByIdBecaAndDescripcionIgnoreCase(Long idBeca, String descripcion) {
+		return carreraRepository.existsByIdBecaAndDescripcionIgnoreCase(idBeca, descripcion);
 	}
 
 }

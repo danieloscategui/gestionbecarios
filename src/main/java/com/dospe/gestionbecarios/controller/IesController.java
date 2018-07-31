@@ -56,7 +56,7 @@ public class IesController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public IesDTO create(@Valid @RequestBody IesDTO iesDTO) {
-		boolean iesExiste = iesService.findByNombre(iesDTO.getNombre().toUpperCase()) != null;
+		boolean iesExiste = iesService.existsByNombreIgnoreCase(iesDTO.getNombre());
 		if(iesExiste) {
 			throw new DuplicateValueException("El nombre "+iesDTO.getNombre()+ " ya existe");
 		}

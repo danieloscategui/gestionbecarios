@@ -54,8 +54,9 @@ public class TipoGestionServiceImpl implements TipoGestionService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public TipoGestion findByDescripcion(String descripcion) {
-		return tipoGestionRepository.findByDescripcion(descripcion);
+	public boolean existsByDescripcionIgnoreCase(String descripcion) {
+		return tipoGestionRepository.existsByDescripcionIgnoreCase(descripcion);
 	}
+
 
 }

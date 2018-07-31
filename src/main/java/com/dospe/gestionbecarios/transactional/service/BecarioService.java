@@ -9,4 +9,5 @@ import com.dospe.gestionbecarios.persistence.domain.BecarioView;
 public interface BecarioService extends CrudService<Becario, Long> {
 	public Collection<BecarioView> findBecariosPorBeca(Long idBeca);
 	public Collection<Becario> findByDNI(String DNI);
+	public Collection<Becario> findAllByBeca(Long idBeca);
 }

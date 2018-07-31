@@ -7,5 +7,5 @@ import com.dospe.gestionbecarios.persistence.domain.TipoIes;
 
 @Repository("tipoIesRepository")
 public interface TipoIesRepository extends JpaRepository<TipoIes, Long> {
-	public TipoIes findByDescripcion(String descripcion);
+	public boolean existsByDescripcionIgnoreCase(String descripcion);
 }

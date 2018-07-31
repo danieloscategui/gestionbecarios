@@ -53,7 +53,7 @@ public class CarreraController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public CarreraDTO create(@PathVariable("id") Long idBeca, @Valid @RequestBody CarreraDTO carreraDTO) {
-		boolean carreraExiste = carreraService.findByDescripcion(idBeca, carreraDTO.getDescripcion().toUpperCase()) != null;
+		boolean carreraExiste = carreraService.existsByIdBecaAndDescripcionIgnoreCase(idBeca, carreraDTO.getDescripcion());
 		if(carreraExiste) {
 			throw new DuplicateValueException("La carrera "+ carreraDTO.getDescripcion()+ " ya existe");
 		}

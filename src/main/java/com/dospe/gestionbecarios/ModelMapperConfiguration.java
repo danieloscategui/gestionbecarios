@@ -6,12 +6,14 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.dospe.gestionbecarios.controller.dto.BecarioListDTO;
 import com.dospe.gestionbecarios.controller.dto.CarreraDTO;
 import com.dospe.gestionbecarios.controller.dto.CarreraListDTO;
 import com.dospe.gestionbecarios.controller.dto.IesDTO;
 import com.dospe.gestionbecarios.controller.dto.IesListDTO;
 import com.dospe.gestionbecarios.controller.dto.SedeEstudioDTO;
 import com.dospe.gestionbecarios.controller.dto.SedeEstudioListDTO;
+import com.dospe.gestionbecarios.persistence.domain.Becario;
 import com.dospe.gestionbecarios.persistence.domain.Carrera;
 import com.dospe.gestionbecarios.persistence.domain.Ies;
 import com.dospe.gestionbecarios.persistence.domain.SedeEstudio;
@@ -61,6 +63,18 @@ public class ModelMapperConfiguration {
 				map().setIdIes(source.getIes().getId());
 			}
 		});
+		
+		modelMapper.addMappings(new PropertyMap<Becario, BecarioListDTO>() {
+			protected void configure() {
+				map().setNombreCompleto(source.getFullName());
+				map().setCarrera(source.getAsignacion().getCarrera().getDescripcion());
+				map().setBeca(source.getAsignacion().getCarrera().getBeca().getShortName());
+				map().setAsesor(source.getAsignacion().getAsesor().getNombre());
+				map().setEstado(source.getEstado().getDescripcion());
+				map().setCondicion(source.getCondicion().getDescripcion());
+			}
+		});
+
 		
 		return modelMapper;
 	}

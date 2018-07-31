@@ -54,8 +54,9 @@ public class TipoIesServiceImpl implements TipoIesService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public TipoIes findByDescripcion(String descripcion) {
-		return tipoIesRepository.findByDescripcion(descripcion);
+	public boolean existsByDescripcionIgnoreCase(String descripcion) {
+		return tipoIesRepository.existsByDescripcionIgnoreCase(descripcion);
 	}
+
 
 }

@@ -44,23 +44,33 @@ public class BecarioServiceImpl implements BecarioService {
 	}
 
 	@Override
+	@Transactional
 	public void remove(Long id) {
 		becarioRepository.deleteById(id);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Page<Becario> findPaginated(int page, int size, String orden, String campo) {
 		return null;
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Collection<BecarioView> findBecariosPorBeca(Long idBeca) {
 		return null;
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Collection<Becario> findByDNI(String DNI) {
 		return null;
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public Collection<Becario> findAllByBeca(Long idBeca) {
+		return becarioRepository.findAllByBeca(idBeca);
+	}
+	
 }

@@ -58,7 +58,7 @@ public class TipoGestionController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public TipoGestionDTO create(@Valid @RequestBody TipoGestionDTO tipoGestionDTO) {
-		boolean tipoGestionExiste = tipoGestionService.findByDescripcion(tipoGestionDTO.getDescripcion().toUpperCase()) != null;
+		boolean tipoGestionExiste = tipoGestionService.existsByDescripcionIgnoreCase(tipoGestionDTO.getDescripcion());
 		if(tipoGestionExiste) {
 			throw new DuplicateValueException("El nombre "+tipoGestionDTO.getDescripcion()+ " ya existe");
 		}

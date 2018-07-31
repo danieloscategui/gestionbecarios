@@ -53,9 +53,8 @@ public class AsesorServiceImpl implements AsesorService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Asesor findByNombre(String nombre) {
-		return asesorRepository.findByNombre(nombre);
+	public boolean existsByNombreIgnoreCase(String nombre) {
+		return asesorRepository.existsByNombreIgnoreCase(nombre);
 	}
-
 
 }

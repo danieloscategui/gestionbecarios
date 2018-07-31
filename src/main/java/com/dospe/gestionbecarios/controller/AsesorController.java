@@ -60,7 +60,7 @@ public class AsesorController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public AsesorEditDTO create(@Valid @RequestBody AsesorAddDTO asesorDTO) {
-		boolean asesorExiste = asesorService.findByNombre(asesorDTO.getNombre().toUpperCase()) != null;
+		boolean asesorExiste = asesorService.existsByNombreIgnoreCase(asesorDTO.getNombre());
 		if(asesorExiste) {
 			throw new DuplicateValueException("El nombre "+asesorDTO.getNombre()+ " ya existe");
 		}
