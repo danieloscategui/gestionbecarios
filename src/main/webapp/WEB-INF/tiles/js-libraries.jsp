@@ -7,17 +7,22 @@
 <script src="components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- FastClick -->
 <script src="components/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
+<!-- AdminLTE App 
+-->
 <script src="AdminLTE-2.4.3/js/adminlte.min.js"></script>
-<!-- Sparkline -->
+<!-- Sparkline 
 <script src="components/jquery-sparkline/jquery.sparkline.min.js"></script>
-<!-- jvectormap  -->
+-->
+<!-- jvectormap  
 <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
 <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- SlimScroll -->
+-->
+<!-- SlimScroll 
 <script src="components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- ChartJS -->
+-->
+<!-- ChartJS 
 <script src="components/chart.js/Chart.js"></script>
+-->
 <!-- Axios -->
 <script src="plugins/axios/axios.min.js"></script>
 

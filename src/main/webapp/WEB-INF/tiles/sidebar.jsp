@@ -56,24 +56,17 @@
             <li><a href="#"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
           </ul>
         </li>
-		<li class="treeview">
-          <a href="${homeUrl}">
-            <i class="fa fa-edit"></i> <span>Home</span>
-          </a>
-		  <a href="${asesorMenuUrl}">
-            <i class="fa fa-edit"></i> <span>Asesores</span>
-          </a>	
-        </li>
-        <li class="treeview active">
+        <li class="treeview">
           <a href="#">
-            <i class="fa fa-table"></i> <span>Tables</span>
+            <i class="fa fa-table"></i> <span>Tablas</span>
             <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
           </a>
           <ul class="treeview-menu">
+            <li><a href="${asesorMenuUrl }"><i class="fa fa-circle-o"></i> Asesores 2</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Data tables</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Data tables</a></li>
           </ul>
         </li>
         <li class="treeview">

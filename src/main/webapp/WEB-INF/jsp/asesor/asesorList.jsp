@@ -14,13 +14,13 @@
 <!--./BOTON AGREGAR BECA  -->
 
 <!-- PANEL DE RESULTADO -->
-<div class="panel panel-primary">
+<div class="panel panel-info">
 	<div class="panel-heading">Asesores registrados</div>
 		<div class="panel-body">
 			 <div class="table table-responsive small"> <!-- display strip compact hover row-border -->
 				  <table id="tbl_asesor" class="table table-striped" >
 					  <thead>
-						  <tr class="bg-primary">
+						  <tr class="bg-info">
 							  <td class="col-md-1">Asesor</td>
 							  <td class="col-md-1">Acci&oacute;n</td>
 						  </tr>
@@ -52,7 +52,7 @@
 <!-- MODAL ASESOR -->
 <div class="modal fade" id="modal_asesor" role="dialog" data-keyboard="false" data-backdrop="static" tabindex="-1">
 	<div class="modal-dialog">
-		<div class="panel panel-primary">
+		<div class="panel panel-info">
 			<div class="panel-heading ">
 			    <span class="panel-title" id="titulo_asesor">Editar Asesor</span>
 			</div>

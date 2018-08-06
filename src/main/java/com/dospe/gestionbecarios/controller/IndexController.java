@@ -14,6 +14,7 @@ public class IndexController {
 		logger.info("show welcome page");
 //		return "base-definition";
 		return "asesor-list";
+//		return "asesor-list-2";
 	}
 	
 	

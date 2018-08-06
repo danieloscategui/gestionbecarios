@@ -27,4 +27,20 @@
 	</definition>
 	
 	
+	
+	<!-- Base definition 2 -->
+	<definition name="base-definition-2" template="/WEB-INF/template/base-template.jsp">
+		<put-attribute name="header" value="/WEB-INF/template/header.jsp"/>
+		<put-attribute name="sidebar" value="/WEB-INF/template/sidebar.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/template/body.jsp"/>
+	</definition>
+	
+	<!-- Asesor list 2 -->
+	<definition name="asesor-list-2" extends="base-definition-2">
+		<put-attribute name="body" value="/WEB-INF/jsp/asesor/asesorList2.jsp"/>
+	</definition>
+	
+	
+	
+	
 </tiles-definitions>
