@@ -61,5 +61,9 @@ public class BecaListDTO implements Serializable {
 	public void setTermino(Date termino) {
 		this.termino = termino;
 	}
+	
+	public String getBecaName() {
+		return this.convocatoria + " - " + this.modalidad;
+	}
 
 }

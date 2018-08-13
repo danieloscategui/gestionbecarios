@@ -28,16 +28,25 @@ public class Asignacion implements Serializable {
 	@Column(name="id_asignacion")
 	private Long idAsignacion;
 	
-	@JoinColumn(name="id_carrera", referencedColumnName="id_carrera")
-	@ManyToOne(optional=false)
+	@Column(name="id_carrera")
+	private Long idCarrera;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_carrera", referencedColumnName="id_carrera", insertable=false, nullable=false, updatable=false)
 	private Carrera carrera;
 	
-	@JoinColumn(name="id_sede_estudio", referencedColumnName="id_sede_estudio")
-	@ManyToOne(optional=false)
+	@Column(name="id_sede_estudio")
+	private Long idSedeEstudio;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_sede_estudio", referencedColumnName="id_sede_estudio", insertable=false, nullable=false, updatable=false)
 	private SedeEstudio sedeEstudio;
 	
-	@JoinColumn(name="id_asesor", referencedColumnName="id_asesor")
-	@ManyToOne(optional=false)
+	@Column(name="id_asesor")
+	private Long idAsesor;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_asesor", referencedColumnName="id_asesor", insertable=false, nullable=false, updatable=false)
 	private Asesor asesor;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="asignacion", fetch=FetchType.LAZY)
@@ -51,6 +60,14 @@ public class Asignacion implements Serializable {
 		this.idAsignacion = idAsignacion;
 	}
 	
+	public Long getIdCarrera() {
+		return idCarrera;
+	}
+
+	public void setIdCarrera(Long idCarrera) {
+		this.idCarrera = idCarrera;
+	}
+
 	public Carrera getCarrera() {
 		return carrera;
 	}
@@ -59,6 +76,14 @@ public class Asignacion implements Serializable {
 		this.carrera = carrera;
 	}
 	
+	public Long getIdSedeEstudio() {
+		return idSedeEstudio;
+	}
+
+	public void setIdSedeEstudio(Long idSedeEstudio) {
+		this.idSedeEstudio = idSedeEstudio;
+	}
+
 	public SedeEstudio getSedeEstudio() {
 		return sedeEstudio;
 	}
@@ -67,6 +92,14 @@ public class Asignacion implements Serializable {
 		this.sedeEstudio = sedeEstudio;
 	}
 	
+	public Long getIdAsesor() {
+		return idAsesor;
+	}
+
+	public void setIdAsesor(Long idAsesor) {
+		this.idAsesor = idAsesor;
+	}
+
 	public Asesor getAsesor() {
 		return asesor;
 	}

@@ -2,6 +2,8 @@ package com.dospe.gestionbecarios.persistence.repository;
 
 import java.util.Collection;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,27 +26,22 @@ public interface BecarioRepository extends JpaRepository<Becario, Long> {
 //		return jdbcTemplate.query(sql.toString(), new Object[]{idBeca}, new BecarioViewMapper());
 //	}
 
-//	public List<Becario> findBecariosPorBecaPaginated(Long idBeca, Integer offset, Integer maxResults){
-//		return null;
-//	}
+	@Query(value= "select b from Becario b "
+				+ "inner join b.asignacion asig "
+				+ "inner join asig.carrera c "
+				+ "inner join c.beca bec "
+				+ "where bec.id = :idBeca ")
+	Page<Becario> findAllByBeca(@Param("idBeca") Long idBeca, Pageable pageable);
 	
-//	@SuppressWarnings("unchecked")
-//	public List<Becario> findByDNI(String dni){
-//		return getCurrentSession()
-//				.createCriteria(Becario.class)
-//				.add(Restrictions.eq("dni", dni))
-//				.addOrder(Order.asc("idBecario"))
-//				.list();
-//	}
-	
-//	public Long countByBeca(Long idBeca){
-//		return 0L;
-//	}
 	
 	@Query(value= "select b from Becario b "
-				+ "inner join fetch b.asignacion asig "
-				+ "inner join fetch asig.carrera c "
-				+ "inner join fetch c.beca bec "
-				+ "where bec.id = :idBeca ")
-	public Collection<Becario> findAllByBeca(@Param("idBeca") Long idBeca);
+			+ "inner join b.asignacion asig "
+			+ "inner join asig.carrera c "
+			+ "inner join c.beca bec "
+			+ "where bec.id = :idBeca "
+			+ "and b.dni = :dni ")
+	Page<Becario> findAllByBecaAndDNI(@Param("idBeca") Long idBeca, @Param("dni") String dni, Pageable pageable);
+	
+//	public Collection<Becario> findByDni(String dni);
+
 }

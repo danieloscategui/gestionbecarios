@@ -1,14 +1,20 @@
 package com.dospe.gestionbecarios.controller;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,12 +62,23 @@ public class BecarioController {
 	@GetMapping({"/beca/{id}"})
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public List<BecarioListDTO> findAllByBeca(@PathVariable("id") Long idBeca){
-		logger.info("listando todos los becarios por beca");
-		List<Becario> becarioList = (List<Becario>) becarioService.findAllByBeca(idBeca);
-		return becarioList.stream()
-				.map(becario-> convertToDTO(becario))
-				.collect(Collectors.toList());
+	public Map<String, Object> findAllByBeca(@PathVariable("id") Long idBeca, HttpServletRequest request){
+		Map<String, Object> result = new HashMap<String, Object>();
+		logger.info("listando todos los becarios por beca: "+ idBeca);
+		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
+		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
+		
+		Page<Becario> becarioPage = becarioService.findAllByBeca(idBeca, page, rows);
+		
+		List<BecarioListDTO> becarios = becarioPage.getContent().stream()
+											.map(becario -> convertToDTO(becario))
+											.collect(Collectors.toList());
+		
+		result.put("total", becarioPage.getTotalElements());
+		result.put("rows", becarios);
+		
+		return result;
+
 	}
 	
 	
@@ -75,7 +92,7 @@ public class BecarioController {
 
 	@RequestMapping(value="/becario/api/beca/{idBeca}", method=RequestMethod.GET)
 	@ResponseBody
-	public Collection<BecarioView> showBecariosPorBeca(@PathVariable("idBeca") Long idBeca){
+	public Collection<BecarioView> showBecariosPorBeca(@PathVariable("id") Long idBeca, @PathVariable("dni") String dni, HttpServletRequest request){
 //		model.addAttribute("becarioList", becarioService.findBecariosPorBecaPaginated(idBeca, offset, maxResults));
 //		model.addAttribute("beca", becaService.findOne(idBeca));
 //		model.addAttribute("becarioCount", becarioService.countByBeca(idBeca));
@@ -85,20 +102,28 @@ public class BecarioController {
 	}
 	
 	
-	@RequestMapping(value="/becario/{dni}/buscar", method=RequestMethod.GET)
-	public String buscarBecarioPorDni(@PathVariable("dni") String dni, Model model){
-		if (dni.isEmpty() || dni == null){
-			model.addAttribute("msg", "Ingrese DNI");
-			return "redirect:/";
-		}
+//	@RequestMapping(value="/becario/{dni}/buscar", method=RequestMethod.GET)
+	@GetMapping({"{dni}/beca/{id}"})
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public Map<String, Object> buscarBecarioPorDniYBeca(@PathVariable("id") Long idBeca, @NotNull(message="Ingrese DNI") @PathVariable("dni") String dni, HttpServletRequest request){
 		
-		Collection<Becario> becariosEncontrados = becarioService.findByDNI(dni);
-		if(becariosEncontrados.isEmpty()){
-			model.addAttribute("msg", "No existe DNI");
-			return "redirect:/";
-		}
-		model.addAttribute("becariosEncontrados", becariosEncontrados);
-		return "BECARIO_RESULTADO_BUSQUEDA_POR_DNI";
+		Map<String, Object> result = new HashMap<String, Object>();
+		logger.info("listando todos los becarios por beca: "+ idBeca + " y dni: " + dni);
+		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
+		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
+		
+		Page<Becario> becarioPage = becarioService.findAllByBecaAndDni(idBeca, dni, page, rows);
+		
+		List<BecarioListDTO> becarios = becarioPage.getContent().stream()
+											.map(becario -> convertToDTO(becario))
+											.collect(Collectors.toList());
+		
+		result.put("total", becarioPage.getTotalElements());
+		result.put("rows", becarios);
+		
+		return result;
+		
 	}
 	
 	

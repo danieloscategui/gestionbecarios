@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,14 +64,14 @@ public class BecarioServiceImpl implements BecarioService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Collection<Becario> findByDNI(String DNI) {
-		return null;
+	public Page<Becario> findAllByBecaAndDni(Long idBeca, String dni, int page, int size) {
+		return becarioRepository.findAllByBecaAndDNI(idBeca, dni, PageRequest.of(page-1, size));
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public Collection<Becario> findAllByBeca(Long idBeca) {
-		return becarioRepository.findAllByBeca(idBeca);
+	public Page<Becario> findAllByBeca(Long idBeca, int page, int size) {
+		return becarioRepository.findAllByBeca(idBeca, PageRequest.of(page-1, size));
 	}
 	
 }

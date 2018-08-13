@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +56,12 @@ public class AsesorServiceImpl implements AsesorService {
 	@Transactional(readOnly=true)
 	public boolean existsByNombreIgnoreCase(String nombre) {
 		return asesorRepository.existsByNombreIgnoreCase(nombre);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Page<Asesor> findAllPaginated(int page, int size) {
+		return asesorRepository.findAll(PageRequest.of(page-1, size));
 	}
 
 }

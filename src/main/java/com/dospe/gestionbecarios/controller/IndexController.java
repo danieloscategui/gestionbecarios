@@ -12,10 +12,20 @@ public class IndexController {
 	@RequestMapping("/")
 	public String showWelcomePage() {
 		logger.info("show welcome page");
-//		return "base-definition";
-		return "asesor-list";
+//		return "base-definition2";
+//		return "asesor-list";
 //		return "asesor-list-2";
+		return "asesor-list-page";
 	}
 	
+	@RequestMapping("/becario")
+	public String showBecarioPage() {
+		return "becario-list-page";
+	}
+	
+	@RequestMapping("/becarioForm")
+	public String showBecarioFormPage() {
+		return "becario-form";
+	}
 	
 }

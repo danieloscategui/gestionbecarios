@@ -1,8 +1,11 @@
 package com.dospe.gestionbecarios.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +59,29 @@ public class AsesorController {
 				.map(asesor -> convertToDTO(asesor))
 				.collect(Collectors.toList());
 	}
+
+	@GetMapping("/page")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public Map<String, Object> paging(HttpServletRequest request){
+		Map<String, Object> result = new HashMap<String, Object>();
+		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
+		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
+		
+		logger.info("page: " + page);
+		logger.info("rows: " + rows);
+		
+		Page<Asesor> asesorPage = asesorService.findAllPaginated(page, rows);
+		
+		logger.info("total elements: " + asesorPage.getTotalElements());
+		result.put("total", asesorPage.getTotalElements());
+		result.put("rows", asesorPage.getContent().stream()
+				.map(asesor -> convertToDTO(asesor))
+				.collect(Collectors.toList()));
+		
+		return result;
+	}
+	
 	
 	@PostMapping("/")
 	@ResponseStatus(HttpStatus.CREATED)

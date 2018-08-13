@@ -6,32 +6,6 @@ $(document).ready(function(){
 	var url_base = protocol + '//' + hostname + ':' + port + '/jkbecarios'
 	
 	
-	$(function($) {
-		$.datepicker.regional['es'] = {
-			closeText : 'Cerrar',
-			prevText : '&#x3c;Ant',
-			nextText : 'Sig&#x3e;',
-			currentText : 'Hoy',
-			monthNames : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-			monthNamesShort : ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-			dayNames : ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-			dayNamesShort : ['Dom', 'Lun', 'Mar', 'Mie;', 'Juv', 'Vie', 'Sab'],
-			dayNamesMin : ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-			weekHeader : 'Sm',
-			dateFormat : 'dd/mm/yy',
-			firstDay : 1,
-			isRTL : false,
-			showMonthAfterYear : false,
-			yearSuffix : ''
-		};
-		$.datepicker.setDefaults($.datepicker.regional['es']);
-	}); 
-	
-	$(".datepicker").datepicker({
-      	dateFormat: "dd/mm/yy",
-	});
-
-	
 	$('.only-number').on("keypress keyup blur", function(event){
 		$(this).val($(this).val().replace(/[^\d].+/, ""));
 	    if ((event.which < 48 || event.which > 57)) {

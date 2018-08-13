@@ -54,8 +54,8 @@ public class Becario implements Serializable {
 	@Column(name="id_asignacion")
 	private Long idAsignacion;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_asignacion", referencedColumnName="id_asignacion", insertable=false, nullable=false, updatable=false)
-	@ManyToOne(optional=false)
 	private Asignacion asignacion;
 	
 	@Column(name="numero_expediente")
