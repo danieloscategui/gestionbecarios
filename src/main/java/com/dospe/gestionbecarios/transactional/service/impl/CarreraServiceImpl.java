@@ -57,8 +57,7 @@ public class CarreraServiceImpl implements CarreraService {
 	@Override
 	@Transactional(readOnly=true)
 	public List<Carrera> findAllByBeca(Long idBeca) {
-		// TODO Auto-generated method stub
-		return null;
+		return carreraRepository.findAllByBeca(idBeca);
 	}
 
 	@Override

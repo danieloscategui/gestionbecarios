@@ -1,6 +1,7 @@
 package com.dospe.gestionbecarios.controller.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class IesListDTO implements Serializable{
 	private static final long serialVersionUID = 4085484744188463655L;
@@ -9,6 +10,7 @@ public class IesListDTO implements Serializable{
 	private String nombre;
 	private String tipoGestion;
 	private String tipoIes;
+	private List<SedeEstudioListDTO> sedes;
 	
 	public Long getId() {
 		return id;
@@ -34,4 +36,11 @@ public class IesListDTO implements Serializable{
 	public void setTipoIes(String tipoIes) {
 		this.tipoIes = tipoIes;
 	}
+	public List<SedeEstudioListDTO> getSedes() {
+		return sedes;
+	}
+	public void setSedes(List<SedeEstudioListDTO> sedes) {
+		this.sedes = sedes;
+	}
+	
 }

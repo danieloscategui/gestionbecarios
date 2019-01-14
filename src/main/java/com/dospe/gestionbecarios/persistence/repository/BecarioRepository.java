@@ -38,6 +38,13 @@ public interface BecarioRepository extends JpaRepository<Becario, Long> {
 			+ "inner join b.asignacion asig "
 			+ "inner join asig.carrera c "
 			+ "inner join c.beca bec "
+			+ "where bec.id = :idBeca ")
+	Collection<Becario> findAllByBeca(@Param("idBeca") Long idBeca);
+	
+	@Query(value= "select b from Becario b "
+			+ "inner join b.asignacion asig "
+			+ "inner join asig.carrera c "
+			+ "inner join c.beca bec "
 			+ "where bec.id = :idBeca "
 			+ "and b.dni = :dni ")
 	Page<Becario> findAllByBecaAndDNI(@Param("idBeca") Long idBeca, @Param("dni") String dni, Pageable pageable);

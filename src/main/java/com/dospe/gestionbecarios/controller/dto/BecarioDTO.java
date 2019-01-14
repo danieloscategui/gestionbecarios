@@ -10,31 +10,41 @@ import javax.validation.constraints.NotNull;
 
 import com.dospe.gestionbecarios.persistence.domain.Sexo;
 import com.dospe.gestionbecarios.util.JsonDateDeserializer;
+import com.dospe.gestionbecarios.util.JsonDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class BecarioDTO implements Serializable {
 
 	private static final long serialVersionUID = -3101669372822728174L;
 
 	private Long id;
+	private String dni;
 	@NotNull(message = "<span>Nombre: </span> Es requerido.")
 	private String nombres;
 	@NotNull(message = "<span>Apellidos: </span> Es requerido.")
 	private String apellidos;
 	@JsonDeserialize(using = JsonDateDeserializer.class)
+	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date fechaNacimiento;
 	private Integer edad;
 	@Enumerated(EnumType.STRING)
 	private Sexo sexo;
 	private String numeroExpediente;
 	private Long idAsignacion;
+	private Long idAsesor;
+	private Long idCarrera;
+	private Long idSedeEstudio;
+	private Long idIes;
+	private Long idBeca;
 	private Long idEstado;
 	private Long idCondicion;
 	private String resolucionAdjudicacion;
 	@JsonDeserialize(using = JsonDateDeserializer.class)
+	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date resolucionAdjudicacionFecha;
-	private String representante;
-	private String representanteDni;
+	private String contacto;
+	private String contactoTelefono;
 	private String telefonos;
 	@Email(message = "<span>Correo Pronabec: </span> Ingrese un correo valido")
 	private String correoPronabec;
@@ -44,8 +54,8 @@ public class BecarioDTO implements Serializable {
 	private String regionProcedencia;
 	private String provinciaProcedencia;
 	private String distritoProcedencia;
-	private String regionPostulacion;
-	private String provinciaPostulacion;
+	private String documentoCulminacion;
+	private String resolucionPerdidaBeca;
 	private String distritoPostulacion;
 	private String observaciones;
 
@@ -145,22 +155,6 @@ public class BecarioDTO implements Serializable {
 		this.resolucionAdjudicacionFecha = resolucionAdjudicacionFecha;
 	}
 
-	public String getRepresentante() {
-		return representante;
-	}
-
-	public void setRepresentante(String representante) {
-		this.representante = representante;
-	}
-
-	public String getRepresentanteDni() {
-		return representanteDni;
-	}
-
-	public void setRepresentanteDni(String representanteDni) {
-		this.representanteDni = representanteDni;
-	}
-
 	public String getTelefonos() {
 		return telefonos;
 	}
@@ -217,22 +211,6 @@ public class BecarioDTO implements Serializable {
 		this.distritoProcedencia = distritoProcedencia;
 	}
 
-	public String getRegionPostulacion() {
-		return regionPostulacion;
-	}
-
-	public void setRegionPostulacion(String regionPostulacion) {
-		this.regionPostulacion = regionPostulacion;
-	}
-
-	public String getProvinciaPostulacion() {
-		return provinciaPostulacion;
-	}
-
-	public void setProvinciaPostulacion(String provinciaPostulacion) {
-		this.provinciaPostulacion = provinciaPostulacion;
-	}
-
 	public String getDistritoPostulacion() {
 		return distritoPostulacion;
 	}
@@ -249,4 +227,121 @@ public class BecarioDTO implements Serializable {
 		this.observaciones = observaciones;
 	}
 
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+
+	public String getContactoTelefono() {
+		return contactoTelefono;
+	}
+
+	public void setContactoTelefono(String contactoTelefono) {
+		this.contactoTelefono = contactoTelefono;
+	}
+
+	public String getDocumentoCulminacion() {
+		return documentoCulminacion;
+	}
+
+	public void setDocumentoCulminacion(String documentoCulminacion) {
+		this.documentoCulminacion = documentoCulminacion;
+	}
+
+	public String getResolucionPerdidaBeca() {
+		return resolucionPerdidaBeca;
+	}
+
+	public void setResolucionPerdidaBeca(String resolucionPerdidaBeca) {
+		this.resolucionPerdidaBeca = resolucionPerdidaBeca;
+	}
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	public Long getIdAsesor() {
+		return idAsesor;
+	}
+
+	public void setIdAsesor(Long idAsesor) {
+		this.idAsesor = idAsesor;
+	}
+
+	public Long getIdCarrera() {
+		return idCarrera;
+	}
+
+	public void setIdCarrera(Long idCarrera) {
+		this.idCarrera = idCarrera;
+	}
+
+	public Long getIdSedeEstudio() {
+		return idSedeEstudio;
+	}
+
+	public void setIdSedeEstudio(Long idSedeEstudio) {
+		this.idSedeEstudio = idSedeEstudio;
+	}
+
+	public Long getIdIes() {
+		return idIes;
+	}
+
+	public void setIdIes(Long idIes) {
+		this.idIes = idIes;
+	}
+
+	public Long getIdBeca() {
+		return idBeca;
+	}
+
+	public void setIdBeca(Long idBeca) {
+		this.idBeca = idBeca;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Becario[").append("\n");
+		sb.append("id:").append(id).append(",").append("\n");
+		sb.append("asesor:").append(idAsesor).append(",").append("\n");
+		sb.append("beca:").append(idBeca).append(",").append("\n");
+		sb.append("carrera:").append(idCarrera).append(",").append("\n");
+		sb.append("ies:").append(idIes).append(",").append("\n");
+		sb.append("sede:").append(idSedeEstudio).append(",").append("\n");
+		sb.append("expediente:").append(numeroExpediente).append(",").append("\n");
+		sb.append("res-adj:").append(resolucionAdjudicacion).append(",").append("\n");
+		sb.append("fec-res-adj:").append(resolucionAdjudicacionFecha).append(",").append("\n");
+		sb.append("r-proc:").append(regionProcedencia).append(",").append("\n");
+		sb.append("p-proc:").append(provinciaProcedencia).append(",").append("\n");
+		sb.append("d-proc:").append(distritoProcedencia).append(",").append("\n");
+		sb.append("dni:").append(dni).append(",").append("\n");
+		sb.append("nombre:").append(nombres).append(",").append("\n");
+		sb.append("apellidos:").append(apellidos).append(",").append("\n");
+		sb.append("f-nac:").append(fechaNacimiento).append(",").append("\n");
+		sb.append("edad:").append(edad).append(",").append("\n");
+		sb.append("sexo:").append(sexo).append(",").append("\n");
+		sb.append("correo-p:").append(correoPersonal).append(",").append("\n");
+		sb.append("telef:").append(telefonos).append(",").append("\n");
+		sb.append("direccion:").append(direccion).append(",").append("\n");
+		sb.append("contacto:").append(contacto).append(",").append("\n");
+		sb.append("contacto-t:").append(contactoTelefono).append(",").append("\n");
+		sb.append("estado:").append(idEstado).append(",").append("\n");
+		sb.append("condicion:").append(idCondicion).append(",").append("\n");
+		sb.append("doc-culm:").append(documentoCulminacion).append(",").append("\n");
+		sb.append("res-perd-beca:").append(resolucionPerdidaBeca).append(",").append("\n");
+		sb.append("obs:").append(observaciones).append("\n");
+		sb.append("asignacion").append(idAsignacion);
+		sb.append("]");
+		
+		return sb.toString();
+	}
 }

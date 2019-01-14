@@ -46,8 +46,8 @@ function editUser(){
 	var idBeca = $('#cboBeca').combobox('getValue');
 	var row = $('#dgBecarios').datagrid('getSelected');
 	if (idBeca != null && idBeca > 0 && row != null){
-		alert('editUser-row: '+row.id);	
-		$(location).attr('href', 'becarioForm');
+		//alert('editUser-row: '+row.id);	
+		$(location).attr('href', row.id);
 	}
 	//window.location.href = "http://example.com/new_url";
 }

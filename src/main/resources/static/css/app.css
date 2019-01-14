@@ -17,3 +17,20 @@
 .errorMessages span {
 	font-weight: bold;
 }
+
+.table>thead>tr>th{
+	font-weight: normal;
+	font-size: 13px;
+}
+
+.table>tbody>tr>td {
+	font-size: 12px;
+}
+.table>tbody>tr>td>a:hover {
+	cursor: pointer;
+}
+
+.ocultar {
+	display: none;
+}
+

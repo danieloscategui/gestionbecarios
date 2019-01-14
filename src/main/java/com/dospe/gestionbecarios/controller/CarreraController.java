@@ -42,10 +42,10 @@ public class CarreraController {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public List<CarreraListDTO> findAllByBeca(@PathVariable("id") Long idBeca){
-		logger.info("listando todos las carreras por beca");
+		logger.info("listando todos las carreras por beca: " + idBeca);
 		List<Carrera> carreraList = (List<Carrera>) carreraService.findAllByBeca(idBeca);
 		return carreraList.stream()
-				.map(ies -> convertToDTO(ies))
+				.map(carrera -> convertToDTO(carrera))
 				.collect(Collectors.toList());
 	}
 	

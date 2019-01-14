@@ -4,50 +4,69 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.dospe.gestionbecarios.controller.dto.BecaListDTO;
 import com.dospe.gestionbecarios.controller.dto.CondicionDTO;
+import com.dospe.gestionbecarios.controller.dto.CondicionListDTO;
 import com.dospe.gestionbecarios.controller.dto.EstadoDTO;
+import com.dospe.gestionbecarios.controller.dto.EstadoListDTO;
+import com.dospe.gestionbecarios.persistence.domain.Beca;
 import com.dospe.gestionbecarios.persistence.domain.Condicion;
 import com.dospe.gestionbecarios.persistence.domain.Estado;
 import com.dospe.gestionbecarios.transactional.service.CondicionService;
 import com.dospe.gestionbecarios.transactional.service.EstadoService;
 
-@Controller
+@RestController
+@RequestMapping("/api/estado")
 public class EstadoController {
 	private static final String ESTADO_LIST = "estado-list";
 	
 	private static final Logger logger = LoggerFactory.getLogger(EstadoController.class);
-
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	@Autowired
 	private EstadoService estadoService;
 	
 	@Autowired
 	private CondicionService condicionService;
 	
-	@RequestMapping(value="/estado", method=RequestMethod.GET)
+	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String showEstadoPage(Model model){
 		logger.debug("Cargando pagina inicial de estado.");
 		model.addAttribute("estados", estadoService.findAll());
 		return ESTADO_LIST;
 	}
 	
-	@RequestMapping(value="/estado/get", method=RequestMethod.GET)
+	@GetMapping({"/", ""})
+	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public Collection<Estado> listarEstado(){
+	public List<EstadoListDTO> listarEstado(){
 		logger.debug("Listando todos los estados");
-		return  estadoService.findAll();
-	}
+		
+		List<Estado> estados = (List<Estado>) estadoService.findAll();
+		return estados.stream()
+				.map(estado -> convertToDTO(estado))
+				.collect(Collectors.toList());
+		
+	}	
 
 	@RequestMapping(value="/estado/get/{idEstado}", method=RequestMethod.GET)
 	@ResponseBody
@@ -63,11 +82,16 @@ public class EstadoController {
 		return  condicionService.findById(idCondicion);
 	}
 	
-	@RequestMapping(value="/estado/{idEstado}/condicion", method=RequestMethod.GET)
+	@GetMapping("/condicion/{idEstado}")
 	@ResponseBody
-	public Collection<Condicion> mostrarCondicionPorBeca(@PathVariable("idEstado") Long idEstado){
-		logger.debug("Consultando todas las condiciones por determinado estado");
-		return  condicionService.findAllByEstado(idEstado);
+	public Collection<CondicionListDTO> mostrarCondicionPorEstado(@PathVariable("idEstado") Long idEstado){
+		logger.info("Consultando todas las condiciones por determinado estado");
+		
+		List<Condicion> condiciones = (List<Condicion>) condicionService.findAllByEstado(idEstado);
+		
+		return condiciones.stream()
+				.map(condicion -> convertToDTO(condicion))
+				.collect(Collectors.toList());
 	}
 	
 	@RequestMapping(value="/estado/subcondicion/{idCondicion}", method=RequestMethod.GET)
@@ -106,7 +130,7 @@ public class EstadoController {
 	@ResponseBody
 	public Map<String, Object> crearCondicion(@ModelAttribute("condicionDTO") CondicionDTO condicionDTO){
 		Map<String, Object> map = new HashMap<String, Object>();
-		Condicion condicion = condicionService.findById(condicionDTO.getIdCondicion());
+		Condicion condicion = condicionService.findById(condicionDTO.getId());
 		Estado estado = estadoService.findById(condicionDTO.getIdEstado());
 		
 		if(condicion.isNew() && estado != null){
@@ -126,10 +150,10 @@ public class EstadoController {
 	@ResponseBody
 	public Map<String, Object> actualizarCondicion(@ModelAttribute("condicionDTO") CondicionDTO condicionDTO){
 		Map<String, Object> map = new HashMap<String, Object>();
-		Condicion condicion = condicionService.findById(condicionDTO.getIdCondicion());
+		Condicion condicion = condicionService.findById(condicionDTO.getId());
 		Estado estado = estadoService.findById(condicionDTO.getIdEstado());
 		condicion.setDescripcion(condicionDTO.getDescripcion());
-		condicion.setEstado(estado);
+		//condicion.setEstado(estado);
 		condicion.setIdSubCondicion(condicionDTO.getIdSubCondicion());
 		condicionService.save(condicion);
 		map.put("success", true);
@@ -138,4 +162,13 @@ public class EstadoController {
 		return map;
 	}
 	
+	private EstadoListDTO convertToDTO(Estado estado) {
+		EstadoListDTO estadoListDTO = modelMapper.map(estado, EstadoListDTO.class);
+		return estadoListDTO;
+	}
+	
+	private CondicionListDTO convertToDTO(Condicion condicion) {
+		CondicionListDTO condicionListDTO = modelMapper.map(condicion, CondicionListDTO.class);
+		return condicionListDTO;
+	}
 }

@@ -1,8 +1,12 @@
 package com.dospe.gestionbecarios.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -22,9 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dospe.gestionbecarios.controller.dto.IesDTO;
 import com.dospe.gestionbecarios.controller.dto.IesListDTO;
+import com.dospe.gestionbecarios.controller.dto.SedeEstudioDTO;
 import com.dospe.gestionbecarios.persistence.domain.Ies;
+import com.dospe.gestionbecarios.persistence.domain.SedeEstudio;
 import com.dospe.gestionbecarios.persistence.exception.DuplicateValueException;
 import com.dospe.gestionbecarios.transactional.service.IesService;
+import com.dospe.gestionbecarios.transactional.service.SedeEstudioService;
 
 @RestController
 @RequestMapping("/api/ies")
@@ -40,6 +47,8 @@ public class IesController {
 	
 	@Autowired
 	private IesService iesService;
+	@Autowired
+	private SedeEstudioService sedeEstudioService;
 
 	@GetMapping({"/", ""})
 	@ResponseStatus(HttpStatus.OK)
@@ -50,6 +59,22 @@ public class IesController {
 		return iesList.stream()
 				.map(ies -> convertToDTO(ies))
 				.collect(Collectors.toList());
+	}
+	
+	@GetMapping("/map")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public Map<String, Object> listarIes(HttpServletRequest request){
+		Map<String, Object> result = new HashMap<String, Object>();
+		logger.info("listando todas las IES en un map");
+		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
+		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
+		List<Ies> iesList = (List<Ies>) iesService.findAll();
+		List<IesListDTO> iesListDTO = iesList.stream()
+				.map(ies -> convertToDTO(ies))
+				.collect(Collectors.toList());
+		result.put("data", iesListDTO);
+		return result;
 	}
 	
 	@PostMapping("/")
@@ -78,15 +103,56 @@ public class IesController {
 
 	@PutMapping("/{id}")
 	@ResponseBody
-	public IesDTO update(@PathVariable("id") Long id, @Valid @RequestBody IesDTO iesDTO) {
-		Ies ies = iesService.findById(id);
-		ies.setNombre(iesDTO.getNombre());
+	public Map<String, Object> update(@PathVariable("id") Long id, @Valid @RequestBody IesDTO iesDTO) {
+		logger.info("Dentro de update ies");
+		logger.info("Sedes: " + iesDTO.getSedes().size());
+		Ies ies = convertoToEntity(iesDTO);
 		iesService.save(ies);
-		return modelMapper.map(ies, IesDTO.class);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("success", true);
+		response.put("idIes", ies.getId());
+		return response;
 	}
 	
 	private IesListDTO convertToDTO(Ies ies) {
 		IesListDTO iesListDTO = modelMapper.map(ies, IesListDTO.class);
 		return iesListDTO;
+	}
+	
+	private Ies convertoToEntity(IesDTO iesDTO) {
+		Ies ies;
+		if (iesDTO.getId() != null) {
+			ies = iesService.findById(iesDTO.getId());
+		} else {
+			ies = new Ies();
+		}
+		ies.setNombre(iesDTO.getNombre().toUpperCase());
+		ies.setIdTipoIes(iesDTO.getIdTipoIes());
+		ies.setIdTipoGestion(iesDTO.getIdTipoGestion());
+		ies.setContacto(iesDTO.getContacto().toUpperCase());
+		ies.setTelefono(iesDTO.getTelefono().toUpperCase());
+		ies.setCorreo(iesDTO.getCorreo().toUpperCase());
+		
+		List<SedeEstudio> sedes = new ArrayList<SedeEstudio>();
+		for (SedeEstudioDTO sedeDTO : iesDTO.getSedes()) {
+			SedeEstudio sede;
+			if(sedeDTO.getId() != null) {
+				sede = sedeEstudioService.findById(sedeDTO.getId());
+			} else {
+				sede = new SedeEstudio();
+			}
+			sede.setIdIes(ies.getId());
+			sede.setRegion(sedeDTO.getRegion().toUpperCase());
+			sede.setSede(sedeDTO.getSede().toUpperCase());
+			sede.setContacto(sedeDTO.getContacto().toUpperCase());
+			sede.setTelefono(sedeDTO.getTelefono());
+			sede.setCorreo(sedeDTO.getCorreo().toUpperCase());
+			
+			sedes.add(sede);
+		}
+		
+		ies.setSedes(sedes);
+		return ies;
 	}
 }

@@ -48,6 +48,13 @@ public class SedeEstudio implements Serializable {
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="sedeEstudio", fetch=FetchType.LAZY)
 	private List<Asignacion> asignaciones = new ArrayList<Asignacion>();
 	
+	@Column
+	private String contacto;
+	@Column
+	private String telefono;
+	@Column
+	private String correo;
+	
 	public Long getId() {
 		return id;
 	}
@@ -99,4 +106,29 @@ public class SedeEstudio implements Serializable {
 	public boolean isNew(){
 		return (this.id == null);
 	}
+
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+	
 }

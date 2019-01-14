@@ -52,6 +52,13 @@ public class Ies implements Serializable{
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="ies", fetch=FetchType.LAZY)
 	private List<SedeEstudio> sedes = new ArrayList<SedeEstudio>();
 	
+	@Column
+	private String contacto;
+	@Column
+	private String telefono;
+	@Column
+	private String correo;
+	
 	public Long getId() {
 		return id;
 	}
@@ -98,4 +105,23 @@ public class Ies implements Serializable{
 	public boolean isNew(){
 		return (this.id == null);
 	}
+	public String getContacto() {
+		return contacto;
+	}
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+	public String getTelefono() {
+		return telefono;
+	}
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+	public String getCorreo() {
+		return correo;
+	}
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+	
 }

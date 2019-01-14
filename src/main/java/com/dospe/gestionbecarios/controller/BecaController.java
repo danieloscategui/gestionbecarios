@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dospe.gestionbecarios.controller.dto.BecaDTO;
 import com.dospe.gestionbecarios.controller.dto.BecaListDTO;
 import com.dospe.gestionbecarios.persistence.domain.Beca;
+import com.dospe.gestionbecarios.persistence.domain.Sexo;
 import com.dospe.gestionbecarios.transactional.service.BecaService;
 
 
@@ -46,7 +47,8 @@ public class BecaController {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public List<BecaListDTO> findAll(){
-		logger.info("listando todos las ies");
+		logger.info("listando todos las becas");
+		
 		List<Beca> becas = (List<Beca>) becaService.findAll();
 		return becas.stream()
 				.map(beca -> convertToDTO(beca))

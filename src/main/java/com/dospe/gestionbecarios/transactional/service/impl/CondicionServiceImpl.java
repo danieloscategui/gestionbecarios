@@ -1,6 +1,7 @@
 package com.dospe.gestionbecarios.transactional.service.impl;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -53,8 +54,8 @@ public class CondicionServiceImpl implements CondicionService {
 	}
 
 	@Override
-	public Collection<Condicion> findAllByEstado(Long idEstado) {
-		return null;
+	public List<Condicion> findAllByEstado(Long idEstado) {
+		return condicionRepository.findAllByEstado(idEstado);
 	}
 
 	@Override

@@ -82,11 +82,11 @@ public class Becario implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date resolucionAdjudicacionFecha;
 
-	@Column(name="representante")
-	private String representante;
+	@Column(name="contacto")
+	private String contacto;
 	
-	@Column(name="representante_dni")
-	private String representanteDni;
+	@Column(name="contacto_telf")
+	private String contactoTelefono;
 	
 	@Column
 	private String telefonos;
@@ -97,23 +97,23 @@ public class Becario implements Serializable {
 	@Column(name="correo_personal")
 	private String correoPersonal;
 	
-	@Column
+	@Column(name="DIRECCION")
 	private String direccion;
 	
-	@Column(name="region_procedencia")
+	@Column(name="REGION_PROCEDENCIA")
 	private String regionProcedencia;
 	
-	@Column(name="provincia_procedencia")
+	@Column(name="PROVINCIA_PROCEDENCIA")
 	private String provinciaProcedencia;
 	
-	@Column(name="distrito_procedencia")
+	@Column(name="DISTRITO_PROCEDENCIA")
 	private String distritoProcedencia;
 	
-	@Column(name="region_postulacion")
-	private String regionPostulacion;
+	@Column(name="doc_culminacion")
+	private String documentoCulminacion;
 	
-	@Column(name="provincia_postulacion")
-	private String provinciaPostulacion;
+	@Column(name="res_perdida_beca")
+	private String resolucionPerdidaBeca;
 	
 	@Column(name="distrito_postulacion")
 	private String distritoPostulacion;
@@ -249,22 +249,6 @@ public class Becario implements Serializable {
 		this.resolucionAdjudicacionFecha = resolucionAdjudicacionFecha;
 	}
 
-	public String getRepresentante() {
-		return representante;
-	}
-
-	public void setRepresentante(String representante) {
-		this.representante = representante;
-	}
-
-	public String getRepresentanteDni() {
-		return representanteDni;
-	}
-
-	public void setRepresentanteDni(String representanteDni) {
-		this.representanteDni = representanteDni;
-	}
-
 	public String getTelefonos() {
 		return telefonos;
 	}
@@ -321,22 +305,6 @@ public class Becario implements Serializable {
 		this.distritoProcedencia = distritoProcedencia;
 	}
 
-	public String getRegionPostulacion() {
-		return regionPostulacion;
-	}
-
-	public void setRegionPostulacion(String regionPostulacion) {
-		this.regionPostulacion = regionPostulacion;
-	}
-
-	public String getProvinciaPostulacion() {
-		return provinciaPostulacion;
-	}
-
-	public void setProvinciaPostulacion(String provinciaPostulacion) {
-		this.provinciaPostulacion = provinciaPostulacion;
-	}
-
 	public String getDistritoPostulacion() {
 		return distritoPostulacion;
 	}
@@ -357,6 +325,38 @@ public class Becario implements Serializable {
 		return (this.id == null);
 	}
 	
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+
+	public String getContactoTelefono() {
+		return contactoTelefono;
+	}
+
+	public void setContactoTelefono(String contactoTelefono) {
+		this.contactoTelefono = contactoTelefono;
+	}
+
+	public String getDocumentoCulminacion() {
+		return documentoCulminacion;
+	}
+
+	public void setDocumentoCulminacion(String documentoCulminacion) {
+		this.documentoCulminacion = documentoCulminacion;
+	}
+
+	public String getResolucionPerdidaBeca() {
+		return resolucionPerdidaBeca;
+	}
+
+	public void setResolucionPerdidaBeca(String resolucionPerdidaBeca) {
+		this.resolucionPerdidaBeca = resolucionPerdidaBeca;
+	}
+
 	public String getFullName(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(nombres).append(" ").append(apellidos);
@@ -369,7 +369,9 @@ public class Becario implements Serializable {
 		sb.append("ID[").append(id).append("], ");
 		sb.append("Full Name[").append(getFullName()).append("], ");
 		sb.append("DNI[").append(dni).append("], ");
-		sb.append("Estado[").append(estado.getDescripcion()).append("]");
+		sb.append("Estado[").append(estado.getDescripcion()).append("], ");
+		sb.append("Direccion[").append(direccion).append("], ");
+		sb.append("Observaciones[").append(observaciones).append("]");
 		return sb.toString();
 	}
 }

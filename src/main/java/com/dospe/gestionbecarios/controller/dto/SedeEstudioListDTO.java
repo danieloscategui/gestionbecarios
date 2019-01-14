@@ -14,6 +14,10 @@ public class SedeEstudioListDTO implements Serializable {
 
 	private String ies;
 	
+	private String contacto;
+	private String telefono;
+	private String correo;
+	
 	public Long getId() {
 		return id;
 	}
@@ -37,6 +41,24 @@ public class SedeEstudioListDTO implements Serializable {
 	}
 	public void setIes(String ies) {
 		this.ies = ies;
+	}
+	public String getContacto() {
+		return contacto;
+	}
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+	public String getCorreo() {
+		return correo;
+	}
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+	public String getTelefono() {
+		return telefono;
+	}
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
 	
 }

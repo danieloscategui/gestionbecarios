@@ -1,8 +1,11 @@
 package com.dospe.gestionbecarios.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -42,12 +45,18 @@ public class SedeEstudioController {
 	@GetMapping({"/ies/{id}"})
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public List<SedeEstudioListDTO> findAllByIes(@PathVariable("id") Long idIes){
-		logger.info("Listando todas las sedes por ies.");
-		List<SedeEstudio> sedeEstudioList = (List<SedeEstudio>) sedeEstudioService.findAllByIes(idIes);
-		return sedeEstudioList.stream()
-				.map(tipoIes -> convertToDTO(tipoIes))
-				.collect(Collectors.toList());
+	public Map<String, Object> findAllByIes(@PathVariable("id") Long idIes, HttpServletRequest request){
+		Map<String, Object> result = new HashMap<String, Object>();
+		logger.info("Listando todas las sedes por ies: " + idIes);
+		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
+		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
+		
+		List<SedeEstudioListDTO> sedeEstudioListDTO = sedeEstudioService.findAllByIes(idIes).stream()
+														.map(becario -> convertToDTO(becario))
+														.collect(Collectors.toList());
+		result.put("data", sedeEstudioListDTO);
+		result.put("ies", sedeEstudioListDTO.get(0).getIes());
+		return result;
 	}
 	
 	@PostMapping("/ies/{id}/")

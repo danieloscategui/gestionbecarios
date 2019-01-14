@@ -6,16 +6,16 @@ public class CondicionDTO implements Serializable{
 	
 	private static final long serialVersionUID = -4922599109841693508L;
 
-	private Long idCondicion;
+	private Long id;
 	private String descripcion;
 	private Long idEstado;
 	private Long idSubCondicion;
 	
-	public Long getIdCondicion() {
-		return idCondicion;
+	public Long getId() {
+		return id;
 	}
-	public void setIdCondicion(Long idCondicion) {
-		this.idCondicion = idCondicion;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getDescripcion() {
 		return descripcion;

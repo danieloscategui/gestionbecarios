@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/bootstrap/easyui.css">
     <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/color.css">
-    <link rel="stylesheet" type="text/css" href="easyui/demo/demo.css">
+    <link rel="stylesheet" type="text/css" href="_easyui/demo/demo.css">
     <link rel="stylesheet" type="text/css" href="jqTree/jqtree.css">
     <link rel="stylesheet" href="components/font-awesome/css/font-awesome.min.css">
     
@@ -22,14 +22,14 @@
 	<script src="plugins/axios/axios.min.js"></script>
 
 <body>
-		<div class="easyui-layout" style="width:100%; height: 650px;">
+		<div class="easyui-layout" style="width:100%; height: 700px;">
 			<div data-options="region:'north'" style="height:40px; background-color: #034f84;">
 					<span class="h6 text-light lead" style="color: #fff;">Gestión Becarios</span>
 			</div>
 			<div data-options="region:'west',split:true" title="Menu" style="width:15%;padding:10px;">
 				<tiles:insertAttribute name="sidebar"/>
 			</div>
-			<div data-options="region:'center',title:'',iconCls:'icon-ok'" style="height: 100%;">
+			<div data-options="region:'center',title:'',iconCls:'icon-ok'" style="width:75%; ">
 				<tiles:insertAttribute name="content"/>
 			</div>
 		</div>

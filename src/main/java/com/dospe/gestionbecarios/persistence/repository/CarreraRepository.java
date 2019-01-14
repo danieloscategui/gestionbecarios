@@ -1,5 +1,7 @@
 package com.dospe.gestionbecarios.persistence.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +16,7 @@ public interface CarreraRepository extends JpaRepository<Carrera, Long> {
 	
 	@Query(value= "select c from Carrera c where c.idBeca = :idBeca ")
 	Page<Carrera> findAllByBeca(Long idBeca, Pageable pageable);
+	
+	@Query(value= "select c from Carrera c where c.idBeca = :idBeca ")
+	List<Carrera> findAllByBeca(Long idBeca);
 }

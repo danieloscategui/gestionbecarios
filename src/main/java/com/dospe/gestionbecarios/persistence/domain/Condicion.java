@@ -11,8 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -34,10 +32,13 @@ public class Condicion implements Serializable {
 	@Column
 	private String descripcion;
 	
-	@JoinColumn(name="id_estado", referencedColumnName="id_estado")
-	@ManyToOne(optional=false)
+	@Column(name="id_estado")
+	private Long idEstado;
+	/*
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="id_estado", referencedColumnName="id_estado", nullable=false, insertable=false, updatable=false)
 	private Estado estado;
-	
+	*/
 	@Column(name="id_sub_condicion")
 	private Long idSubCondicion;
 
@@ -50,7 +51,7 @@ public class Condicion implements Serializable {
 	
 	public Condicion(String descripcion, Estado estado, Long idSubCondicion) {
 		this.descripcion = descripcion;
-		this.estado = estado;
+//		this.estado = estado;
 		this.idSubCondicion = idSubCondicion;
 	}
 
@@ -70,13 +71,21 @@ public class Condicion implements Serializable {
 		this.descripcion = descripcion;
 	}
 
+	public Long getIdEstado() {
+		return idEstado;
+	}
+
+	public void setIdEstado(Long idEstado) {
+		this.idEstado = idEstado;
+	}
+/*
 	public Estado getEstado() {
 		return estado;
 	}
 
 	public void setEstado(Estado estado) {
 		this.estado = estado;
-	}
+	}*/
 
 	public Long getIdSubCondicion() {
 		return idSubCondicion;

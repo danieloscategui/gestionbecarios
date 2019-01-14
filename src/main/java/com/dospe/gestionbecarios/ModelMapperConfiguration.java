@@ -6,15 +6,19 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.dospe.gestionbecarios.controller.dto.BecarioDTO;
 import com.dospe.gestionbecarios.controller.dto.BecarioListDTO;
 import com.dospe.gestionbecarios.controller.dto.CarreraDTO;
 import com.dospe.gestionbecarios.controller.dto.CarreraListDTO;
+import com.dospe.gestionbecarios.controller.dto.CondicionDTO;
+import com.dospe.gestionbecarios.controller.dto.CondicionListDTO;
 import com.dospe.gestionbecarios.controller.dto.IesDTO;
 import com.dospe.gestionbecarios.controller.dto.IesListDTO;
 import com.dospe.gestionbecarios.controller.dto.SedeEstudioDTO;
 import com.dospe.gestionbecarios.controller.dto.SedeEstudioListDTO;
 import com.dospe.gestionbecarios.persistence.domain.Becario;
 import com.dospe.gestionbecarios.persistence.domain.Carrera;
+import com.dospe.gestionbecarios.persistence.domain.Condicion;
 import com.dospe.gestionbecarios.persistence.domain.Ies;
 import com.dospe.gestionbecarios.persistence.domain.SedeEstudio;
 
@@ -75,6 +79,33 @@ public class ModelMapperConfiguration {
 			}
 		});
 
+		modelMapper.addMappings(new PropertyMap<Becario, BecarioDTO>() {
+			protected void configure() {
+				map().setIdAsesor(source.getAsignacion().getIdAsesor());
+				map().setIdSedeEstudio(source.getAsignacion().getIdSedeEstudio());
+				map().setIdCarrera(source.getAsignacion().getIdCarrera());
+				map().setIdIes(source.getAsignacion().getSedeEstudio().getIdIes());
+				map().setIdBeca(source.getAsignacion().getCarrera().getIdBeca());
+				map().setIdCondicion(source.getIdCondicion());
+				map().setIdEstado(source.getIdEstado());
+			}
+		});
+		
+		modelMapper.addMappings(new PropertyMap<Condicion, CondicionDTO>() {
+			protected void configure() {
+				map().setId(source.getIdCondicion());
+				map().setDescripcion(source.getDescripcion());
+				map().setIdEstado(source.getIdEstado());
+				map().setIdSubCondicion(source.getIdSubCondicion());
+			}
+		});
+		
+		modelMapper.addMappings(new PropertyMap<Condicion, CondicionListDTO>() {
+			protected void configure() {
+				map().setId(source.getIdCondicion());
+				map().setDescripcion(source.getDescripcion());
+			}
+		});
 		
 		return modelMapper;
 	}

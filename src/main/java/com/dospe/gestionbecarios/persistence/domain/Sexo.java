@@ -2,7 +2,7 @@ package com.dospe.gestionbecarios.persistence.domain;
 
 public enum Sexo {
 	
-	FEMENINO("Femenino"), MASCULINO("Masculino");
+	F("FEMENINO"), M("MASCULINO");
 	
 	private String value;
 	

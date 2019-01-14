@@ -1,6 +1,7 @@
 package com.dospe.gestionbecarios.controller.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -17,7 +18,13 @@ public class IesDTO implements Serializable{
 	
 	@NotNull(message = "<span>Tipo de IES:</span> Es requerido")
 	private Long idTipoIes;
+	
+	private String contacto;
+	private String telefono;
+	private String correo;
 
+	private List<SedeEstudioDTO> sedes;
+	
 	public IesDTO() {
 		super();
 	}
@@ -46,4 +53,38 @@ public class IesDTO implements Serializable{
 	public void setIdTipoIes(Long idTipoIes) {
 		this.idTipoIes = idTipoIes;
 	}
+
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	public List<SedeEstudioDTO> getSedes() {
+		return sedes;
+	}
+
+	public void setSedes(List<SedeEstudioDTO> sedes) {
+		this.sedes = sedes;
+	}
+	
+	
 }
