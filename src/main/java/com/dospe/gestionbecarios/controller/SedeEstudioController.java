@@ -24,9 +24,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dospe.gestionbecarios.controller.dto.IesDTO;
 import com.dospe.gestionbecarios.controller.dto.SedeEstudioDTO;
 import com.dospe.gestionbecarios.controller.dto.SedeEstudioListDTO;
+import com.dospe.gestionbecarios.persistence.domain.Ies;
 import com.dospe.gestionbecarios.persistence.domain.SedeEstudio;
+import com.dospe.gestionbecarios.persistence.exception.DuplicateValueException;
 import com.dospe.gestionbecarios.transactional.service.SedeEstudioService;
 
 @RestController
@@ -48,8 +51,8 @@ public class SedeEstudioController {
 	public Map<String, Object> findAllByIes(@PathVariable("id") Long idIes, HttpServletRequest request){
 		Map<String, Object> result = new HashMap<String, Object>();
 		logger.info("Listando todas las sedes por ies: " + idIes);
-		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
-		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
+//		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
+//		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
 		
 		List<SedeEstudioListDTO> sedeEstudioListDTO = sedeEstudioService.findAllByIes(idIes).stream()
 														.map(becario -> convertToDTO(becario))
@@ -59,18 +62,23 @@ public class SedeEstudioController {
 		return result;
 	}
 	
-	@PostMapping("/ies/{id}/")
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public SedeEstudioDTO create(@PathVariable("id") Long idIes, @Valid @RequestBody SedeEstudioDTO sedeEstudioDTO) {
-//		boolean sedeEstudioExiste = sedeEstudioService.findByDescripcion(tipoIesDTO.getDescripcion().toUpperCase()) != null;
-//		if(sedeEstudioExiste) {
-//			throw new DuplicateValueException("El nombre "+tipoIesDTO.getDescripcion()+ " ya existe");
-//		}
+	public Map<String, Object> create(@Valid @RequestBody SedeEstudioDTO sedeEstudioDTO) {
+		boolean sedeEstudioExiste = sedeEstudioService.existsBySedeIgnoreCase(sedeEstudioDTO.getSede(), sedeEstudioDTO.getIdIes());
+		if(sedeEstudioExiste) {
+			logger.info("Duplicidad de sede de estudio");
+			throw new DuplicateValueException("La sede de estudio  " + sedeEstudioDTO.getSede().toUpperCase() + " ya existe");
+		}
 		
-		SedeEstudio sedeEstudio = modelMapper.map(sedeEstudioDTO, SedeEstudio.class);
+		SedeEstudio sedeEstudio = convertoToEntity(sedeEstudioDTO);
 		sedeEstudioService.save(sedeEstudio);
-		return modelMapper.map(sedeEstudio, SedeEstudioDTO.class);
+		logger.info("Sede de estudio creada.");
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("success", true);
+		response.put("sedeEstudioDTO", modelMapper.map(sedeEstudio, SedeEstudioDTO.class));
+		return response;
 	}
 	
 	@GetMapping("/{id}")
@@ -83,19 +91,37 @@ public class SedeEstudioController {
 		return sedeEstudioDTO;
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping
 	@ResponseBody
-	public SedeEstudioDTO update(@PathVariable("id") Long id, @Valid @RequestBody SedeEstudioDTO sedeEstudioDTO) {
-		SedeEstudio sedeEstudio = sedeEstudioService.findById(id);
-		sedeEstudio.setIdIes(sedeEstudioDTO.getIdIes());
-		sedeEstudio.setRegion(sedeEstudio.getRegion());
-		sedeEstudio.setSede(sedeEstudio.getSede());
+	public Map<String, Object> update(@Valid @RequestBody SedeEstudioDTO sedeEstudioDTO) {
+		SedeEstudio sedeEstudio = convertoToEntity(sedeEstudioDTO);
 		sedeEstudioService.save(sedeEstudio);
-		return modelMapper.map(sedeEstudio, SedeEstudioDTO.class);
+		logger.info("Sede de estudio actualizada.");
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("success", true);
+		response.put("sedeEstudioDTO", modelMapper.map(sedeEstudio, SedeEstudioDTO.class));
+		return response;
 	}
 	
 	private SedeEstudioListDTO convertToDTO(SedeEstudio sedeEstudio) {
 		SedeEstudioListDTO sedeEstudioListDTO = modelMapper.map(sedeEstudio, SedeEstudioListDTO.class);
 		return sedeEstudioListDTO;
+	}
+	
+	private SedeEstudio convertoToEntity(SedeEstudioDTO sedeEstudioDTO) {
+		SedeEstudio sedeEstudio;
+		if (sedeEstudioDTO.getId() != null) {
+			sedeEstudio = sedeEstudioService.findById(sedeEstudioDTO.getId());
+		} else {
+			sedeEstudio = new SedeEstudio();
+		}
+		sedeEstudio.setIdIes(sedeEstudioDTO.getIdIes());
+		sedeEstudio.setRegion(sedeEstudioDTO.getRegion());
+		sedeEstudio.setSede(sedeEstudioDTO.getSede());
+		sedeEstudio.setContacto(sedeEstudioDTO.getContacto());
+		sedeEstudio.setTelefono(sedeEstudioDTO.getTelefono());
+		sedeEstudio.setCorreo(sedeEstudioDTO.getCorreo());
+		
+		return sedeEstudio;
 	}
 }

@@ -1,7 +1,6 @@
 package com.dospe.gestionbecarios.controller.dto;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -23,8 +22,6 @@ public class IesDTO implements Serializable{
 	private String telefono;
 	private String correo;
 
-	private List<SedeEstudioDTO> sedes;
-	
 	public IesDTO() {
 		super();
 	}
@@ -78,13 +75,4 @@ public class IesDTO implements Serializable{
 		this.correo = correo;
 	}
 
-	public List<SedeEstudioDTO> getSedes() {
-		return sedes;
-	}
-
-	public void setSedes(List<SedeEstudioDTO> sedes) {
-		this.sedes = sedes;
-	}
-	
-	
 }

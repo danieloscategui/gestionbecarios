@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnTransformer;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -26,15 +28,17 @@ public class SedeEstudio implements Serializable {
 	private static final long serialVersionUID = -3178972070747791038L;
 
 	@Id
-	@SequenceGenerator(name="sedeEstudioSequence", sequenceName="gb_sede_estudio_seq", allocationSize=20)
+	@SequenceGenerator(name="sedeEstudioSequence", sequenceName="gb_sede_estudio_seq", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="sedeEstudioSequence")
 	@Column(name="id_sede_estudio")
 	private Long id;
 	
 	@Column
+	@ColumnTransformer(write="upper(?)")
 	private String region;
 	
 	@Column
+	@ColumnTransformer(write="upper(?)")
 	private String sede;
 	
 	@Column(name="id_ies")
@@ -49,10 +53,12 @@ public class SedeEstudio implements Serializable {
 	private List<Asignacion> asignaciones = new ArrayList<Asignacion>();
 	
 	@Column
+	@ColumnTransformer(write="upper(?)")
 	private String contacto;
 	@Column
 	private String telefono;
 	@Column
+	@ColumnTransformer(write="upper(?)")
 	private String correo;
 	
 	public Long getId() {
@@ -103,10 +109,6 @@ public class SedeEstudio implements Serializable {
 		this.asignaciones = asignaciones;
 	}
 
-	public boolean isNew(){
-		return (this.id == null);
-	}
-
 	public String getContacto() {
 		return contacto;
 	}
@@ -131,4 +133,17 @@ public class SedeEstudio implements Serializable {
 		this.correo = correo;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SedeEstudio: ").append("\n");
+		sb.append("ID[").append(this.id).append("], ");
+		sb.append("REGION[").append(this.region).append("], ");
+		sb.append("SEDE[").append(this.sede).append("], ");
+		sb.append("ID_IES[").append(this.idIes).append("], ");
+		sb.append("CONTACTO[").append(this.contacto).append("], ");
+		sb.append("TELEFONO[").append(this.telefono).append("], ");
+		sb.append("CORREO[").append(this.correo).append("], ");
+		return sb.toString();
+	}
 }

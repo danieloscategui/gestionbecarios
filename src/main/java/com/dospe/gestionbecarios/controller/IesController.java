@@ -1,6 +1,5 @@
 package com.dospe.gestionbecarios.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dospe.gestionbecarios.controller.dto.IesDTO;
 import com.dospe.gestionbecarios.controller.dto.IesListDTO;
-import com.dospe.gestionbecarios.controller.dto.SedeEstudioDTO;
 import com.dospe.gestionbecarios.persistence.domain.Ies;
-import com.dospe.gestionbecarios.persistence.domain.SedeEstudio;
 import com.dospe.gestionbecarios.persistence.exception.DuplicateValueException;
 import com.dospe.gestionbecarios.transactional.service.IesService;
-import com.dospe.gestionbecarios.transactional.service.SedeEstudioService;
 
 @RestController
 @RequestMapping("/api/ies")
@@ -47,28 +43,28 @@ public class IesController {
 	
 	@Autowired
 	private IesService iesService;
-	@Autowired
-	private SedeEstudioService sedeEstudioService;
+//	@Autowired
+//	private SedeEstudioService sedeEstudioService;
 
-	@GetMapping({"/", ""})
-	@ResponseStatus(HttpStatus.OK)
-	@ResponseBody
-	public List<IesListDTO> findAll(){
-		logger.info("listando todos las ies");
-		List<Ies> iesList = (List<Ies>) iesService.findAll();
-		return iesList.stream()
-				.map(ies -> convertToDTO(ies))
-				.collect(Collectors.toList());
-	}
+//	@GetMapping({"/", ""})
+//	@ResponseStatus(HttpStatus.OK)
+//	@ResponseBody
+//	public List<IesListDTO> findAll(){
+//		logger.info("listando todos las ies");
+//		List<Ies> iesList = (List<Ies>) iesService.findAll();
+//		return iesList.stream()
+//				.map(ies -> convertToDTO(ies))
+//				.collect(Collectors.toList());
+//	}
 	
-	@GetMapping("/map")
+	@GetMapping({"/", ""})
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public Map<String, Object> listarIes(HttpServletRequest request){
 		Map<String, Object> result = new HashMap<String, Object>();
 		logger.info("listando todas las IES en un map");
-		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
-		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
+//		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
+//		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
 		List<Ies> iesList = (List<Ies>) iesService.findAll();
 		List<IesListDTO> iesListDTO = iesList.stream()
 				.map(ies -> convertToDTO(ies))
@@ -80,20 +76,27 @@ public class IesController {
 	@PostMapping("/")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public IesDTO create(@Valid @RequestBody IesDTO iesDTO) {
+	public Map<String, Object> create(@Valid @RequestBody IesDTO iesDTO) {
+		
 		boolean iesExiste = iesService.existsByNombreIgnoreCase(iesDTO.getNombre());
 		if(iesExiste) {
-			throw new DuplicateValueException("El nombre "+iesDTO.getNombre()+ " ya existe");
+			logger.info("Duplicidad de nomnbre de institución.");
+			throw new DuplicateValueException("La institución "+iesDTO.getNombre().toUpperCase()+ " ya existe.");
 		}
 		
-		Ies ies = modelMapper.map(iesDTO, Ies.class);
+		Ies ies = convertoToEntity(iesDTO);
 		iesService.save(ies);
-		return modelMapper.map(ies, IesDTO.class);
+		logger.info("Institución creada.");
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("success", true);
+		response.put("iesDTO", modelMapper.map(ies, IesDTO.class));
+		return response;
 	}
 	
 	@GetMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public IesDTO edit(@PathVariable("id") Long id) {
+	public IesDTO get(@PathVariable("id") Long id) {
 		IesDTO iesDTO = modelMapper.map(
 									iesService.findById(id), 
 									IesDTO.class
@@ -102,16 +105,15 @@ public class IesController {
 	}
 
 	@PutMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public Map<String, Object> update(@PathVariable("id") Long id, @Valid @RequestBody IesDTO iesDTO) {
-		logger.info("Dentro de update ies");
-		logger.info("Sedes: " + iesDTO.getSedes().size());
 		Ies ies = convertoToEntity(iesDTO);
 		iesService.save(ies);
-
+		logger.info("Institución actualizada.");
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("success", true);
-		response.put("idIes", ies.getId());
+		response.put("iesDTO", modelMapper.map(ies, IesDTO.class));
 		return response;
 	}
 	
@@ -127,32 +129,13 @@ public class IesController {
 		} else {
 			ies = new Ies();
 		}
-		ies.setNombre(iesDTO.getNombre().toUpperCase());
+		ies.setNombre(iesDTO.getNombre());
 		ies.setIdTipoIes(iesDTO.getIdTipoIes());
 		ies.setIdTipoGestion(iesDTO.getIdTipoGestion());
-		ies.setContacto(iesDTO.getContacto().toUpperCase());
-		ies.setTelefono(iesDTO.getTelefono().toUpperCase());
-		ies.setCorreo(iesDTO.getCorreo().toUpperCase());
+		ies.setContacto(iesDTO.getContacto());
+		ies.setTelefono(iesDTO.getTelefono());
+		ies.setCorreo(iesDTO.getCorreo());
 		
-		List<SedeEstudio> sedes = new ArrayList<SedeEstudio>();
-		for (SedeEstudioDTO sedeDTO : iesDTO.getSedes()) {
-			SedeEstudio sede;
-			if(sedeDTO.getId() != null) {
-				sede = sedeEstudioService.findById(sedeDTO.getId());
-			} else {
-				sede = new SedeEstudio();
-			}
-			sede.setIdIes(ies.getId());
-			sede.setRegion(sedeDTO.getRegion().toUpperCase());
-			sede.setSede(sedeDTO.getSede().toUpperCase());
-			sede.setContacto(sedeDTO.getContacto().toUpperCase());
-			sede.setTelefono(sedeDTO.getTelefono());
-			sede.setCorreo(sedeDTO.getCorreo().toUpperCase());
-			
-			sedes.add(sede);
-		}
-		
-		ies.setSedes(sedes);
 		return ies;
 	}
 }

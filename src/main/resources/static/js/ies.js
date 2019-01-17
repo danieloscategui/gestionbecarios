@@ -1,20 +1,22 @@
 var app = new Vue({
 	el: '#app',
 	data: {
-		idIes:"",
+		iesId:"",
 		iesNombre:"",
 		tipoIes: [],
 		tipoGestion: [],
 		instituciones:[],
-		institucion:[],
-		carreras: [],
-		sedes:[],
-		sede:[],
-		idCarrera:"",
-		ocultarListaIes: false,
-		ocultarListaSedes: false,
-		ocultarFormulario: true,
-		editarSedeA: false
+		institucion:{},
+		//carreras: [],
+		//sedes:[],
+		sede:{},
+		idCarrera:"", 
+		hideIesList: false,
+		hideIesForm: true,
+		hideSedeList: true,
+		hideSedeForm: true,
+		messageIesError: "",
+		messageSedeError: ""
 	},
 	mounted(){
 		this.loadTipoIes();
@@ -35,10 +37,7 @@ var app = new Vue({
 			});
 		},
 		loadInstituciones: function(){
-				var url = "api/ies/map";
-//				$('#tbl-instituciones').DataTable().clear();
-//				$('#tbl-instituciones').DataTable().destroy();
-			
+				var url = "api/ies/";
 				$('#tbl-instituciones').DataTable({
 					"ajax": url,
 					"type": "GET",
@@ -49,8 +48,8 @@ var app = new Vue({
 							{"orderable":false, "defaultContent": "", "className":"text-center",
 			                    "render": function(data, type, row, meta){
 			                        if (type === 'display'){
-			                        	data = '<a class="fa fa-edit text-green" title="Ver registro" onclick=app.verInstitucion($(this).data("id")) data-id='+ row.id +'></a>\t';
-			                        	data += '<a class="fa fa-list-alt text-green" title="Ver sedes" onclick=app.verSedesPorIes($(this).data("id")) data-id='+ row.id +'></a>'
+			                        	data = '<a class="fa fa-edit text-green" title="Ver registro" onclick=app.showInstitucion($(this).data("id")) data-id='+ row.id +'></a>\t';
+			                        	data += '<a class="fa fa-list-alt text-green" title="Ver sedes" onclick=app.showSedesPorIes($(this).data("id")) data-id='+ row.id +'></a>'
 			                        }
 			                        return data;
 			                    }
@@ -59,22 +58,37 @@ var app = new Vue({
 					"autoWidth": false
 				});
 		},
-		verSedesPorIes: function(idIes){
+		showInstitucion: function(idIes){
+			this.resetIesForm();
+			this.resetSedeForm();
+		
+			this.hideIesList = true;
+			this.hideIesForm = false;
+			this.hideSedeList = true;
+			this.hideSedeForm = true;
+
+			var urlIes = "api/ies/" + idIes;
+			axios.get(urlIes).then(response => {
+				this.institucion = response.data;
+			});
+		},
+		showSedesPorIes: function(idIes){
 			var urlSedesPorIes = "api/sedeEstudio/ies/" + idIes;
 			var urlIes = "api/ies/" + idIes;
 			
 			axios.get(urlIes).then(response => {
 				this.iesNombre = response.data.nombre;
+				this.iesId = response.data.id;
 			});
-			
 			
 			$('#tbl-sedes').DataTable().clear();
 			$('#tbl-sedes').DataTable().destroy();
 
-			this.ocultarListaIes = true;
-			this.ocultarFormulario = true;
-			this.ocultarListaSedes = false;
-			
+			this.hideIesList = true;
+			this.hideIesForm = true;
+			this.hideSedeList = false;
+			this.hideSedeForm = true;
+
 			$('#tbl-sedes').DataTable({
 				"ajax": urlSedesPorIes,
 				"type": "GET",
@@ -84,7 +98,7 @@ var app = new Vue({
 						{"orderable":false, "defaultContent": "", "className":"text-center",
 		                    "render": function(data, type, row, meta){
 		                        if (type === 'display'){
-		                        	data = "<a class='fa fa-edit text-green' title='Ver registro' onclick=app.verSede($(this).data('id')) data-id="+ row.id +"></a>   ";
+		                        	data = "<a class='fa fa-edit text-green' title='Ver registro' onclick=app.showSede($(this).data('id')) data-id="+ row.id +"></a>   ";
 		                        }
 		                        return data;
 		                    }
@@ -93,72 +107,125 @@ var app = new Vue({
 				"autoWidth": false
 			});
 		},
-		verSede: function(idSede){
+		showSede: function(idSede){
+			this.resetIesForm();
+			this.resetSedeForm();
+		
+			this.hideIesList = true;
+			this.hideIesForm = true;
+			this.hideSedeList = true;
+			this.hideSedeForm = false;
+			
 			var url = 'api/sedeEstudio/'+idSede;
 			axios.get(url).then(response => {
 				this.sede = response.data;
 			});
-			
-//			this.sede = this.sedes[index]
-			console.log(index)
-			console.log(JSON.stringify(this.sedes[0]))
 		},
-		verInstitucion: function(idIes){
-			this.resetIes();
-			this.resetSede();
-			
-			this.ocultarListaIes = true;
-			this.ocultarFormulario = false;
-			this.ocultarListaSedes = true;
-			/*
-			var urlIes = "api/ies/" + idIes;
-			axios.get(urlIes).then(response => {
-				this.institucion = response.data;
-				console.log(JSON.stringify(this.institucion.sedes))
-				//sedes se muestra en el listado
-				this.sedes = this.institucion.sedes;
-			});
-			*/
-		},
-		resetIes: function(){
-			this.ies = [];
+		resetIesForm: function(){
+			this.institucion = {};
 			$('#form-ies').find("input[type=text], input[type=email]").val("");
 		},
-		resetSede: function(){
-			this.sede = [];
+		resetSedeForm: function(){
+			this.sede = {};
 			$('#form-ies').find("input[type=text], input[type=email]").val("");
 		},
-		verListado: function(){
-			this.ocultarListaIes = false;
-			this.ocultarFormulario = true;
-			this.resetIes();
-			this.resetSede();
+		showIesList: function(){
+			this.hideIesList = false;
+			this.hideIesForm = true;
+			this.hideSedeList = true;
+			this.hideSedeForm = true;
+			this.resetIesForm();
+			this.resetSedeForm();
+			$('#tbl-instituciones').DataTable().ajax.reload();
 		},
-		guardarIes:function(){
+		showSedeList: function(){
+			this.hideIesList = true;
+			this.hideIesForm = true;
+			this.hideSedeList = false;
+			this.hideSedeForm = true;
+			this.resetIesForm();
+			this.resetSedeForm();
+			$('#tbl-sedes').DataTable().ajax.reload();
+		},
+		saveIes: function(){
+			this.institucion.id > 0 ? this.updateIes() : this.createIes();
+		},
+		createIes:function(){
+				var url="api/ies/"; 
+				axios.post(url, this.institucion)
+				.then(response => {
+					if (response.data.success){
+						alert("Institución creada");
+						this.showIesList();
+					}
+				})
+				.catch(error => {
+					messageIesError = error.response.data;
+					alert(messageIesError);
+				});
+		},
+		updateIes:function(){
 			var url="api/ies/" + this.institucion.id;
-			this.institucion.sedes = this.sedes;
 			axios.put(url, this.institucion)
 			.then(response => {
 				if (response.data.success){
-					//this.institucion.id = response.data.idIes;
-					this.verListado();
+					alert("Datos actualizados");
+					this.showIesList();
 				}
 			})
 			.catch(error => {
-				alert('error')
+				messageIesError = error.response.data;
+				alert(messageIesError);
 			});
 		},
-		agregarSede: function(){
-			console.log(JSON.stringify(this.sedes))
-			console.log(JSON.stringify(this.sede))
+		saveSede: function(){
+			this.sede.id > 0 ? this.updateSede() : this.createSede();
 		},
-		nuevoIES: function(){
-			this.resetIes();
-			this.resetSede();
+		createSede: function(){
+			var url="api/sedeEstudio";
 			
-			this.ocultarListaIes = true;
-			this.ocultarFormulario = false;
-			this.ocultarListaSedes = true;
+			axios.post(url, this.sede)
+			.then(response => {
+				if (response.data.success){
+					alert("Sede Educativa creada");
+					this.showSedeList();
+				}
+			})
+			.catch(error => {
+				messageSedeError = error.response.data;
+				alert(messageSedeError);
+			});
+		},
+		updateSede: function(){
+			var url="api/sedeEstudio";
+			axios.put(url, this.sede)
+			.then(response => {
+				if (response.data.success){
+					alert("Sede Educativa actualizada");
+					this.showSedeList();
+				}
+			})
+			.catch(error => {
+				messageSedeError = error.response.data;
+				alert(messageSedeError);
+			});
+		},
+		newIes: function(){
+			this.hideIesList = true;
+			this.hideIesForm = false;
+			this.hideSedeList = true;
+			this.hideSedeForm = true;
+			this.resetIesForm();
+			this.resetSedeForm();
+		},
+		newSede: function(iesId){
+			this.hideIesList = true;
+			this.hideIesForm = true;
+			this.hideSedeList = true;
+			this.hideSedeForm = false;
+			this.resetIesForm();
+			this.resetSedeForm();
+			this.sede.idIes = iesId;
 		}
 	}
 });

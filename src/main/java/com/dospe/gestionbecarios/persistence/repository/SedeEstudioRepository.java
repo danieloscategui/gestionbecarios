@@ -13,4 +13,7 @@ public interface SedeEstudioRepository extends JpaRepository<SedeEstudio, Long>{
 	
 	@Query(value= "select c from SedeEstudio c where c.idIes = :idIes")
 	List<SedeEstudio> findAllByIes(Long idIes);
+	
+	public boolean existsBySedeIgnoreCaseAndIdIes(String sede, Long idIes);
+	
 }

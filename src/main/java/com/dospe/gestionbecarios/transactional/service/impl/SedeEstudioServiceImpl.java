@@ -58,4 +58,10 @@ public class SedeEstudioServiceImpl implements SedeEstudioService {
 		return sedeEstudioRepository.findAllByIes(idIes);
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public boolean existsBySedeIgnoreCase(String sede, Long idIes) {
+		return sedeEstudioRepository.existsBySedeIgnoreCaseAndIdIes(sede, idIes);
+	}
+
 }

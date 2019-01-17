@@ -4,90 +4,6 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-	<!-- Base Definition 
-	-->
-	<definition name="base-definition" template="/WEB-INF/layout/default.jsp">
-		<put-attribute name="head" value="/WEB-INF/tiles/head.jsp"/>
-		<put-attribute name="header" value="/WEB-INF/tiles/header.jsp"/>
-		<put-attribute name="sidebar" value="/WEB-INF/tiles/sidebar.jsp"/>
-		<put-attribute name="content" value="/WEB-INF/tiles/content.jsp"/>
-		<put-attribute name="js-libraries" value="/WEB-INF/tiles/js-libraries.jsp"/>
-	</definition>
-
-	<!-- Home Page 
-	-->
-	<definition name="home" extends="base-definition">
-		<put-attribute name="body" value="/WEB-INF/jsp//body.jsp"/>
-	</definition>
-	<!-- Asesor Pages 
-	<definition name="asesor-list" extends="base-definition">
-		<put-attribute name="content" value="/WEB-INF/jsp/asesor/asesorList.jsp"/>
-	</definition>
-	<definition name="asesor-form" extends="base-definition">
-		<put-attribute name="content" value="/WEB-INF/jsp/asesor/asesorForm.jsp"/>
-	</definition>
-	-->
-	
-	
-	
-	<!-- Base definition 2 -->
-	<!-- 
-	<definition name="base-definition-2" template="/WEB-INF/template/base-template.jsp">
-		<put-attribute name="header" value="/WEB-INF/template/header.jsp"/>
-		<put-attribute name="sidebar" value="/WEB-INF/template/sidebar.jsp"/>
-		<put-attribute name="body" value="/WEB-INF/template/body.jsp"/>
-	</definition> 
-	-->
-	
-	<!-- Asesor list 2 -->
-	<!-- 
-	<definition name="asesor-list-2" extends="base-definition-2">
-		<put-attribute name="body" value="/WEB-INF/jsp/asesor/asesorList2.jsp"/>
-	</definition>
-	 -->
-	
-	
-	<!-- Base Definition 2-->
-	<!-- 
-	 -->
-	<definition name="base-definition2" template="/WEB-INF/template/base-template2.jsp">
-		<put-attribute name="header" value="/WEB-INF/tiles2/header.jsp"/>
-		<put-attribute name="sidebar" value="/WEB-INF/tiles2/sidebar.jsp"/>
-		<put-attribute name="content" value="/WEB-INF/tiles2/content.jsp"/>
-	</definition>
-	
-	<definition name="asesor-list-page" extends="base-definition2">
-		<put-attribute name="content" value="/WEB-INF/jsp/asesor/asesorListNew.jsp"/>
-	</definition>
-	
-	<definition name="becario-list-page" extends="base-definition2">
-		<put-attribute name="content" value="/WEB-INF/jsp/becario/becarioList.jsp"/>
-	</definition>
-	<!-- 
-	<definition name="becario-form" extends="base-definition2">
-		<put-attribute name="content" value="/WEB-INF/jsp/becario/becarioForm.jsp"/>
-	</definition>
-	 -->
-	
-	
-	<!-- New Layout -->
-	<definition name="base-layout" template="/WEB-INF/template-2/base-template.jsp">
-		<put-attribute name="header" value="/WEB-INF/template-2/header.jsp"/>
-		<put-attribute name="content" value="/WEB-INF/template-2/content.jsp"/>
-	</definition>
-	
-	<definition name="becario-list" extends="base-layout">
-		<put-attribute name="content" value="/WEB-INF/jsp/becario/becario-list-3.jsp"/>
-	</definition>
-	
-	<definition name="becario-list-4" extends="base-layout">
-		<put-attribute name="content" value="/WEB-INF/jsp/becario/becario-list-4.jsp"/>
-	</definition>
-	
-	<definition name="becario-form" extends="base-layout">
-		<put-attribute name="content" value="/WEB-INF/jsp/becario/becarioForm.jsp"/>
-	</definition>
-	
 	
 	<definition name="base-starter" template="/WEB-INF/tiles/starter.jsp">
 		<put-attribute name="head" value="/WEB-INF/tiles/head.jsp"/>
@@ -106,6 +22,5 @@
 		<put-attribute name="content" value="/WEB-INF/jsp/ies/ies-mant.jsp"/>
 		<put-attribute name="js-custom" value="/WEB-INF/jsp/ies/js-ies.jsp"/>
 	</definition>
-	
 	
 </tiles-definitions>

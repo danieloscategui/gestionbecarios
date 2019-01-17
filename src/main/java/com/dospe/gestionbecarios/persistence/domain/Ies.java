@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnTransformer;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -32,6 +34,7 @@ public class Ies implements Serializable{
 	private Long id;
 	
 	@Column
+	@ColumnTransformer(write="upper(?)")
 	private String nombre;
 	
 	@Column(name="id_tipo_ies")
@@ -53,10 +56,12 @@ public class Ies implements Serializable{
 	private List<SedeEstudio> sedes = new ArrayList<SedeEstudio>();
 	
 	@Column
+	@ColumnTransformer(write="upper(?)")
 	private String contacto;
 	@Column
 	private String telefono;
 	@Column
+	@ColumnTransformer(write="upper(?)")
 	private String correo;
 	
 	public Long getId() {
