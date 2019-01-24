@@ -54,7 +54,8 @@ public class ApiValidationExceptionHandler extends ResponseEntityExceptionHandle
 	
 	@ExceptionHandler(DuplicateValueException.class)
 	public final ResponseEntity<Object> handleDuplicateValueException(DuplicateValueException ex, WebRequest request){
-		return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+		return ResponseEntity
+				.status(HttpStatus.CONFLICT)
+				.body(ex.getMessage());
 	}
-	
 }

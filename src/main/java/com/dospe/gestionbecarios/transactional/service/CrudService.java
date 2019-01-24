@@ -1,11 +1,11 @@
 package com.dospe.gestionbecarios.transactional.service;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 
 public interface CrudService<Entity, TypeId> {
-	public Collection<Entity> findAll();
+	public List<Entity> findAll();
 	public void save(Entity entity);
 	public Entity findById(TypeId id);
 	public void remove(TypeId id);

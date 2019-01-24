@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class SedeEstudioListDTO implements Serializable {
 	
-	private static final long serialVersionUID = -1682879310083541338L;
+
+	private static final long serialVersionUID = 6478633936424481160L;
 
 	private Long id;
 	
@@ -12,12 +13,6 @@ public class SedeEstudioListDTO implements Serializable {
 	
 	private String sede;
 
-	private String ies;
-	
-	private String contacto;
-	private String telefono;
-	private String correo;
-	
 	public Long getId() {
 		return id;
 	}
@@ -36,29 +31,4 @@ public class SedeEstudioListDTO implements Serializable {
 	public void setSede(String sede) {
 		this.sede = sede;
 	}
-	public String getIes() {
-		return ies;
-	}
-	public void setIes(String ies) {
-		this.ies = ies;
-	}
-	public String getContacto() {
-		return contacto;
-	}
-	public void setContacto(String contacto) {
-		this.contacto = contacto;
-	}
-	public String getCorreo() {
-		return correo;
-	}
-	public void setCorreo(String correo) {
-		this.correo = correo;
-	}
-	public String getTelefono() {
-		return telefono;
-	}
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
-	
 }

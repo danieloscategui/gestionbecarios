@@ -22,5 +22,12 @@
 		<put-attribute name="content" value="/WEB-INF/jsp/ies/ies-mant.jsp"/>
 		<put-attribute name="js-custom" value="/WEB-INF/jsp/ies/js-ies.jsp"/>
 	</definition>
-	
+	<definition name="beca-mant" extends="base-starter">
+		<put-attribute name="content" value="/WEB-INF/jsp/beca/beca-mant.jsp"/>
+		<put-attribute name="js-custom" value="/WEB-INF/jsp/beca/js-beca.jsp"/>
+	</definition>
+	<definition name="condicion-mant" extends="base-starter">
+		<put-attribute name="content" value="/WEB-INF/jsp/condicion/condicion-mant.jsp"/>
+		<put-attribute name="js-custom" value="/WEB-INF/jsp/condicion/js-condicion.jsp"/>
+	</definition>
 </tiles-definitions>

@@ -1,5 +1,5 @@
 var app = new Vue({
-	el: '#ies_mant',
+	el: '#condicion_mant',
 	data: {
 		iesId:"",
 		iesNombre:"",

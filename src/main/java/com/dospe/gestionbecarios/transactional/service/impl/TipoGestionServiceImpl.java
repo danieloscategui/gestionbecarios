@@ -1,6 +1,6 @@
 package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,7 +25,7 @@ public class TipoGestionServiceImpl implements TipoGestionService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Collection<TipoGestion> findAll() {
+	public List<TipoGestion> findAll() {
 		return tipoGestionRepository.findAll();
 	}
 

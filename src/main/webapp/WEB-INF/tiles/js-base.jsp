@@ -22,7 +22,8 @@
 <script src="adminlte/plugins/vue/vue.js"></script>
 <!-- Axios -->
 <script src="adminlte/plugins/axios/axios.min.js"></script>
-
+<!-- Alertifyjs -->
+<script src="adminlte/plugins/alertifyjs/alertify.min.js"></script>
 <script>
 $.extend( $.fn.dataTable.defaults, {
 	"language": {
@@ -35,9 +36,14 @@ $.extend($.fn.datepicker.defaults, {
     'autoclose': true,
     'format':'dd/mm/yyyy',
     //'orientation':'bottom left',
-    'todayHighlight': false,
-    'showOnFocus': true
+    'todayHighlight': true,
+    'showOnFocus': true,
+    'clearBtn': true
 });
+
+alertify.defaults.notifier.position = 'top-right';
+alertify.defaults.notifier.delay = 3;
+
 </script>
 
 <!-- General JS -->

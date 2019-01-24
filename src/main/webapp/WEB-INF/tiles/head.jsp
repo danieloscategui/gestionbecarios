@@ -4,7 +4,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Favicon -->
-  <link rel="icon" type="img/ico" href=""/>
+  <link rel="icon" type="img/ico" href="img/folders.png"/>
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="adminlte/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -23,6 +23,11 @@
        folder instead of downloading all of them to reduce the load. 
   -->
   <link rel="stylesheet" href="adminlte/dist/css/skins/_all-skins.min.css">
+  
+  <!-- Alertifyjs -->
+  <link rel="stylesheet" href="adminlte/plugins/alertifyjs/css/alertify.min.css">
+  <link rel="stylesheet" href="adminlte/plugins/alertifyjs/css/themes/default.min.css">
+  <link rel="stylesheet" href="adminlte/plugins/alertifyjs/css/themes/bootstrap.min.css">
   
   <link rel="stylesheet" href="css/app.css">
 

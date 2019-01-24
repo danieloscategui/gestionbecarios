@@ -1,6 +1,5 @@
 package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class CarreraServiceImpl implements CarreraService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Collection<Carrera> findAll() {
+	public List<Carrera> findAll() {
 		return carreraRepository.findAll();
 	}
 

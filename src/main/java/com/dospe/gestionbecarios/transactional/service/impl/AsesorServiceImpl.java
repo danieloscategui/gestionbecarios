@@ -1,6 +1,6 @@
 package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +26,7 @@ public class AsesorServiceImpl implements AsesorService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Collection<Asesor> findAll() {
+	public List<Asesor> findAll() {
 		return asesorRepository.findAll();
 	}
 

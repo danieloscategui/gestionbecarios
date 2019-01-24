@@ -24,17 +24,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dospe.gestionbecarios.controller.dto.IesDTO;
 import com.dospe.gestionbecarios.controller.dto.SedeEstudioDTO;
 import com.dospe.gestionbecarios.controller.dto.SedeEstudioListDTO;
-import com.dospe.gestionbecarios.persistence.domain.Ies;
+import com.dospe.gestionbecarios.controller.dto.SedeEstudioTableListDTO;
 import com.dospe.gestionbecarios.persistence.domain.SedeEstudio;
 import com.dospe.gestionbecarios.persistence.exception.DuplicateValueException;
 import com.dospe.gestionbecarios.transactional.service.SedeEstudioService;
+import com.dospe.gestionbecarios.util.Common;
 
 @RestController
 @RequestMapping("/api/sedeEstudio")
-public class SedeEstudioController {
+public class SedeEstudioController extends Common {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SedeEstudioController.class);
 	
@@ -45,22 +45,32 @@ public class SedeEstudioController {
 	@Qualifier("sedeEstudioService")
 	private SedeEstudioService sedeEstudioService;
 
-	@GetMapping({"/ies/{id}"})
+	@GetMapping("/ies/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public Map<String, Object> findAllByIes(@PathVariable("id") Long idIes, HttpServletRequest request){
-		Map<String, Object> result = new HashMap<String, Object>();
+	public Map<String, Object> listarTablaSedesPorIes(@PathVariable("id") Long idIes, HttpServletRequest request){
 		logger.info("Listando todas las sedes por ies: " + idIes);
 //		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
 //		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
 		
-		List<SedeEstudioListDTO> sedeEstudioListDTO = sedeEstudioService.findAllByIes(idIes).stream()
-														.map(becario -> convertToDTO(becario))
+		List<SedeEstudioTableListDTO> sedeEstudioTableListDTO = sedeEstudioService.findAllByIes(idIes).stream()
+														.map(becario -> convertToTableListDTO(becario))
 														.collect(Collectors.toList());
-		result.put("data", sedeEstudioListDTO);
-		result.put("ies", sedeEstudioListDTO.get(0).getIes());
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("data", sedeEstudioTableListDTO);
 		return result;
 	}
+	
+	@GetMapping("/ies/{id}/list")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<SedeEstudioListDTO> listarSedesPorIes(@PathVariable("id") Long idIes, HttpServletRequest request){
+		return sedeEstudioService.findAllByIes(idIes).stream()
+				.map(becario -> convertToListDTO(becario))
+				.collect(Collectors.toList());
+	}
+	
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -69,46 +79,50 @@ public class SedeEstudioController {
 		boolean sedeEstudioExiste = sedeEstudioService.existsBySedeIgnoreCase(sedeEstudioDTO.getSede(), sedeEstudioDTO.getIdIes());
 		if(sedeEstudioExiste) {
 			logger.info("Duplicidad de sede de estudio");
-			throw new DuplicateValueException("La sede de estudio  " + sedeEstudioDTO.getSede().toUpperCase() + " ya existe");
+			throw new DuplicateValueException(getMessageSource("atributo.duplicado", new Object[] {sedeEstudioDTO.getSede().toUpperCase()}));
 		}
 		
-		SedeEstudio sedeEstudio = convertoToEntity(sedeEstudioDTO);
+		SedeEstudio sedeEstudio = convertToEntity(sedeEstudioDTO);
 		sedeEstudioService.save(sedeEstudio);
 		logger.info("Sede de estudio creada.");
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("success", true);
 		response.put("sedeEstudioDTO", modelMapper.map(sedeEstudio, SedeEstudioDTO.class));
+		response.put("message", getMessageSource("record.created"));
 		return response;
 	}
 	
 	@GetMapping("/{id}")
 	@ResponseBody
 	public SedeEstudioDTO edit(@PathVariable("id") Long id) {
-		SedeEstudioDTO sedeEstudioDTO = modelMapper.map(
-									sedeEstudioService.findById(id), 
-									SedeEstudioDTO.class
+		return  modelMapper.map(
+								sedeEstudioService.findById(id), 
+								SedeEstudioDTO.class
 								);
-		return sedeEstudioDTO;
 	}
 
 	@PutMapping
 	@ResponseBody
 	public Map<String, Object> update(@Valid @RequestBody SedeEstudioDTO sedeEstudioDTO) {
-		SedeEstudio sedeEstudio = convertoToEntity(sedeEstudioDTO);
+		SedeEstudio sedeEstudio = convertToEntity(sedeEstudioDTO);
 		sedeEstudioService.save(sedeEstudio);
 		logger.info("Sede de estudio actualizada.");
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("success", true);
 		response.put("sedeEstudioDTO", modelMapper.map(sedeEstudio, SedeEstudioDTO.class));
+		response.put("message", getMessageSource("record.updated"));
 		return response;
 	}
 	
-	private SedeEstudioListDTO convertToDTO(SedeEstudio sedeEstudio) {
-		SedeEstudioListDTO sedeEstudioListDTO = modelMapper.map(sedeEstudio, SedeEstudioListDTO.class);
-		return sedeEstudioListDTO;
+	private SedeEstudioListDTO convertToListDTO(SedeEstudio sedeEstudio) {
+		return modelMapper.map(sedeEstudio, SedeEstudioListDTO.class);
 	}
 	
-	private SedeEstudio convertoToEntity(SedeEstudioDTO sedeEstudioDTO) {
+	private SedeEstudioTableListDTO convertToTableListDTO(SedeEstudio sedeEstudio) {
+		return  modelMapper.map(sedeEstudio, SedeEstudioTableListDTO.class);
+	}
+	
+	private SedeEstudio convertToEntity(SedeEstudioDTO sedeEstudioDTO) {
 		SedeEstudio sedeEstudio;
 		if (sedeEstudioDTO.getId() != null) {
 			sedeEstudio = sedeEstudioService.findById(sedeEstudioDTO.getId());

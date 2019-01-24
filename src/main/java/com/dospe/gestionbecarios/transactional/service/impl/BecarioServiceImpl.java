@@ -1,6 +1,7 @@
 package com.dospe.gestionbecarios.transactional.service.impl;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dospe.gestionbecarios.controller.BecarioRestController;
 import com.dospe.gestionbecarios.persistence.domain.Asignacion;
 import com.dospe.gestionbecarios.persistence.domain.Becario;
-import com.dospe.gestionbecarios.persistence.domain.BecarioView;
 import com.dospe.gestionbecarios.persistence.repository.AsignacionRepository;
 import com.dospe.gestionbecarios.persistence.repository.BecarioRepository;
 import com.dospe.gestionbecarios.transactional.service.BecarioService;
@@ -39,7 +38,7 @@ public class BecarioServiceImpl implements BecarioService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Collection<Becario> findAll() {
+	public List<Becario> findAll() {
 		return becarioRepository.findAll();
 	}
 

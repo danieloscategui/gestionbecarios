@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.ColumnTransformer;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -33,9 +35,11 @@ public class Beca implements Serializable{
 	private Long id;
 	
 	@Column
+	@ColumnTransformer(write="upper(?)")
 	private String convocatoria;
 
 	@Column
+	@ColumnTransformer(write="upper(?)")
 	private String modalidad;
 	
 	@Column

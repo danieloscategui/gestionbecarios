@@ -87,7 +87,7 @@
 							<select class="form-control input-sm" id="idIes"
 								@change="loadSedesPorIes()"
 								v-model="becario.idIes">
-								<option disabled value="0">[SELECCIONE INSTITUCIÓN]</option>
+								<option disabled value="0">[SELECCIONE INSTITUCI&Oacute;N]</option>
 								<option v-for="ie in ies"
 										v-bind:value="ie.id">{{ie.nombre}}</option>
 							</select>
@@ -196,7 +196,7 @@
 						<span>F. Nac</span>
 						<div class="input-group">
 							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar text-info"></span></span>
-							<input type="text" class="form-control input-sm" v-model="becario.fechaNacimiento" placeholder="dd/mm/yyyy" id="fechaNacimiento" name="fechaNacimiento" maxlength="50"/>
+							<input type="text" class="form-control input-sm" v-model="becario.fechaNacimiento" placeholder="dd/mm/yyyy" id="fechaNacimiento" name="fechaNacimiento"/>
 						</div>
 					</div>
 				</div>

@@ -26,7 +26,7 @@ public class CondicionServiceImpl implements CondicionService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Collection<Condicion> findAll() {
+	public List<Condicion> findAll() {
 		return condicionRepository.findAll();
 	}
 

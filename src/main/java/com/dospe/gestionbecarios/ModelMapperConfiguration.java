@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Configuration;
 import com.dospe.gestionbecarios.controller.dto.BecarioDTO;
 import com.dospe.gestionbecarios.controller.dto.BecarioListDTO;
 import com.dospe.gestionbecarios.controller.dto.CarreraDTO;
-import com.dospe.gestionbecarios.controller.dto.CarreraListDTO;
+import com.dospe.gestionbecarios.controller.dto.CarreraTableListDTO;
 import com.dospe.gestionbecarios.controller.dto.CondicionDTO;
 import com.dospe.gestionbecarios.controller.dto.CondicionListDTO;
 import com.dospe.gestionbecarios.controller.dto.IesDTO;
-import com.dospe.gestionbecarios.controller.dto.IesListDTO;
+import com.dospe.gestionbecarios.controller.dto.IesTableListDTO;
 import com.dospe.gestionbecarios.controller.dto.SedeEstudioDTO;
-import com.dospe.gestionbecarios.controller.dto.SedeEstudioListDTO;
+import com.dospe.gestionbecarios.controller.dto.SedeEstudioTableListDTO;
 import com.dospe.gestionbecarios.persistence.domain.Becario;
 import com.dospe.gestionbecarios.persistence.domain.Carrera;
 import com.dospe.gestionbecarios.persistence.domain.Condicion;
@@ -30,7 +30,7 @@ public class ModelMapperConfiguration {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
-		modelMapper.addMappings(new PropertyMap<Ies, IesListDTO>() {
+		modelMapper.addMappings(new PropertyMap<Ies, IesTableListDTO>() {
             protected void configure() {
                 map().setTipoIes(source.getTipoIes().getDescripcion());
                 map().setTipoGestion(source.getTipoGestion().getDescripcion());
@@ -44,7 +44,7 @@ public class ModelMapperConfiguration {
             }
         });
 		
-		modelMapper.addMappings(new PropertyMap<Carrera, CarreraListDTO>() {
+		modelMapper.addMappings(new PropertyMap<Carrera, CarreraTableListDTO>() {
 			protected void configure() {
 				map().setBeca(source.getBeca().getShortName());
 			}
@@ -56,7 +56,7 @@ public class ModelMapperConfiguration {
 			}
 		});
 		
-		modelMapper.addMappings(new PropertyMap<SedeEstudio, SedeEstudioListDTO>() {
+		modelMapper.addMappings(new PropertyMap<SedeEstudio, SedeEstudioTableListDTO>() {
 			protected void configure() {
 				map().setIes(source.getIes().getNombre());
 			}

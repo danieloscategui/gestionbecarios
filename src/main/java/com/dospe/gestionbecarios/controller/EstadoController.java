@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dospe.gestionbecarios.controller.dto.BecaListDTO;
+import com.dospe.gestionbecarios.controller.dto.BecaTableListDTO;
 import com.dospe.gestionbecarios.controller.dto.CondicionDTO;
 import com.dospe.gestionbecarios.controller.dto.CondicionListDTO;
 import com.dospe.gestionbecarios.controller.dto.EstadoDTO;

@@ -49,25 +49,25 @@ var app = new Vue({
 			});
 		},
 		loadIes: function(){
-			axios.get("api/ies").then(response => {
+			axios.get("api/ies/list").then(response => {
 				this.ies = response.data;
 			});
 		},
 		loadBecas: function(){
-			axios.get("api/beca").then(response => {
+			axios.get("api/beca/list").then(response => {
 				this.becas = response.data;
 			});
 		},
 		loadCarrerasPorBeca: function(){
 			if (this.becario.idBeca != null){
-				axios.get("api/carrera/beca/"+this.becario.idBeca).then(response => {
+				axios.get("api/carrera/beca/"+this.becario.idBeca+"/list").then(response => {
 					this.carreras = response.data;
 				});
 			}
 		},
 		loadSedesPorIes: function(){
 			if (this.becario.idIes != null) {
-				axios.get("api/sedeEstudio/ies/"+this.becario.idIes).then(response => {
+				axios.get("api/sedeEstudio/ies/"+this.becario.idIes+"/list").then(response => {
 					this.sedes = response.data;
 				});
 			}

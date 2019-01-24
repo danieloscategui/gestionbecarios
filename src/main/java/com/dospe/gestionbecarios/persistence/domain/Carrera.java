@@ -8,12 +8,16 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.ColumnTransformer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,14 +28,17 @@ public class Carrera implements Serializable{
 	private static final long serialVersionUID = 8774107940560900477L;
 
 	@Id
-	@SequenceGenerator(name="carreraSequence", sequenceName="gb_carrera_seq", allocationSize=20)
+	@SequenceGenerator(name="carreraSequence", sequenceName="gb_carrera_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="carreraSequence")
 	@Column(name="id_carrera")
 	private Long id;
 	
 	@Column
+	@ColumnTransformer(write="upper(?)")
 	private String descripcion;
 	
 	@Column(name="semestre_egreso")
+	@ColumnTransformer(write="upper(?)")
 	private String semestreEgreso;
 	
 	@Column(name="id_beca")

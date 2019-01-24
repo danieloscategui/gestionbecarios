@@ -49,15 +49,14 @@ public class AsesorController {
 	@Qualifier("asesorService")
 	private AsesorService asesorService;
 	
-	@GetMapping({"/", ""})
+	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public List<AsesorListDTO> findAll(){
 		logger.info("listando todos los asesores");
-		List<Asesor> asesores = (List<Asesor>) asesorService.findAll();
-		return asesores.stream()
-				.map(asesor -> convertToDTO(asesor))
-				.collect(Collectors.toList());
+		return asesorService.findAll().stream()
+						.map(asesor -> convertToDTO(asesor))
+						.collect(Collectors.toList());
 	}
 
 	@GetMapping("/page")

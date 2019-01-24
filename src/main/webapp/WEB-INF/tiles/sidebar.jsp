@@ -7,8 +7,9 @@
 <spring:url value="/dashboard" var="dashboardMenuUrl"/>
 <spring:url value="/becarios" var="becariosMenuUrl"/>
 <spring:url value="/ies" var="iesMenuUrl"/>
-<spring:url value="/asesor" var="asesorMenuUrl"/>
 <spring:url value="/beca" var="becaMenuUrl"/>
+<spring:url value="/condicion" var="condicionMenuUrl"/>
+<spring:url value="/asesor" var="asesorMenuUrl"/>
 <spring:url value="/tramite" var="tramiteMenuUrl"/>
 <spring:url value="/pagoAcademico" var="pagoAcademicoMenuUrl"/>
 
@@ -18,6 +19,7 @@
 
 
       <!-- search form (Optional) -->
+      <!-- 
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
@@ -27,6 +29,7 @@
             </span>
         </div>
       </form>
+       -->
       <!-- /.search form -->
 
       <!-- Sidebar Menu -->
@@ -35,7 +38,8 @@
         <!-- Optionally, you can add icons to the links -->
         <li><a href="${becariosMenuUrl}"><i class="fa fa-users text-blue"></i> <span>Becarios por Beca</span></a></li>
         <li><a href="${iesMenuUrl}"><i class="fa fa-university text-blue"></i> <span>IES</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+        <li><a href="${becaMenuUrl}"><i class="fa fa-book text-blue"></i> <span>Becas</span></a></li>
+        <li><a href="${condicionMenuUrl}"><i class="fa fa-link text-blue"></i> <span>Condici&oacute;n</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">

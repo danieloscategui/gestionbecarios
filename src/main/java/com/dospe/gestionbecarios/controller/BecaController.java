@@ -1,8 +1,11 @@
 package com.dospe.gestionbecarios.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -22,78 +25,116 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dospe.gestionbecarios.controller.dto.BecaDTO;
 import com.dospe.gestionbecarios.controller.dto.BecaListDTO;
+import com.dospe.gestionbecarios.controller.dto.BecaTableListDTO;
 import com.dospe.gestionbecarios.persistence.domain.Beca;
-import com.dospe.gestionbecarios.persistence.domain.Sexo;
 import com.dospe.gestionbecarios.transactional.service.BecaService;
-
+import com.dospe.gestionbecarios.util.Common;
 
 @RestController
 @RequestMapping("api/beca")
-public class BecaController {
+public class BecaController extends Common {
 
-//	private static final String BECA_LIST_PAGINATED = "beca-list-paginated";
-//	private static final String BECA_FORM = "beca-form";
-//	private static final String BECA_REDIRECT = "redirect:/beca/";
+	private static final Logger logger = LoggerFactory.getLogger(BecaController.class);
 
-	private static final Logger logger = LoggerFactory.getLogger(BecaController.class); 
-	
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
 	@Autowired
 	private BecaService becaService;
-	
-	@GetMapping({"/", ""})
+
+	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public List<BecaListDTO> findAll(){
-		logger.info("listando todos las becas");
-		
-		List<Beca> becas = (List<Beca>) becaService.findAll();
-		return becas.stream()
-				.map(beca -> convertToDTO(beca))
+	public Map<String, Object> listarTableBecas(HttpServletRequest request) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		logger.info("listando todos las becas para datatable");
+		// int page = request.getParameter("page") == null? 1 :
+		// Integer.parseInt(request.getParameter("page"));
+		// int rows = request.getParameter("rows") == null? 10 :
+		// Integer.parseInt(request.getParameter("rows"));
+
+		List<Beca> becasList = (List<Beca>) becaService.findAll();
+		List<BecaTableListDTO> becaTableListDTO = becasList.stream().map(beca -> convertToTableListDTO(beca))
 				.collect(Collectors.toList());
+		response.put("data", becaTableListDTO);
+		return response;
 	}
 	
-	@PostMapping("/")
+	@GetMapping("/list")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<BecaListDTO> listarBecas() {
+		return becaService.findAll().stream().map(beca -> convertToListDTO(beca))
+											 .collect(Collectors.toList());
+	}
+	
+
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public BecaDTO create(@Valid @RequestBody BecaDTO becaDTO) {
-//		boolean iesExiste = iesService.findByNombre(iesDTO.getNombre().toUpperCase()) != null;
-//		if(iesExiste) {
-//			throw new DuplicateValueException("El nombre "+iesDTO.getNombre()+ " ya existe");
-//		}
-		
-		Beca beca = modelMapper.map(becaDTO, Beca.class);
+	public Map<String, Object> create(@Valid @RequestBody BecaDTO becaDTO) {
+		// boolean becaExiste =
+		// becaService.findByConvocatoriaAndModalidad(becaDTO.getConvocatoria().toUpperCase(),
+		// becaDTO.getModalidad().toUpperCase) != null;
+		// if(becaExiste) {
+		// throw new DuplicateValueException(getMessageSource("atributo.duplicado", new
+		// Object[] {becaDTO.getModalidad().toUpperCase()}));
+		// }
+
+		Beca beca = convertToEntity(becaDTO);
 		becaService.save(beca);
-		return modelMapper.map(beca, BecaDTO.class);
+		logger.info("Beca creada");
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("success", true);
+		response.put("becaDTO", modelMapper.map(beca, BecaDTO.class));
+		response.put("message", getMessageSource("record.created"));
+		return response;
 	}
-	
+
 	@GetMapping("/{id}")
 	@ResponseBody
 	public BecaDTO edit(@PathVariable("id") Long id) {
-		BecaDTO becaDTO = modelMapper.map(
-									becaService.findById(id), 
-									BecaDTO.class
-								);
-		return becaDTO;
+		return  modelMapper.map(becaService.findById(id), BecaDTO.class);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping
 	@ResponseBody
-	public BecaDTO update(@PathVariable("id") Long id, @Valid @RequestBody BecaDTO becaDTO) {
-		Beca beca = becaService.findById(id);
+	public Map<String, Object> update(@Valid @RequestBody BecaDTO becaDTO) {
+		Beca beca = convertToEntity(becaDTO);
+		becaService.save(beca);
+		logger.info("beca actualizada.");
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("success", true);
+		response.put("becaDTO", modelMapper.map(beca, BecaDTO.class));
+		response.put("message", getMessageSource("record.updated"));
+		return response;
+		
+	}
+
+	private BecaTableListDTO convertToTableListDTO(Beca beca) {
+		return  modelMapper.map(beca, BecaTableListDTO.class);
+	}
+	
+	private BecaListDTO convertToListDTO(Beca beca) {
+		return modelMapper.map(beca, BecaListDTO.class);
+	}
+
+	private Beca convertToEntity(BecaDTO becaDTO) {
+		Beca beca;
+		if (becaDTO.getId() != null) {
+			logger.info("Beca tiene id");
+			beca = becaService.findById(becaDTO.getId());
+		} else {
+			logger.info("Beca no tiene id");
+			beca = new Beca();
+		}
+
 		beca.setConvocatoria(becaDTO.getConvocatoria());
 		beca.setModalidad(becaDTO.getModalidad());
 		beca.setInicio(becaDTO.getInicio());
 		beca.setTermino(becaDTO.getTermino());
-		becaService.save(beca);
-		return modelMapper.map(beca, BecaDTO.class);
-	}
 
-	private BecaListDTO convertToDTO(Beca beca) {
-		BecaListDTO becaListDTO = modelMapper.map(beca, BecaListDTO.class);
-		return becaListDTO;
-	}
+		return beca;
 
+	}
 }

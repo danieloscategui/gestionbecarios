@@ -1,6 +1,6 @@
 package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +26,7 @@ public class BecaServiceImpl implements BecaService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Collection<Beca> findAll() {
+	public List<Beca> findAll() {
 		return becaRepository.findAll();
 	}
 

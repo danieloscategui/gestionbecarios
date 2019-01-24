@@ -25,103 +25,99 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dospe.gestionbecarios.controller.dto.IesDTO;
 import com.dospe.gestionbecarios.controller.dto.IesListDTO;
+import com.dospe.gestionbecarios.controller.dto.IesTableListDTO;
 import com.dospe.gestionbecarios.persistence.domain.Ies;
 import com.dospe.gestionbecarios.persistence.exception.DuplicateValueException;
 import com.dospe.gestionbecarios.transactional.service.IesService;
+import com.dospe.gestionbecarios.util.Common;
 
 @RestController
 @RequestMapping("/api/ies")
-public class IesController {
-	
+public class IesController extends Common {
+
 	private static final Logger logger = LoggerFactory.getLogger(IesController.class);
-//	private static final String IES_FORM = "ies-form";
-//	private static final String IES_LIST_PAGINATED = "ies-list-paginated";
-//	private static final String IES_REDIRECT = "redirect:/ies/";
 	
+
 	@Autowired
 	ModelMapper modelMapper;
-	
+
 	@Autowired
 	private IesService iesService;
-//	@Autowired
-//	private SedeEstudioService sedeEstudioService;
 
-//	@GetMapping({"/", ""})
-//	@ResponseStatus(HttpStatus.OK)
-//	@ResponseBody
-//	public List<IesListDTO> findAll(){
-//		logger.info("listando todos las ies");
-//		List<Ies> iesList = (List<Ies>) iesService.findAll();
-//		return iesList.stream()
-//				.map(ies -> convertToDTO(ies))
-//				.collect(Collectors.toList());
-//	}
-	
-	@GetMapping({"/", ""})
+	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public Map<String, Object> listarIes(HttpServletRequest request){
-		Map<String, Object> result = new HashMap<String, Object>();
+	public Map<String, Object> listarTablaIes(HttpServletRequest request) {
+		Map<String, Object> response = new HashMap<String, Object>();
 		logger.info("listando todas las IES en un map");
-//		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
-//		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
+		// int page = request.getParameter("page") == null? 1 :
+		// Integer.parseInt(request.getParameter("page"));
+		// int rows = request.getParameter("rows") == null? 10 :
+		// Integer.parseInt(request.getParameter("rows"));
 		List<Ies> iesList = (List<Ies>) iesService.findAll();
-		List<IesListDTO> iesListDTO = iesList.stream()
-				.map(ies -> convertToDTO(ies))
-				.collect(Collectors.toList());
-		result.put("data", iesListDTO);
-		return result;
+		List<IesTableListDTO> iesTableListDTO = iesList.stream().map(ies -> convertToTableListDTO(ies)).collect(Collectors.toList());
+		response.put("data", iesTableListDTO);
+		return response;
+	}
+
+	@GetMapping("/list")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<IesListDTO> listarIes(HttpServletRequest request) {
+		return iesService.findAll().stream().map(ies -> convertToListDTO(ies))
+											.collect(Collectors.toList());
 	}
 	
-	@PostMapping("/")
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public Map<String, Object> create(@Valid @RequestBody IesDTO iesDTO) {
-		
+
 		boolean iesExiste = iesService.existsByNombreIgnoreCase(iesDTO.getNombre());
-		if(iesExiste) {
+		if (iesExiste) {
 			logger.info("Duplicidad de nomnbre de institución.");
-			throw new DuplicateValueException("La institución "+iesDTO.getNombre().toUpperCase()+ " ya existe.");
+			throw new DuplicateValueException(getMessageSource("atributo.duplicado", new Object[] {iesDTO.getNombre().toUpperCase()}));
 		}
-		
+
 		Ies ies = convertoToEntity(iesDTO);
 		iesService.save(ies);
 		logger.info("Institución creada.");
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("success", true);
 		response.put("iesDTO", modelMapper.map(ies, IesDTO.class));
+		response.put("message", getMessageSource("record.created"));
 		return response;
 	}
-	
+
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public IesDTO get(@PathVariable("id") Long id) {
-		IesDTO iesDTO = modelMapper.map(
-									iesService.findById(id), 
-									IesDTO.class
-								);
-		return iesDTO;
+		return modelMapper.map(iesService.findById(id), IesDTO.class);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public Map<String, Object> update(@PathVariable("id") Long id, @Valid @RequestBody IesDTO iesDTO) {
+	public Map<String, Object> update(@Valid @RequestBody IesDTO iesDTO) {
 		Ies ies = convertoToEntity(iesDTO);
 		iesService.save(ies);
 		logger.info("Institución actualizada.");
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("success", true);
 		response.put("iesDTO", modelMapper.map(ies, IesDTO.class));
+		response.put("message", getMessageSource("record.updated"));
 		return response;
 	}
-	
-	private IesListDTO convertToDTO(Ies ies) {
-		IesListDTO iesListDTO = modelMapper.map(ies, IesListDTO.class);
-		return iesListDTO;
+
+	private IesListDTO convertToListDTO(Ies ies) {
+		return modelMapper.map(ies, IesListDTO.class);
 	}
 	
+	private IesTableListDTO convertToTableListDTO(Ies ies) {
+		return modelMapper.map(ies, IesTableListDTO.class);
+	}
+
 	private Ies convertoToEntity(IesDTO iesDTO) {
 		Ies ies;
 		if (iesDTO.getId() != null) {
@@ -135,7 +131,8 @@ public class IesController {
 		ies.setContacto(iesDTO.getContacto());
 		ies.setTelefono(iesDTO.getTelefono());
 		ies.setCorreo(iesDTO.getCorreo());
-		
+
 		return ies;
 	}
+
 }

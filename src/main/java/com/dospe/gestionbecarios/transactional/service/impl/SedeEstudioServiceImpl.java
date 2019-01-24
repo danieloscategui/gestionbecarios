@@ -1,6 +1,5 @@
 package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class SedeEstudioServiceImpl implements SedeEstudioService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Collection<SedeEstudio> findAll() {
+	public List<SedeEstudio> findAll() {
 		return sedeEstudioRepository.findAll();
 	}
 

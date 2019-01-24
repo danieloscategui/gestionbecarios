@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class BecaListDTO implements Serializable {
 
-	private static final long serialVersionUID = -1488217904496557686L;
+	private static final long serialVersionUID = 7199863298950977350L;
 
 	private Long id;
 	
@@ -16,12 +16,6 @@ public class BecaListDTO implements Serializable {
 	
 	private String modalidad;
 	
-	@JsonSerialize(using = JsonDateSerializer.class)
-	private Date inicio;
-	
-	@JsonSerialize(using = JsonDateSerializer.class)
-	private Date termino;
-
 	public Long getId() {
 		return id;
 	}
@@ -46,22 +40,6 @@ public class BecaListDTO implements Serializable {
 		this.modalidad = modalidad;
 	}
 
-	public Date getInicio() {
-		return inicio;
-	}
-
-	public void setInicio(Date inicio) {
-		this.inicio = inicio;
-	}
-
-	public Date getTermino() {
-		return termino;
-	}
-
-	public void setTermino(Date termino) {
-		this.termino = termino;
-	}
-	
 	public String getBecaName() {
 		return this.convocatoria + " - " + this.modalidad;
 	}

@@ -6,7 +6,9 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 
 import com.dospe.gestionbecarios.util.JsonDateDeserializer;
+import com.dospe.gestionbecarios.util.JsonDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class BecaDTO implements Serializable {
 	private static final long serialVersionUID = 8922074438345437232L;
@@ -21,10 +23,12 @@ public class BecaDTO implements Serializable {
 	
 	@NotNull(message = "<span>Fecha Inicio: </span> Es requerido.")
 	@JsonDeserialize(using = JsonDateDeserializer.class)
+	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date inicio;
 	
 	@NotNull(message = "<span>Fecha Termino: </span> Es requerido.")
 	@JsonDeserialize(using = JsonDateDeserializer.class)
+	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date termino;
 
 	public Long getId() {
