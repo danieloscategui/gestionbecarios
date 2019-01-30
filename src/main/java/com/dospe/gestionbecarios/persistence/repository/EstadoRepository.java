@@ -7,5 +7,6 @@ import com.dospe.gestionbecarios.persistence.domain.Estado;
 
 @Repository("estadoRepository")
 public interface EstadoRepository extends JpaRepository<Estado, Long> {
-
+	
+	public boolean existsByDescripcionIgnoreCase(String descripcion);
 }

@@ -49,13 +49,12 @@ public class IesController extends Common {
 	@ResponseBody
 	public Map<String, Object> listarTablaIes(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
-		logger.info("listando todas las IES en un map");
+		logger.info("listando todas las IES");
 		// int page = request.getParameter("page") == null? 1 :
 		// Integer.parseInt(request.getParameter("page"));
 		// int rows = request.getParameter("rows") == null? 10 :
 		// Integer.parseInt(request.getParameter("rows"));
-		List<Ies> iesList = (List<Ies>) iesService.findAll();
-		List<IesTableListDTO> iesTableListDTO = iesList.stream().map(ies -> convertToTableListDTO(ies)).collect(Collectors.toList());
+		List<IesTableListDTO> iesTableListDTO =  iesService.findAll().stream().map(ies -> convertToTableListDTO(ies)).collect(Collectors.toList());
 		response.put("data", iesTableListDTO);
 		return response;
 	}

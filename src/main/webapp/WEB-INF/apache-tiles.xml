@@ -12,6 +12,7 @@
 		<put-attribute name="content" value="/WEB-INF/tiles/content.jsp"/>
 		<put-attribute name="js-base" value="/WEB-INF/tiles/js-base.jsp"/>
 		<put-attribute name="js-custom" value=""/>
+		<put-attribute name="vue-templates" value="/WEB-INF/tiles/vue-templates.jsp"/>
 	</definition>
 	
 	<definition name="becario-lista" extends="base-starter">

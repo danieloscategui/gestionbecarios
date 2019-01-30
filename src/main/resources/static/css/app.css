@@ -34,6 +34,10 @@
 	display: none;
 }
 
+.btn{
+	outline: none !important;
+}
+
 /*
 ALertify
 .alertify-notifier .ajs-message.ajs-success {

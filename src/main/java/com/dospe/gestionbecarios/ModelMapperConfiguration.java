@@ -72,10 +72,8 @@ public class ModelMapperConfiguration {
 			protected void configure() {
 				map().setNombreCompleto(source.getFullName());
 				map().setCarrera(source.getAsignacion().getCarrera().getDescripcion());
-				map().setBeca(source.getAsignacion().getCarrera().getBeca().getShortName());
 				map().setAsesor(source.getAsignacion().getAsesor().getNombre());
 				map().setEstado(source.getEstado().getDescripcion());
-				map().setCondicion(source.getCondicion().getDescripcion());
 			}
 		});
 
@@ -93,16 +91,16 @@ public class ModelMapperConfiguration {
 		
 		modelMapper.addMappings(new PropertyMap<Condicion, CondicionDTO>() {
 			protected void configure() {
-				map().setId(source.getIdCondicion());
+				map().setId(source.getId());
 				map().setDescripcion(source.getDescripcion());
 				map().setIdEstado(source.getIdEstado());
-				map().setIdSubCondicion(source.getIdSubCondicion());
+				map().setIdPadre(source.getIdPadre());
 			}
 		});
 		
 		modelMapper.addMappings(new PropertyMap<Condicion, CondicionListDTO>() {
 			protected void configure() {
-				map().setId(source.getIdCondicion());
+				map().setId(source.getId());
 				map().setDescripcion(source.getDescripcion());
 			}
 		});

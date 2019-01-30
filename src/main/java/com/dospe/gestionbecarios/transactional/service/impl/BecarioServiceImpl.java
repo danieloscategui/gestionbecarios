@@ -1,6 +1,5 @@
 package com.dospe.gestionbecarios.transactional.service.impl;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -68,7 +67,7 @@ public class BecarioServiceImpl implements BecarioService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Collection<Becario> findBecariosPorBeca(Long idBeca) {
+	public List<Becario> findBecariosPorBeca(Long idBeca) {
 		return becarioRepository.findAllByBeca(idBeca);
 	}
 

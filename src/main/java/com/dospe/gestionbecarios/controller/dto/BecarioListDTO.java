@@ -2,11 +2,6 @@ package com.dospe.gestionbecarios.controller.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
-import com.dospe.gestionbecarios.persistence.domain.Sexo;
-
 public class BecarioListDTO implements Serializable {
 
 	private static final long serialVersionUID = -3101669372822728174L;
@@ -14,13 +9,7 @@ public class BecarioListDTO implements Serializable {
 	private Long id;
 	private String dni;
 	private String nombreCompleto;
-	private Integer edad;
-	@Enumerated(EnumType.STRING)
-	private Sexo sexo;
-	private String numeroExpediente;
 	private String estado;
-	private String condicion;
-	private String beca;
 	private String carrera;
 	private String asesor;
 	
@@ -42,42 +31,6 @@ public class BecarioListDTO implements Serializable {
 	public void setNombreCompleto(String nombreCompleto) {
 		this.nombreCompleto = nombreCompleto;
 	}
-	public Integer getEdad() {
-		return edad;
-	}
-	public void setEdad(Integer edad) {
-		this.edad = edad;
-	}
-	public Sexo getSexo() {
-		return sexo;
-	}
-	public void setSexo(Sexo sexo) {
-		this.sexo = sexo;
-	}
-	public String getNumeroExpediente() {
-		return numeroExpediente;
-	}
-	public void setNumeroExpediente(String numeroExpediente) {
-		this.numeroExpediente = numeroExpediente;
-	}
-	public String getEstado() {
-		return estado;
-	}
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-	public String getCondicion() {
-		return condicion;
-	}
-	public void setCondicion(String condicion) {
-		this.condicion = condicion;
-	}
-	public String getBeca() {
-		return beca;
-	}
-	public void setBeca(String beca) {
-		this.beca = beca;
-	}
 	public String getCarrera() {
 		return carrera;
 	}
@@ -89,6 +42,12 @@ public class BecarioListDTO implements Serializable {
 	}
 	public void setAsesor(String asesor) {
 		this.asesor = asesor;
+	}
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 	
 }

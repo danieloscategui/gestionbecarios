@@ -68,8 +68,8 @@ public class BecarioRestController {
 	public Map<String, Object> findAllByBeca(@PathVariable("id") Long idBeca, HttpServletRequest request){
 		Map<String, Object> result = new HashMap<String, Object>();
 		logger.info("listando todos los becarios por beca: "+ idBeca);
-		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
-		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
+//		int page = request.getParameter("page") == null? 1 : Integer.parseInt(request.getParameter("page"));
+//		int rows = request.getParameter("rows") == null? 10 : Integer.parseInt(request.getParameter("rows"));
 		
 		List<BecarioListDTO> becariosDTO = becarioService.findBecariosPorBeca(idBeca).stream()
 											.map(becario -> convertToDTO(becario))
@@ -94,7 +94,7 @@ public class BecarioRestController {
 		return becarioService.findBecariosPorBeca(idBeca);
 	}
 	
-	@PostMapping("/")
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public Map<String, Object> update(@Valid @RequestBody BecarioDTO becarioDTO) {
@@ -148,8 +148,7 @@ public class BecarioRestController {
 	
 	
 	private BecarioListDTO convertToDTO(Becario becario) {
-		BecarioListDTO becarioListDTO = modelMapper.map(becario, BecarioListDTO.class);
-		return becarioListDTO;
+		return modelMapper.map(becario, BecarioListDTO.class);
 	}
 	
 	private Becario convertoToEntity(BecarioDTO becarioDTO) {

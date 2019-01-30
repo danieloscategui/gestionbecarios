@@ -1,6 +1,6 @@
 package com.dospe.gestionbecarios.persistence.repository;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +39,7 @@ public interface BecarioRepository extends JpaRepository<Becario, Long> {
 			+ "inner join asig.carrera c "
 			+ "inner join c.beca bec "
 			+ "where bec.id = :idBeca ")
-	Collection<Becario> findAllByBeca(@Param("idBeca") Long idBeca);
+	List<Becario> findAllByBeca(@Param("idBeca") Long idBeca);
 	
 	@Query(value= "select b from Becario b "
 			+ "inner join b.asignacion asig "

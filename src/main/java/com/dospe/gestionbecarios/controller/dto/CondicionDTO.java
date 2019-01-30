@@ -9,7 +9,7 @@ public class CondicionDTO implements Serializable{
 	private Long id;
 	private String descripcion;
 	private Long idEstado;
-	private Long idSubCondicion;
+	private Long idPadre;
 	
 	public Long getId() {
 		return id;
@@ -29,11 +29,11 @@ public class CondicionDTO implements Serializable{
 	public void setIdEstado(Long idEstado) {
 		this.idEstado = idEstado;
 	}
-	public Long getIdSubCondicion() {
-		return idSubCondicion;
+	public Long getIdPadre() {
+		return idPadre;
 	}
-	public void setIdSubCondicion(Long idSubCondicion) {
-		this.idSubCondicion = idSubCondicion;
+	public void setIdPadre(Long idPadre) {
+		this.idPadre = idPadre;
 	}
 	
 }

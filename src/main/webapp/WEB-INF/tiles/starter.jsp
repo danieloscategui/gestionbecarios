@@ -39,6 +39,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		  <strong>Copyright &copy; 2018 <a href="#">dospe</a>.</strong> All rights reserved.
 		</footer>
 	</div>
+	<tiles:insertAttribute name="vue-templates"/>
 </body>
 
 <tiles:insertAttribute name="js-base"/>

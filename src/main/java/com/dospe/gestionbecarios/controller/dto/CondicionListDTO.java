@@ -8,6 +8,7 @@ public class CondicionListDTO implements Serializable{
 
 	private Long id;
 	private String descripcion;
+	private Long idPadre;
 	
 	public Long getId() {
 		return id;
@@ -20,6 +21,12 @@ public class CondicionListDTO implements Serializable{
 	}
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+	public Long getIdPadre() {
+		return idPadre;
+	}
+	public void setIdPadre(Long idPadre) {
+		this.idPadre = idPadre;
 	}
 	
 }

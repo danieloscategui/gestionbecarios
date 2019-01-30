@@ -44,7 +44,7 @@ var app = new Vue({
 			});
 		},
 		loadEstados: function(){
-			axios.get("api/estado").then(response => {
+			axios.get("api/estado/list").then(response => {
 				this.estados = response.data;
 			});
 		},
@@ -74,7 +74,8 @@ var app = new Vue({
 		},
 		loadCondicionPorEstado: function(){
 			if (this.becario.idEstado != null ){
-				axios.get("api/estado/condicion/"+this.becario.idEstado).then(response =>{
+				var url = "api/estado/" + this.becario.idEstado + "/condicion/list"
+				axios.get(url).then(response =>{
 					this.condiciones = response.data;
 				});
 			}
@@ -129,7 +130,7 @@ var app = new Vue({
 			this.resetFormulario();
 		},
 		guardar: function(){
-			var url = "api/becario/";
+			var url = "api/becario";
 			axios.post(url, this.becario)
 			.then(response => {
 				if (response.data.success){

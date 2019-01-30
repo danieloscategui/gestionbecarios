@@ -52,4 +52,9 @@ public class EstadoServiceImpl implements EstadoService {
 		return null;
 	}
 
+	@Override
+	public boolean existsByDescripcionIgnoreCase(String descripcion) {
+		return estadoRepository.existsByDescripcionIgnoreCase(descripcion);
+	}
+
 }

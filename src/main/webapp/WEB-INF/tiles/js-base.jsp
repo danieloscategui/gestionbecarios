@@ -48,3 +48,6 @@ alertify.defaults.notifier.delay = 3;
 
 <!-- General JS -->
 <script src="js/general.js"></script>
+
+<!-- vue-base JS -->
+<script src="js/vue-base.js"></script>

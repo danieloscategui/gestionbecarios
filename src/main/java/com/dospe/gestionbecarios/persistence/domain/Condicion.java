@@ -1,5 +1,6 @@
 package com.dospe.gestionbecarios.persistence.domain;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,7 +33,7 @@ public class Condicion implements Serializable {
 	@SequenceGenerator(name="condicionSequence", sequenceName="gb_condicion_seq", allocationSize=20)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="condicionSequence")
 	@Column(name="id_condicion")
-	private Long idCondicion;
+	private Long id;
 	
 	@Column
 	private String descripcion;
@@ -39,8 +45,18 @@ public class Condicion implements Serializable {
 	@JoinColumn(name="id_estado", referencedColumnName="id_estado", nullable=false, insertable=false, updatable=false)
 	private Estado estado;
 	*/
-	@Column(name="id_sub_condicion")
-	private Long idSubCondicion;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@NotFound(action=NotFoundAction.IGNORE)
+	@JoinColumn(name="id_padre", referencedColumnName="id_condicion", nullable = true, insertable = false, updatable = false)
+	private Condicion condicionPadre;
+
+	@JsonIgnore
+	@OneToMany(mappedBy="condicionPadre", fetch=FetchType.LAZY)
+	private List<Condicion> subCondiciones = new ArrayList<Condicion>();
+	
+	@Column(name="id_padre")
+	private Long idPadre;
 
 	@JsonIgnore
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="condicion", fetch=FetchType.LAZY)
@@ -49,18 +65,18 @@ public class Condicion implements Serializable {
 	public Condicion() {
 	}
 	
-	public Condicion(String descripcion, Estado estado, Long idSubCondicion) {
+	public Condicion(String descripcion, Estado estado, Long idPadre) {
 		this.descripcion = descripcion;
 //		this.estado = estado;
-		this.idSubCondicion = idSubCondicion;
+		this.idPadre = idPadre;
 	}
 
-	public Long getIdCondicion() {
-		return idCondicion;
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdCondicion(Long idCondicion) {
-		this.idCondicion = idCondicion;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDescripcion() {
@@ -87,12 +103,12 @@ public class Condicion implements Serializable {
 		this.estado = estado;
 	}*/
 
-	public Long getIdSubCondicion() {
-		return idSubCondicion;
+	public Long getIdPadre() {
+		return idPadre;
 	}
 
-	public void setIdSubCondicion(Long idSubCondicion) {
-		this.idSubCondicion = idSubCondicion;
+	public void setIdPadre(Long idPadre) {
+		this.idPadre = idPadre;
 	}
 	
 	public List<Becario> getBecarios() {
@@ -103,7 +119,20 @@ public class Condicion implements Serializable {
 		this.becarios = becarios;
 	}
 
-	public boolean isNew(){
-		return (this.idCondicion == null);
+	public Condicion getCondicionPadre() {
+		return condicionPadre;
 	}
+
+	public void setCondicionPadre(Condicion condicionPadre) {
+		this.condicionPadre = condicionPadre;
+	}
+
+	public List<Condicion> getSubCondiciones() {
+		return subCondiciones;
+	}
+
+	public void setSubCondiciones(List<Condicion> subCondiciones) {
+		this.subCondiciones = subCondiciones;
+	}
+	
 }

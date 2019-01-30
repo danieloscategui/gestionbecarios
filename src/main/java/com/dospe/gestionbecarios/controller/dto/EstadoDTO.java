@@ -8,16 +8,16 @@ public class EstadoDTO implements Serializable {
 	
 	private static final long serialVersionUID = -3442199441869691425L;
 
-	private Long idEstado;
+	private Long id;
 	
 	@NotNull(message="<span>Descripción: </span> Es requerido.")
 	private String descripcion;
 	
-	public Long getIdEstado() {
-		return idEstado;
+	public Long getId() {
+		return id;
 	}
-	public void setIdEstado(Long idEstado) {
-		this.idEstado = idEstado;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getDescripcion() {
 		return descripcion;
